@@ -50,6 +50,9 @@
       Element = YAHOO.util.Element,
       KeyListener = YAHOO.util.KeyListener;
 
+   var isSurevine = false; 
+   /* @@IS_SUREVINE@@ */
+
    /**
     * FlashUpload constructor.
     *
@@ -549,7 +552,10 @@
        */
       show: function FlashUpload_show(config)
       {
-    	 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading..."
+         if (isSurevine) {
+        	 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading..."
+         }
+
          if (!this.hasRequiredFlashPlayer)
          {
             Alfresco.util.PopupManager.displayPrompt(
@@ -1156,7 +1162,11 @@
                  this._updateStatus();
               }
          }
-         this.waitForHealthCheckOK(0);
+         if (isSurevine) {
+            this.waitForHealthCheckOK(0);
+         } else {
+            this.processOnUploadButtonClick();
+         }
       },
       
       waitForHealthCheckOK: function FlashUpload_waitForHealthCheckOK(counter)
@@ -1203,17 +1213,18 @@
       {
     	 var tags="";
          
-    	 if (this.showConfig.updateNodeRef != null)
-    	 { 
-    		 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading...";
-			 this._loadItemTags(this.showConfig.updateNodeRef, this.id);
-    		 
-    	 }
-    	 else
-         {
-    		 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading...";
-    		 Dom.get(this.id + "-tag-picker-currentValueField").value = '';
-    		 Alfresco.util.ComponentManager.get(this.id+'-tag-picker').specifyCurrentTags(tags);
+         if (isSurevine) {
+        	 if (this.showConfig.updateNodeRef != null)
+        	 { 
+        		 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading...";
+    			 this._loadItemTags(this.showConfig.updateNodeRef, this.id);
+        	 }
+        	 else
+             {
+        		 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading...";
+        		 Dom.get(this.id + "-tag-picker-currentValueField").value = '';
+        		 Alfresco.util.ComponentManager.get(this.id+'-tag-picker').specifyCurrentTags(tags);
+             }
          }
     	 
          // Set the panel title
@@ -1788,7 +1799,9 @@
                attributes.eslopengroupshidden=this.eslOpenGroups.value;
                attributes.eslatomal=this.eslAtomal.value;
                attributes.eslEyes=this.eslEyes.value;
-               attributes.tags=YAHOO.util.Dom.get(this.id + "-tag-picker-currentValueField").value;
+               if (isSurevine) {
+                   attributes.tags=YAHOO.util.Dom.get(this.id + "-tag-picker-currentValueField").value;
+               }
                this.uploader.upload(flashId, url, "POST", attributes, "filedata");
                startedUploads++;
             }
