@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>People In My Groups</shortname>
+   <description>Dashlet showing which users share groups with you</description>
+   <family>user-dashlet</family>
+   <url>/components/dashlets/esl/my-groups</url>
+</webscript>

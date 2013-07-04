@@ -1,0 +1,15 @@
+.yui-skin-default .freeform-markings-selector-panel .ft {
+        font-size: 100%;
+}
+
+.freeform-markings-selector-panel .bd {
+	padding: 10px !important;
+}
+
+.freeform-markings-selector-panel .invisible {
+	display: none;
+}
+
+.eslTextFreeformSelector {
+	text-transform: uppercase;
+}

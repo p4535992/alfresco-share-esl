@@ -1,0 +1,38 @@
+.yui-skin-default .nationality-marking-selector-panel .ft {
+	font-size: 100%;
+}
+
+.nationality-marking-selector-panel {
+	width: 15em !important;
+}
+
+.nationality-marking-selector-panel .bd {
+	padding: 10px !important;
+}
+
+.nationality-marking-selector-panel .invisible {
+	display: none;
+}
+
+.nationality-marking-selector-panel .current-nationality-marking {
+	text-align: center;
+	padding: 0.5em 0 0 0;
+	margin: 0.5em 0 0 0;
+	border-top: 1px dotted #666666;
+}
+
+/* Emulate a zero width space */
+.nationality-marking-selector-panel .current-nationality-marking .zwsp {
+	font-size: 1px;
+	font-size: 0px;
+	width: 0;
+}
+
+.nationality-marking-selector-panel .individual-list li span {
+	display: block;
+}
+
+.nationality-marking-selector-panel .individual-list button {
+	width: 100%;
+	margin: 0;
+}

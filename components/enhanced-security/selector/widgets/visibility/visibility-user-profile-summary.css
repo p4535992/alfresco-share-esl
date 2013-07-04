@@ -1,0 +1,26 @@
+.visibility-user-profile-summary {
+	position: relative;
+	margin-top: 10px;
+	padding: 5px;
+	border: 1px solid #c5d6e2;
+	background-color: #ffffff;
+}
+
+.visibility-user-profile-summary h3 {
+	text-align: center;
+	margin-bottom: 0.5em;
+}
+
+.visibility-user-profile-summary ul.profile .title {
+	font-weight: bold;
+	display: block;
+	float: left;
+	width: 10em;
+}
+
+.visibility-user-profile-summary .profile-link {
+	margin-top: 10px;
+	padding: 5px 5px 5px 30px;
+	background: url(../../../images/user-profile.gif) no-repeat 5px center;
+	border: 1px solid #c5d6e2;
+}

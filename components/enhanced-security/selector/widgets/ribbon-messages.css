@@ -1,0 +1,33 @@
+.enhanced-security-ribbon-messages {
+	clear: both;
+	width: 600px;
+	margin: 0 auto;
+}
+
+.enhanced-security-ribbon-messages ul {
+	padding: 2px 0;
+}
+
+.enhanced-security-ribbon-messages li {
+	margin: 0 0 2px 0;
+	padding: 5px 5px 5px 30px;
+	color: black;
+}
+
+.enhanced-security-ribbon-messages li.error-message {
+	border: 1px solid #ff0000;
+	background: #ffcccc url('../../images/error.gif') no-repeat 5px
+		center;
+}
+
+.enhanced-security-ribbon-messages li.warn-message {
+	border: 1px solid #ffcc00;
+	background: #ffffcc url('../../images/warning.gif') no-repeat 5px
+		center;
+}
+
+.enhanced-security-ribbon-messages li.info-message {
+	border: 1px solid #c4c5c5;
+    background: #e3ebec url('../../images/info.gif') no-repeat 5px
+        center;
+}

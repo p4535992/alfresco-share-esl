@@ -1,0 +1,21 @@
+.visibility-count-dummy {
+	background: none;
+	border-color: transparent;
+}
+
+.visibility-count {
+	padding: 3px 3px 3px 22px;
+	background: #ffffff url('../../images/visibility.gif') 3px center no-repeat;
+}
+
+.visibility-count-loading {
+	background-image: url('../../images/loading.gif');
+}
+
+.visibility-count .yui-button {
+	vertical-align: baseline;
+}
+
+.visibility-count .count {
+	font-weight: bold;
+}

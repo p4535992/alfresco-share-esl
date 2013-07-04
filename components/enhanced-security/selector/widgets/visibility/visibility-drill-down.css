@@ -1,0 +1,33 @@
+.visibility-drill-down .bd {
+	padding: 10px !important;
+}
+
+.visibility-drill-down .marking-label {
+	text-align: center;
+}
+
+.visibility-drill-down .marking-label-intro {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.visibility-drill-down .marking-label .marking-label-marking {
+	display: block;
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.visibility-drill-down .count-label {
+	text-align: center;
+	font-size: 120%;
+}
+
+.visibility-drill-down .loading-overlay {
+	background: white url(../../../../images/ajax_anim.gif) center center no-repeat;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	position: absolute;
+	opacity: 0.85;
+}

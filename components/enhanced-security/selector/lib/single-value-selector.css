@@ -1,0 +1,15 @@
+.yui-skin-default .single-value-selector-panel .ft {
+	font-size: 100%;
+}
+
+.single-value-selector-panel .bd {
+	padding: 10px !important;
+}
+
+.single-value-selector-panel .invisible {
+	display: none;
+}
+
+.single-value-selector-list li {
+	text-align: center;
+}

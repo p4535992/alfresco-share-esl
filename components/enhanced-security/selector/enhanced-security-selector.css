@@ -1,0 +1,96 @@
+.ESLSelector {
+	background-color: #DEE8ED;
+	zoom: 1;
+}
+
+.ESLSelectorControlContainer,.ESLSelectorControlContainerViewOnly {
+	text-align: center;
+	zoom: 1;
+	position: relative;
+}
+
+.ESLSelectorControlContainer {
+	padding: 0 5px 5px 5px;
+}
+
+.ESLSelectorControlContainerViewOnly {
+	padding: 2px 5px;
+}
+
+.ESLSelectorControlContainer .editableESLSelector {
+	display: inline;
+	margin-right: 5px;
+}
+
+.ESLSelectorControlContainer .editableESLSelector .yui-button {
+	margin-top: 5px;
+}
+
+.ESLSelectorControlContainer .editableESLSelector button {
+	background: url("../images/button-arrow.png") no-repeat 100% 50%;
+	padding-right: 20px;
+}
+
+.ESLSelectorControlContainer .editableESLSelector .blank-control button {
+	color: #666666;
+}
+
+.ESLSelectorControlContainer .editableESLSelector .unset-control,
+.ESLSelectorControlContainer .editableESLSelector .unset-control .first-child {
+	border-color: #993333;
+}
+
+.ESLSelectorControlContainer .editableESLSelector .unset-control button {
+	color: #993333;
+}
+
+.ESLSelectorControlContainerViewOnly .viewToEditESLSwitchContainer button {
+	line-height: normal;
+	min-height: 1em;
+}
+
+.ESLSelectorControlContainerViewOnly .viewESLSelector {
+	font-weight: bold;
+}
+
+.ESLInvisible {
+	display:none;
+}
+
+.ESLSelectorControlContainer .visibility-container {
+	width: 40%;
+	float: left;
+	margin-left: 8%; 
+	text-align: right;
+	padding: 5px 0;
+}
+
+.ESLSelectorControlContainer .visibility-container .esl-tooltip {
+    text-align: left;
+    display: inline;
+}
+
+.ESLSelectorControlContainer .quickmarks-container {
+	width: 40%;
+	float: right;
+	text-align: left;
+	padding: 5px 0;
+}
+
+.ESLSelectorControlContainer .visibility-count {
+	display: inline;
+	border: none;
+	background-color: transparent;
+	font-weight: bold;
+	zoom: 1;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.yui-panel .visibility-count {
+	left: 10px;
+}
+
+.ESLSelectorControlContainer .quickmarks-container .yui-button, .ESLSelectorControlContainer .visibility-container .yui-button {
+	vertical-align: baseline;
+}

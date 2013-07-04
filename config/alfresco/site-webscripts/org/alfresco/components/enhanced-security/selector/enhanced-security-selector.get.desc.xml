@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Enhanced Security Selector</shortname>
+	<description>A selector for security labels</description>
+	<url>/components/enhanced-security/enhanced-security-selector</url>
+	<url>/components/enhanced-security/enhanced-security-selector/{editMode}</url>
+</webscript>

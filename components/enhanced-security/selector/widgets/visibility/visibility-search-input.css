@@ -1,0 +1,27 @@
+.visibility-search-input {
+	margin-top: 1em;
+}
+
+.visibility-search-input label {
+	margin-right: 0.5em;
+	margin-top: 2px;
+	float: left;
+}
+
+.visibility-search-input .autocomplete {
+	width: 20em;
+	float: left;
+	z-index: 1;
+}
+
+.visibility-search-input .autocomplete input.yui-ac-input {
+	display: inline-block;
+}
+
+.visibility-search-input .autocomplete-result .term-match {
+	font-weight: bold;
+}
+
+.visibility-search-input .autocomplete-result .username {
+	font-style: italic;
+}

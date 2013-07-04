@@ -1,0 +1,199 @@
+.yui-skin-default .group-selector-panel .ft {
+	font-size: 100%;
+}
+
+.group-selector-panel p {
+	clear: left;
+}
+
+.group-selector-panel .invisible {
+	display: none;
+}
+
+.group-selector-panel .markingListContainer a.groupItem {
+	cursor: pointer;
+	padding: 1px 2px;
+	border: 1px dotted white;
+	display: block;
+	zoom: 1;
+}
+
+.group-selector-panel .markingListContainer a.groupItem.disabled {
+	color: graytext;
+	cursor: auto;
+}
+
+.group-selector-panel .markingListContainer a.groupItem.stuck {
+	color: #dddddd;
+	cursor: auto;
+}
+
+.group-selector-panel .markingListContainer a.groupItem:hover,.group-selector-panel .markingListContainer a.groupItem:focus {
+	border: 1px dotted #c4c5c5;
+	text-decoration: none;
+}
+
+.group-selector-panel .markingListContainer a.selected {
+	color: highlighttext;
+	background-color: highlight;
+	border: 1px solid highlight;
+}
+
+.group-selector-panel .markingListContainer {
+	border: 1px solid #c4c5c5;
+	overflow-x: hidden;
+	overflow-y: auto;
+	width: 100%;
+}
+
+.group-selector-panel h4.markingName {
+	height: 1.5em;
+}
+
+.group-selector-panel .markingButtonContainer {
+	text-align: center;
+	position: relative;
+	padding: 2px;
+	zoom: 1;
+}
+
+.group-selector-panel .eslValidationImage {
+	margin-left: 5px;
+	width: 16px;
+	height: 16px;
+	border: none;
+	vertical-align: middle;
+}
+
+.group-selector-panel .eslValidationFail .eslValidationImage {
+	background: url('../../../images/error.gif') no-repeat;
+}
+
+.group-selector-panel .eslValidationFail input {
+	background-color: #ffcccc;
+}
+
+.group-selector-panel .markingListContainer {
+	height: 15em;
+	background-color: white;
+}
+
+.group-selector-panel .validation-messages {
+	zoom: 1;
+}
+
+.group-selector-panel .messageError {
+	margin-top: 5px;
+	border: 1px solid #ff0000;
+	color: black;
+	padding: 5px 5px 5px 30px;
+	background: #ffcccc url('../../../images/error.gif') no-repeat 5px
+		center;
+}
+
+.group-selector-panel .messageWarning {
+	margin-top: 5px;
+	border: 1px solid #ffcc00;
+	color: black;
+	padding: 5px 5px 5px 30px;
+	background: #ffffcc url('../../../images/warning.gif') no-repeat 5px
+		center;
+}
+
+.group-selector-panel .messageInfo {
+    margin-top: 5px;
+	border: 1px solid #c4c5c5;
+    color: black;
+    padding: 5px 5px 5px 30px;
+    background: #e3ebec url('../../../images/info.gif') no-repeat 5px
+        center;
+}
+
+.eslTextGroupSelector {
+	text-transform: uppercase;
+}
+
+.group-selector-panel .inner {
+	position: relative;
+	zoom: 1;
+}
+
+.group-selector-panel .eslHelpLink {
+	float: right;
+	text-align: right;
+}
+
+.group-selector-panel .eslHelpLink a {
+	padding-left: 20px;
+	background: url('../../../images/help.gif') 0% 50% no-repeat;
+}
+
+.group-selector-panel .visibility-count {
+	display: inline;
+	position: static;
+	float: left;
+}
+
+.group-selector-panel .visibility-count-dummy {
+	display: none;
+}
+
+
+.group-selector-panel .group-selector-lists-container {
+	clear: left;
+}
+
+/* classes .columns1 ... .columnsmorethan4 are total width of panel:
+   calculated from .group-list-outer * number of columns, plus
+   padding/margins of 2 .constraints and .bd
+*/
+
+.group-selector-panel .bd {
+	padding: 10px !important;
+}
+
+.group-selector-panel .constraint {
+	float: left;
+	display: inline; /* IE6 float double-margin bug */
+	padding: 5px 0 5px 5px;
+	margin-right: 5px;
+	margin-top: 10px;
+	background-color: #e3ebec;
+	border: 1px solid #c4c5c5;
+}
+
+.group-selector-panel .group-list-outer {
+	width: 150px;
+	float: left;
+	display: inline; /* IE6 float double-margin bug */
+	margin-right: 5px;
+}
+
+/* 400px is the minimum for all static elements of panel */
+.columns1, .columns2 {
+	width: 400px !important;
+}
+
+/* 20px [.bd] + (2 * 12px) [.constraint] + 3 * 155px [.group-list-outer] */
+.columns3 {
+	width: 509px !important;
+}
+
+/* 20px [.bd] + (2 * 12px) [.constraint] + 4 * 155px [.group-list-outer] */
+.columns4, .columnsmorethan4 {
+	width: 664px !important;
+}
+
+.eslGroupDescription-wrapper .title
+{
+	font-weight: bold;
+	margin-right: 2em;
+	width: 9em;
+	vertical-align:text-top;
+}
+
+.eslGroupDescription-wrapper tr > td
+{
+    padding-bottom: 1em;
+    vertical-align:text-top;
+}

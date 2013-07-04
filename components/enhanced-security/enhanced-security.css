@@ -1,0 +1,339 @@
+/* Center text and buttons inside p elements */
+.enhanced-security p
+{
+   text-align: center;
+}
+
+/* General styling */
+
+.yui-panel-container .enhanced-security
+{
+   width: 440px;
+}
+
+.enhanced-security .yui-gd div.first
+{
+   width: 10.5em;
+}
+
+.enhanced-security textarea
+{
+   width: 20em;
+}
+
+.eslPMDocLib@@esc.marking.lowest@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:black !important;
+   background-color:white;
+   border-style:double;
+   border-width:3px;
+   font-weight:750;
+   text-align:center;
+}
+
+.eslPMDocLib@@esc.marking.lower@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#AFA66D;
+   font-weight:750;
+   text-align:center;
+}
+
+.eslPMDocLib@@esc.marking.medium@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#4753FC;
+   font-weight:750;
+   text-align:center;
+}
+
+.eslPMDocLib@@esc.marking.higher@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#F2A205;
+   font-weight:775;
+   text-align:center;
+}
+
+.eslPMDocLib@@esc.marking.highest@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#D14B2A;
+   font-weight:750;
+   text-align:center;
+}
+
+.eslPMDocLibList@@esc.marking.lowest@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:black !important;
+   background-color:white;
+   border-style:double;
+   border-width:3px;
+   font-weight:750;
+   text-align:center;
+   margin-left:20%;
+   margin-right:20%;
+}
+
+.eslPMDocLibList@@esc.marking.lower@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#AFA66D;
+   font-weight:750;
+   text-align:center;
+   margin-left:20%;
+   margin-right:20%;
+}
+
+.eslPMDocLibList@@esc.marking.medium@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#4753FC;
+   font-weight:750;
+   text-align:center;
+   margin-left:20%;
+   margin-right:20%;
+}
+
+.eslPMDocLibList@@esc.marking.higher@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#F2A205;
+   font-weight:775;
+   text-align:center;
+   margin-left:20%;
+   margin-right:20%;
+}
+
+.eslPMDocLibList@@esc.marking.highest@@
+{
+   font-family:helvetica,ariel;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#D14B2A;
+   font-weight:750;
+   text-align:center;
+   margin-left:20%;
+   margin-right:20%;
+}
+
+.eslPMWiki@@esc.marking.lowest@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:black !important;
+   background-color:white;
+   border-style:double;
+   border-width:3px;
+   background-color:white;
+   font-weight:750;
+   text-align:center;
+   align:left;
+   width:66%;
+   margin-left: 1em;
+}
+
+.eslPMWiki@@esc.marking.lower@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#AFA66D;
+   font-weight:750;
+   text-align:center;
+   align:left;
+   width:66%;
+   margin-left: 1em;
+}
+
+.eslPMWiki@@esc.marking.medium@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#4753FC;
+   font-weight:750;
+   text-align:center;
+   align:left;
+   width:66%;
+   margin-left: 1em;
+}
+
+.eslPMWiki@@esc.marking.higher@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#F2A205;
+   font-weight:775;
+   text-align:center;
+   align:left;
+   width:66%;
+   margin-left: 1em;
+}
+
+.eslPMWiki@@esc.marking.highest@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#D14B2A;
+   font-weight:750;
+   text-align:center;
+   align:left;
+   width:66%;
+   margin-left: 1em;
+}
+
+.eslPMDiscussion@@esc.marking.lowest@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:black !important;
+   background-color:white;
+   border-style:double;
+   border-width:3px;
+   background-color:white;
+   font-weight:750;
+   line-height:1em;
+   text-align:center;
+   align:left;
+   margin-left:3em;
+   margin-right:10%;
+   width:46%;
+   padding-top:2px;
+   padding-bottom:2px;
+}
+
+.eslPMDiscussion@@esc.marking.lower@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#AFA66D;
+   font-weight:750;
+   line-height:1em;
+   text-align:center;
+   align:left;
+   margin-left:3em;
+   margin-right:10%;
+   width:46%;
+   padding-top:2px;
+   padding-bottom:2px;
+}
+
+.eslPMDiscussion@@esc.marking.medium@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#4753FC;
+   font-weight:750;
+   line-height:1em;
+   text-align:center;
+   align:left;
+   margin-left:3em;
+   margin-right:10%;
+   width:46%;
+   padding-top:2px;
+   padding-bottom:2px;
+}
+
+.eslPMDiscussion@@esc.marking.higher@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#F2A205;
+   font-weight:775;
+   line-height:1em;
+   text-align:center;
+   align:left;
+   margin-left:3em;
+   margin-right:10%;
+   width:46%;
+   padding-top:2px;
+   padding-bottom:2px;
+}
+
+.eslPMDiscussion@@esc.marking.highest@@
+{
+   font-family:helvetica,ariel,sans-serif;
+   font-size:0.9em;
+   color:white !important;
+   background-color:#D14B2A;
+   font-weight:750;
+   line-height:1em;
+   text-align:center;
+   align:left;
+   margin-left:3em;
+   margin-right:10%;
+   width:46%;
+   padding-top:2px;
+   padding-bottom:2px;
+}
+
+span.eslHelpLink a
+{
+  color: #515D6B;
+  text-decoration: underline;
+}
+
+div.mygroups-icon {
+  display: inline;
+}
+
+div.mygroups-icon a img {
+  width: 32px;
+  height: 32px;
+  vertical-align: bottom;
+}
+
+div.mygroups-row div.presence {
+  bottom: 0.3em;
+}
+
+div.mygroups-row div.presence button {
+  bottom: 0.3em;
+}
+
+div.status {
+  bottom: 0.3em;
+  font-style: italic;
+  display: inline;
+}
+
+div.mygroups-box ul{
+  border-top:0px !important;
+  border-left:0px !important;
+  border-right:0px !important;
+  border-bottom:1px solid lightgrey !important;
+}
+
+div.mygroups-box div.yui-content {
+  border-style:none;
+  border-width:0px !important;
+  background-color: white;
+}
+
+div.mygroups-box div {
+  background-color: white;
+}
