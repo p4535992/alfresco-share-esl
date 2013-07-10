@@ -32,11 +32,33 @@ function loadVisibilityReport()
 
 }
 
+function VisibilityReport_renderMembersOfGroup(groupDefinition) {
+    var rV="";
+    if (groupDefinition.members.length==0) {
+        if (groupDefinition.name=="Any of my Groups") {
+            rV="<div class='mygroups-row detail-list-item mygroups-info'> There are no other users with your security groups</div>";
+        }
+        else {
+            rV="<div class='mygroups-row detail-list-item mygroups-info'> There are no other users with the <a href='/share/page/site/corporate/wiki-page?title=Security_Group_"+groupDefinition.name+"'>"+groupDefinition.name+"</a> group</div>";
+        }
+    }
+    else {
+        if (groupDefinition.name!="Any of my Groups" && groupDefinition.name!="Users with no security groups") {
+            rV=rV+"<div class='mrgroups-group-detail-row'> The following users also have access to the <a href='/share/page/site/corporate/wiki-page?title=Security_Group_"+groupDefinition.name+"'>"+groupDefinition.name+"</a> group</div>";
+        }
+    }
+    return rV;
+}
+
 function loadVisibilityTab(tabIndex, start, size) {
             var tab = YAHOO.util.Selector.query('div#my-groups-dashlet-body div.yui-content > div')[tabIndex];
             var groupDefinition = com_surevine_visibilityReportResults.groupDefinitions[tabIndex];
             if (groupDefinition.loadedAll || groupDefinition.loaded > (start+size)) {
                 return;
+            }
+            
+            if (start === 0) {
+            	tab.innerHTML = VisibilityReport_renderMembersOfGroup(groupDefinition);
             }
             
             var showMores = getElementsByClassName(tab, 'show-more');
@@ -169,27 +191,11 @@ function handleActiveTabChange(event) {
         onComponentsLoaded: function VisibilityReport_onComponentsLoaded() {
                 this.render();
         },
-        renderMembersOfGroup: function VisibilityReport_renderMembersOfGroup(groupDefinition) {
-            var rV="";
-            if (groupDefinition.members.length==0) {
-                if (groupDefinition.name=="Any of my Groups") {
-                    rV="<div class='mygroups-row detail-list-item mygroups-info'> There are no other users with your security groups</div>";
-                }
-                else {
-                    rV="<div class='mygroups-row detail-list-item mygroups-info'> There are no other users with the <a href='/share/page/site/corporate/wiki-page?title=Security_Group_"+groupDefinition.name+"'>"+groupDefinition.name+"</a> group</div>";
-                }
-            }
-            else {
-                if (groupDefinition.name!="Any of my Groups" && groupDefinition.name!="Users with no security groups") {
-                    rV=rV+"<div class='mrgroups-group-detail-row'> The following users also have access to the <a href='/share/page/site/corporate/wiki-page?title=Security_Group_"+groupDefinition.name+"'>"+groupDefinition.name+"</a> group</div>";
-                }
-            }
-            return rV;
-        }
+        renderMembersOfGroup: VisibilityReport_renderMembersOfGroup
     }
 }
 )
-();   
+();
 
 Alfresco.util.YUILoaderHelper.require(["tabview"], loadVisibilityReport, new Object());
 //]]></script>
