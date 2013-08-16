@@ -309,9 +309,6 @@
 
         fireOnClick : function()
         {
-            // TODO: This conditional should really be somewhere else - it
-            // shouldn't be up to this object to decide what happens when the
-            // event fires
             if (this.countObfuscated) {
                 Alfresco.util.PopupManager.displayPrompt({
                     title : this

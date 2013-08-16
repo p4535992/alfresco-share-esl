@@ -1422,8 +1422,8 @@
              * Get an object representing the marking of the parent item,
              * assuming there is one. This method should not be called to
              * determine if there _is_ a parent item, and may throw an error if
-             * there isn't TODO - cache the return value for improved
-             * performance
+             * there isn't.  In future, we could cache the return value for marginally
+             * improved performance at the cost of some complexity
              * 
              * @return An object with the following properties:
              *         closedGroups(array), openGroups(array), nod, PM, atomal,
@@ -1815,7 +1815,7 @@
             
             /**
              * Enable the 'commit' (AKA Save, edit, Submit etc) button, or show a fake,
-             * permenantly disabled button instead.  TODO:  Use the client-side validation
+             * permenantly disabled button instead.
              * inside Alfresco properley
              * @param enable Evaluates to the boolean 'true' if  we are to enable the commit button, or
              * 'false' if we are to disable it

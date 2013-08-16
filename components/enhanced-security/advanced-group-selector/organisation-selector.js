@@ -273,7 +273,6 @@
                          */
                         countsTowardsAtomal : function(atomalValue)
                         {
-                            // TODO This all feels really wrong
                             return atomalValue == this.options.controller.options.atomalStates[1];
                         },
 

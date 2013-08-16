@@ -910,7 +910,7 @@
          */
         forceSingleSelection : function()
         {
-            // TODO This is terrible.
+            // It would be great to do this via configuration, rather than a hard-coded value, in the future
             return this.options.title == "Groups";
         },
         

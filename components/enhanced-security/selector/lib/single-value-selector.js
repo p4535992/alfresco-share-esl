@@ -368,7 +368,7 @@
              */
             resetValues : function()
             {
-                // TODO
+                // Intentionally blank
             },
 
             /**

@@ -354,7 +354,6 @@
             });
          }
               
-         // Todo see if the nodeRef can be added to the list
          var objComplete =
          {
             successful: [

@@ -58,7 +58,7 @@
                                 }
                                 
                                 // If it's a closed marking and not a "Group" then it doesn't satisfy any atomal
-                                // TODO "Groups" here is hardcoded and terrible
+                                // "Groups" here is hardcoded, which we may want to replace with configuration in future
                                 if((constraint.constraintName == "es_validClosedMarkings") && (constraint.markings[k].type != "Groups")) {
                                     continue;
                                 }
