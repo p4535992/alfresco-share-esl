@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -33,7 +33,7 @@
 
     /**
 	 * EnhancedSecuritySingleValueSelector constructor.
-	 * 
+	 *
 	 * @param {String}
 	 *            htmlId The HTML id of the parent element
 	 * @return {Alfresco.EnhancedSecuritySingleValueSelector} The new instance
@@ -42,7 +42,7 @@
     Alfresco.EnhancedSecurityVisibilitySearchInput = function(htmlId)
     {
         /* Mandatory properties */
-        this.name = "Alfresco.EnhancedSecurityVisibilitySearchInput";
+        this.name = 'Alfresco.EnhancedSecurityVisibilitySearchInput';
         this.id = htmlId;
 
         /* Initialise prototype properties */
@@ -50,13 +50,13 @@
         this.modules = {};
 
         /* Initialise the events */
-        this.onUserChange = new YAHOO.util.CustomEvent("onUserChange", this);
+        this.onUserChange = new YAHOO.util.CustomEvent('onUserChange', this);
 
         /* Register this component */
         Alfresco.util.ComponentManager.register(this);
 
         /* Load YUI Components */
-        Alfresco.util.YUILoaderHelper.require( [ "json", "connection", "event", "datasource", "autocomplete" ], this.onComponentsLoaded, this);
+        Alfresco.util.YUILoaderHelper.require(['json', 'connection', 'event', 'datasource', 'autocomplete'], this.onComponentsLoaded, this);
 
         return this;
     };
@@ -67,66 +67,66 @@
         {
             /**
 			 * Object container for initialization options
-			 * 
+			 *
 			 * @property options
 			 * @type object
 			 */
-            options : {},
+            options: {},
 
             /**
 			 * Object container for storing YUI widget instances.
-			 * 
+			 *
 			 * @property widgets
 			 * @type object
 			 */
-            widgets : null,
+            widgets: null,
 
             /**
 			 * Object container for storing module instances.
-			 * 
+			 *
 			 * @property modules
 			 * @type object
 			 */
-            modules : null,
-            
+            modules: null,
+
             /**
 			 * The currently selected username
 			 */
-            username : null,
+            username: null,
 
             // +++ PUBLIC EVENTS
 
-            onUserChange : null,
-            
+            onUserChange: null,
+
             // +++ PUBLIC METHODS
 
             /**
 			 * Sets the display to the given user.
-			 * 
+			 *
 			 * @public
 			 * @method setUser
 			 * @param {Object}
 			 *            username the user's username
 			 */
-            setUser : function(username)
+            setUser: function(username)
             {
-            	if(username == this.username) {
+            	if (username == this.username) {
             		return;
             	}
-            	
+
                 this.username = username;
             },
 
             /**
 			 * Set multiple initialization options at once.
-			 * 
+			 *
 			 * @method setOptions
 			 * @param obj
 			 *            {object} Object literal specifying a set of options
 			 * @return {Alfresco.EnhancedSecuritySingleValueSelector} returns
 			 *         'this' for method chaining
 			 */
-            setOptions : function(obj)
+            setOptions: function(obj)
             {
                 this.options = YAHOO.lang.merge(this.options, obj);
 
@@ -136,10 +136,10 @@
             /**
 			 * Fired by YUILoaderHelper when required component script files
 			 * have been loaded into the browser.
-			 * 
+			 *
 			 * @method onComponentsLoaded
 			 */
-            onComponentsLoaded : function()
+            onComponentsLoaded: function()
             {
                 Event.onContentReady(this.id, this.onReady, this, true);
             },
@@ -148,79 +148,79 @@
 			 * Fired by YUI when parent element is available for scripting.
 			 * Component initialisation, including instantiation of YUI widgets
 			 * and event listener binding.
-			 * 
+			 *
 			 * @method onReady
 			 */
-            onReady : function()
+            onReady: function()
             {
                 var el = Dom.get(this.id);
-                
-                this.widgets.searchText = Dom.get(this.id + "-searchText");
 
-                var peopleSearchDataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + "enhanced-security/visibility-drill-down-user-search"); 
-                peopleSearchDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
-                peopleSearchDataSource.connXhrMode = "queueRequests"; 
-                peopleSearchDataSource.responseSchema = { 
-    					resultsList: "people", 
-    					fields: ["userName","lastName","firstName"]
+                this.widgets.searchText = Dom.get(this.id + '-searchText');
+
+                var peopleSearchDataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + 'enhanced-security/visibility-drill-down-user-search');
+                peopleSearchDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+                peopleSearchDataSource.connXhrMode = 'queueRequests';
+                peopleSearchDataSource.responseSchema = {
+    					resultsList: 'people',
+    					fields: ['userName', 'lastName', 'firstName']
     			};
-                
-                this.widgets.autocomplete = new YAHOO.widget.AutoComplete(this.id + "-searchText", this.id + "-autocompleteResults", peopleSearchDataSource);
+
+                this.widgets.autocomplete = new YAHOO.widget.AutoComplete(this.id + '-searchText', this.id + '-autocompleteResults', peopleSearchDataSource);
                 this.widgets.autocomplete.minQueryLength = 1;
                 this.widgets.autocomplete.resultTypeList = false;
 
                 var expandFunction = function(el) {
-                	if(!this.widgets.autocomplete.isContainerOpen()) {
+                	if (!this.widgets.autocomplete.isContainerOpen()) {
                 		this.widgets.autocomplete.expandContainer();
                 	}
                 };
-                
-                Event.addListener(this.widgets.searchText, "click", expandFunction, this, true);
-                Event.addListener(this.widgets.searchText, "focus", expandFunction, this, true);
-                
+
+                Event.addListener(this.widgets.searchText, 'click', expandFunction, this, true);
+                Event.addListener(this.widgets.searchText, 'focus', expandFunction, this, true);
+
                 var thisObj = this;	// Keep a handle to "this"
-                
+
                 this.widgets.autocomplete.formatResult = function(oResultData, sQuery, sResultMatch) {
-                	var regEx = new RegExp("(" + sQuery + ")", "gi");
+                	var regEx = new RegExp('(' + sQuery + ')', 'gi');
 
                 	var tmp = [
-                	           "<span class=\"autocomplete-result\">",
+                	           '<span class=\"autocomplete-result\">',
                 	           thisObj.formatAutocompleteField(oResultData.firstName, regEx),
-                	           " ",
+                	           ' ',
                 	           thisObj.formatAutocompleteField(oResultData.lastName, regEx),
-                	           " <span class=\"username\">(",
+                	           ' <span class=\"username\">(',
                 	           thisObj.formatAutocompleteField(oResultData.userName, regEx),
-                	           ")</span></span>"
+                	           ')</span></span>'
                 	           ];
 
-                	return tmp.join("");
+                	return tmp.join('');
                 };
-                
+
                 this.widgets.autocomplete.itemSelectEvent.subscribe(this.itemSelected, this, true);
             },
-            
+
             // +++ PRIVATE METHODS
 
-            itemSelected : function(type, data) {
+            itemSelected: function(type, data) {
             	this.onUserChange.fire(data[2].userName);
             },
-            
-            formatAutocompleteField : function(text, regEx) {
-            	return $html(text).replace(regEx, "<span class=\"term-match\">$1</span>");
+
+            formatAutocompleteField: function(text, regEx) {
+            	return $html(text).replace(regEx, '<span class=\"term-match\">$1</span>');
             },
-            
+
             /**
 			 * Gets a custom message
-			 * 
+			 *
 			 * @method _msg
 			 * @param messageId
 			 *            {string} The messageId to retrieve
 			 * @return {string} The custom message
 			 * @private
 			 */
-            _msg : function(messageId)
+            _msg: function(messageId)
             {
-                return Alfresco.util.message.call(this, messageId, "Alfresco.EnhancedSecuritySelector",
+                return Alfresco.util.message.call(this, messageId, 'Alfresco.EnhancedSecuritySelector',
                         Array.prototype.slice.call(arguments).slice(1));
             }
         };

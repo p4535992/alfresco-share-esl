@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -33,7 +33,7 @@
 
     /**
      * EnhancedSecuritySingleValueSelector constructor.
-     * 
+     *
      * @param {String}
      *            htmlId The HTML id of the parent element
      * @return {Alfresco.EnhancedSecuritySingleValueSelector} The new instance
@@ -42,7 +42,7 @@
     Alfresco.EnhancedSecuritySingleValueSelector = function(htmlId, selectorName)
     {
         /* Mandatory properties */
-        this.name = "Alfresco.EnhancedSecuritySingleValueSelector";
+        this.name = 'Alfresco.EnhancedSecuritySingleValueSelector';
         this.id = htmlId;
         this.selectorName = selectorName;
 
@@ -54,7 +54,7 @@
         Alfresco.util.ComponentManager.register(this);
 
         /* Load YUI Components */
-        Alfresco.util.YUILoaderHelper.require( [ "json", "connection", "event", "button" ], this.onComponentsLoaded,
+        Alfresco.util.YUILoaderHelper.require(['json', 'connection', 'event', 'button'], this.onComponentsLoaded,
                 this);
 
         return this;
@@ -64,21 +64,21 @@
         {
             /**
              * Object container for initialization options
-             * 
+             *
              * @property options
              * @type object
              */
-            options :
+            options:
                 {
                     /**
                      * The list of options to pass to the panel
                      */
-                    panelOptions :
+                    panelOptions:
                         {
-                            close : false,
-                            width : "auto",
-                            modal : true,
-                            constraintoviewport : true
+                            close: false,
+                            width: 'auto',
+                            modal: true,
+                            constraintoviewport: true
                         },
 
                     /**
@@ -86,76 +86,76 @@
                      * Function will be called with one parameter: the value
                      * string
                      */
-                    saveCallback :
+                    saveCallback:
                         {
-                            fn : function(value)
+                            fn: function(value)
                             {
                             },
-                            scope : this
+                            scope: this
                         },
 
                     /**
                      * Callback method for when the cancel button is clicked
                      * Function will be called with no parameters
                      */
-                    cancelCallback :
+                    cancelCallback:
                         {
-                            fn : function()
+                            fn: function()
                             {
                             },
-                            scope : this
+                            scope: this
                         }
                 },
 
             /**
              * Object container for storing YUI widget instances.
-             * 
+             *
              * @property widgets
              * @type object
              */
-            widgets : null,
+            widgets: null,
 
             /**
              * Object container for storing module instances.
-             * 
+             *
              * @property modules
              * @type object
              */
-            modules : null,
+            modules: null,
 
             /**
              * The controller object
-             * 
+             *
              * @property controller
              * @type Alfresco.EnhancedSecuritySelectorAdvancedController
              */
-            controller : null,
+            controller: null,
 
             /**
              * Name of the control
-             * 
+             *
              * @property selectorName
              */
-            selectorName : "",
+            selectorName: '',
 
             /**
              * Value of each button, stored because converting a button to a YUI
              * button wipes out the value attribute
-             * 
+             *
              * @property buttonValues
              */
-            buttonValues : null,
+            buttonValues: null,
 
             /**
              * Set multiple initialization options at once.
-             * 
+             *
              * @method setOptions
              * @param obj
              *            {object} Object literal specifying a set of options
              * @return {Alfresco.EnhancedSecuritySingleValueSelector} returns
              *         'this' for method chaining
              */
-            setOptions : function(obj)
+            setOptions: function(obj)
             {
                 if (obj.panelOptions)
                 {
@@ -173,14 +173,14 @@
 
             /**
              * Set messages for this component.
-             * 
+             *
              * @method setMessages
              * @param obj
              *            {object} Object literal specifying a set of messages
              * @return {Alfresco.EnhancedSecuritySingleValueSelector} returns
              *         'this' for method chaining
              */
-            setMessages : function(obj)
+            setMessages: function(obj)
             {
                 Alfresco.util.addMessages(obj, this.name);
 
@@ -190,10 +190,10 @@
             /**
              * Fired by YUILoaderHelper when required component script files
              * have been loaded into the browser.
-             * 
+             *
              * @method onComponentsLoaded
              */
-            onComponentsLoaded : function()
+            onComponentsLoaded: function()
             {
                 Event.onContentReady(this.id, this.onReady, this, true);
             },
@@ -202,10 +202,10 @@
              * Fired by YUI when parent element is available for scripting.
              * Component initialisation, including instantiation of YUI widgets
              * and event listener binding.
-             * 
+             *
              * @method onReady
              */
-            onReady : function()
+            onReady: function()
             {
                 if (!this.widgets.buttons)
                 {
@@ -217,39 +217,39 @@
                     this.buttonValues = new Array();
                 }
 
-                var buttons = Dom.getElementsByClassName(this.selectorName + "MarkingButton");
+                var buttons = Dom.getElementsByClassName(this.selectorName + 'MarkingButton');
 
-                for ( var x in buttons)
+                for (var x in buttons)
                 {
                     this.buttonValues[x] = buttons[x].attributes['value'].value;
 
-                    var id = buttons[x].id.replace(this.id + '-', "");
+                    var id = buttons[x].id.replace(this.id + '-', '');
 
                     var button = Alfresco.util.createYUIButton(this, id, null,
                         {
-                            onclick :
+                            onclick:
                                 {
-                                    fn : this.buttonClicked,
-                                    obj : this.buttonValues[x],
-                                    scope : this
+                                    fn: this.buttonClicked,
+                                    obj: this.buttonValues[x],
+                                    scope: this
                                 }
                         });
 
                     this.widgets.buttons.push(button);
                 }
 
-                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, "cancelButton", this.cancelClicked,
+                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, 'cancelButton', this.cancelClicked,
                     {
-                        value : "cancel"
+                        value: 'cancel'
                     });
             },
 
             /**
              * Displays the dialog
-             * 
+             *
              * @method show
              */
-            show : function(options)
+            show: function(options)
             {
                 if (options)
                 {
@@ -260,7 +260,7 @@
                 {
                     this.widgets.panel = Alfresco.util.createYUIPanel(this.id, this.options.panelOptions);
 
-                    YAHOO.util.Dom.removeClass(this.id, "hidden");
+                    YAHOO.util.Dom.removeClass(this.id, 'hidden');
 
                     this.resizeButtons();
                 }
@@ -269,7 +269,7 @@
 
                 this.widgets.panel.show();
 
-                Event.addListener(this.id + "_mask", "click", this.cancelClicked, this, true);
+                Event.addListener(this.id + '_mask', 'click', this.cancelClicked, this, true);
 
                 this.highlightButton(this.options.currentValue);
 
@@ -277,96 +277,96 @@
 
             /**
              * Highlight the button representing the current value
-             * 
+             *
              * @private
              * @method highlightButton
              */
-            highlightButton : function(value)
+            highlightButton: function(value)
             {
-                for ( var x in this.buttonValues)
+                for (var x in this.buttonValues)
                 {
                     if (this.buttonValues[x] == value)
                     {
-                        this.widgets.buttons[x].get("element").firstChild.firstChild.focus();
-                        this.widgets.buttons[x].addClass("yui-checkbox-button-checked");
+                        this.widgets.buttons[x].get('element').firstChild.firstChild.focus();
+                        this.widgets.buttons[x].addClass('yui-checkbox-button-checked');
                     }
                     else
                     {
-                        this.widgets.buttons[x].removeClass("yui-checkbox-button-checked");
+                        this.widgets.buttons[x].removeClass('yui-checkbox-button-checked');
                     }
                 }
             },
 
             /**
              * change the buttons to all be the same width
-             * 
+             *
              * @private
              * @method resizeButtons
              */
-            resizeButtons : function()
+            resizeButtons: function()
             {
                 var maxWidth = 0;
 
                 for (x in this.widgets.buttons)
                 {
-                    var actualButton = this.widgets.buttons[x].get("element").firstChild.firstChild;
+                    var actualButton = this.widgets.buttons[x].get('element').firstChild.firstChild;
                     var buttonRegion = Dom.getRegion(actualButton);
                     maxWidth = Math.max(maxWidth, buttonRegion.right - buttonRegion.left);
                 }
 
-                var titleElement = Dom.get(this.id + "-title-span");
+                var titleElement = Dom.get(this.id + '-title-span');
                 var titleRegion = Dom.getRegion(titleElement);
                 maxWidth = Math.max(maxWidth, titleRegion.right - titleRegion.left);
 
                 for (x in this.widgets.buttons)
                 {
-                    var actualButton = this.widgets.buttons[x].get("element").firstChild.firstChild;
-                    actualButton.style.width = maxWidth + "px";
+                    var actualButton = this.widgets.buttons[x].get('element').firstChild.firstChild;
+                    actualButton.style.width = maxWidth + 'px';
                 }
             },
 
             /**
              * Called when a selection button is clicked
-             * 
+             *
              * @private
              * @method buttonClicked
              */
-            buttonClicked : function(e, value)
+            buttonClicked: function(e, value)
             {
-                this.options["saveCallback"].fn.call(this.options["saveCallback"].scope, this.selectorName, value);
+                this.options['saveCallback'].fn.call(this.options['saveCallback'].scope, this.selectorName, value);
                 this.hide();
             },
 
             /**
              * Called when the button with ID specified by the option
              * "cancelButtonId" is clicked
-             * 
+             *
              * @private
              * @method cancelClicked
              */
-            cancelClicked : function()
+            cancelClicked: function()
             {
-                this.options["cancelCallback"].fn.call(this.options["cancelCallback"].scope);
+                this.options['cancelCallback'].fn.call(this.options['cancelCallback'].scope);
                 this.hide();
             },
 
             /**
              * Hide the panel
-             * 
+             *
              * @method hide
              */
-            hide : function()
+            hide: function()
             {
                 this.widgets.panel.hide();
             },
 
             /**
              * Resets the ui to the initial options values
-             * 
+             *
              * @private
              * @method resetGroups
              */
-            resetValues : function()
+            resetValues: function()
             {
                 // Intentionally blank
             },
@@ -377,23 +377,23 @@
              * The assumption here is that the ordering of the buttons within
              * the HTML is equal to the ordering of the markings in terms of
              * sensitivity
-             * 
+             *
              * @param level
              *            Hide all markings lower than this level. The level
              *            must exactly, case sensitivley, match the value of one
              *            of the buttons managed by this control.
              * @return
              */
-            setMinimumLevel : function(level)
+            setMinimumLevel: function(level)
             {
-                if(!this.widgets.buttons)
+                if (!this.widgets.buttons)
                 {
                     return;
                 }
-                
+
                 var i, foundLevel = false;
 
-                for ( i = 0; i < this.widgets.buttons.length; i++)
+                for (i = 0; i < this.widgets.buttons.length; i++)
                 {
                     var value = this.buttonValues[i];
                     if (value == level)
@@ -403,20 +403,20 @@
 
                     if (foundLevel)
                     {
-                        this.widgets.buttons[i].set("disabled", false);
+                        this.widgets.buttons[i].set('disabled', false);
                     }
                     else
                     {
-                        this.widgets.buttons[i].set("disabled", true);
+                        this.widgets.buttons[i].set('disabled', true);
                     }
                 }
-                
+
                 /* If we haven't found the value then enable all the buttons */
-                if(!foundLevel)
+                if (!foundLevel)
                 {
-                    for ( i = 0; i < this.widgets.buttons.length; i++)
+                    for (i = 0; i < this.widgets.buttons.length; i++)
                     {
-                        this.widgets.buttons[i].set("disabled", false);
+                        this.widgets.buttons[i].set('disabled', false);
                     }
                 }
             },
@@ -425,27 +425,27 @@
              * Show all the available options, undoing any previous calls to
              * setMinimumLevel
              */
-            showAllOptions : function()
+            showAllOptions: function()
             {
-                var invisibleElements = YAHOO.util.Selector.query("button.eslInvisible", this.id);
-                for ( var i = 0; i < invisibleElements.length; i++)
+                var invisibleElements = YAHOO.util.Selector.query('button.eslInvisible', this.id);
+                for (var i = 0; i < invisibleElements.length; i++)
                 {
-                    this.widgets.buttons[i].set("disabled", false);
+                    this.widgets.buttons[i].set('disabled', false);
                 }
             },
 
             /**
              * Gets a custom message
-             * 
+             *
              * @method _msg
              * @param messageId
              *            {string} The messageId to retrieve
              * @return {string} The custom message
              * @private
              */
-            _msg : function(messageId)
+            _msg: function(messageId)
             {
-                return Alfresco.util.message.call(this, messageId, "Alfresco.EnhancedSecuritySingleValueSelector",
+                return Alfresco.util.message.call(this, messageId, 'Alfresco.EnhancedSecuritySingleValueSelector',
                         Array.prototype.slice.call(arguments).slice(1));
             }
         };

@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -33,7 +33,7 @@
 
     /**
      * EnhancedSecurityFreeformMarkingsSelector constructor.
-     * 
+     *
      * @param {String}
      *            htmlId The HTML id of the parent element
      * @return {Alfresco.EnhancedSecurityFreeformMarkingsSelector} The new instance
@@ -42,7 +42,7 @@
     Alfresco.EnhancedSecurityFreeformMarkingsSelector = function(htmlId)
     {
         /* Mandatory properties */
-        this.name = "Alfresco.EnhancedSecurityFreeformMarkingsSelector";
+        this.name = 'Alfresco.EnhancedSecurityFreeformMarkingsSelector';
         this.id = htmlId;
 
         /* Initialise prototype properties */
@@ -53,7 +53,7 @@
         Alfresco.util.ComponentManager.register(this);
 
         /* Load YUI Components */
-        Alfresco.util.YUILoaderHelper.require( [ "json", "connection", "event", "button" ], this.onComponentsLoaded,
+        Alfresco.util.YUILoaderHelper.require(['json', 'connection', 'event', 'button'], this.onComponentsLoaded,
                 this);
 
         return this;
@@ -63,32 +63,32 @@
         {
             /**
              * Object container for initialization options
-             * 
+             *
              * @property options
              * @type object
              */
-            options :
+            options:
                 {
                     /**
                      * The list of recent markings. Array of strings.
                      * @type array
                      */
-                    recentMarkings : [],
-                    
+                    recentMarkings: [],
+
                     /**
                      * The string value to set the selector to
                      * @type string
                      */
-                    currentValue : "",
+                    currentValue: '',
 
                     /**
                      * The list of options to pass to the panel
                      */
-                    panelOptions : {
-                        close : false,
-                        width : "auto",
-                        modal : true,
-                        constraintoviewport : true
+                    panelOptions: {
+                        close: false,
+                        width: 'auto',
+                        modal: true,
+                        constraintoviewport: true
                     },
 
                     /**
@@ -96,60 +96,60 @@
                      * Function will be called with one parameter: the value
                      * string
                      */
-                    saveCallback :
+                    saveCallback:
                         {
-                            fn : function(value)
+                            fn: function(value)
                             {
                             },
-                            scope : this
+                            scope: this
                         },
 
                     /**
                      * Callback method for when the cancel button is clicked
                      * Function will be called with no parameters
                      */
-                    cancelCallback :
+                    cancelCallback:
                         {
-                            fn : function()
+                            fn: function()
                             {
                             },
-                            scope : this
+                            scope: this
                         }
                 },
 
             /**
              * Object container for storing YUI widget instances.
-             * 
+             *
              * @property widgets
              * @type object
              */
-            widgets : null,
+            widgets: null,
 
             /**
              * Object container for storing module instances.
-             * 
+             *
              * @property modules
              * @type object
              */
-            modules : null,
+            modules: null,
 
             /**
              * Whether the user interface has been initialised
-             * 
+             *
              * @property uiInitialiased
              */
-            uiInitialiased : false,
+            uiInitialiased: false,
 
             /**
              * Set multiple initialization options at once.
-             * 
+             *
              * @method setOptions
              * @param obj
              *            {object} Object literal specifying a set of options
              * @return {Alfresco.EnhancedSecurityFreeformMarkingsSelector} returns
              *         'this' for method chaining
              */
-            setOptions : function(obj)
+            setOptions: function(obj)
             {
                 if (obj.panelOptions)
                 {
@@ -167,14 +167,14 @@
 
             /**
              * Set messages for this component.
-             * 
+             *
              * @method setMessages
              * @param obj
              *            {object} Object literal specifying a set of messages
              * @return {Alfresco.EnhancedSecurityFreeformMarkingsSelector} returns
              *         'this' for method chaining
              */
-            setMessages : function(obj)
+            setMessages: function(obj)
             {
                 Alfresco.util.addMessages(obj, this.name);
 
@@ -184,10 +184,10 @@
             /**
              * Fired by YUILoaderHelper when required component script files
              * have been loaded into the browser.
-             * 
+             *
              * @method onComponentsLoaded
              */
-            onComponentsLoaded : function()
+            onComponentsLoaded: function()
             {
                 Event.onContentReady(this.id, this.onReady, this, true);
             },
@@ -196,32 +196,32 @@
              * Fired by YUI when parent element is available for scripting.
              * Component initialisation, including instantiation of YUI widgets
              * and event listener binding.
-             * 
+             *
              * @method onReady
              */
-            onReady : function()
+            onReady: function()
             {
                 this.widgets.textBox = Dom.get(this.id + '-textBox');
-                
-                Event.addListener(this.widgets.textBox, "keydown", this.keydown, this, true);
-                Event.addListener(this.widgets.textBox, "change", this.sanitiseMarking, this, true);
-                
-                this.widgets.saveButton = Alfresco.util.createYUIButton(this, "saveButton", this.saveClicked,
+
+                Event.addListener(this.widgets.textBox, 'keydown', this.keydown, this, true);
+                Event.addListener(this.widgets.textBox, 'change', this.sanitiseMarking, this, true);
+
+                this.widgets.saveButton = Alfresco.util.createYUIButton(this, 'saveButton', this.saveClicked,
                         {
-                            value : "save"
+                            value: 'save'
                         });
-                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, "cancelButton", this.cancelClicked,
+                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, 'cancelButton', this.cancelClicked,
                     {
-                        value : "cancel"
+                        value: 'cancel'
                     });
             },
 
             /**
              * Displays the dialog
-             * 
+             *
              * @method show
              */
-            show : function(options)
+            show: function(options)
             {
                 if (options)
                 {
@@ -237,7 +237,7 @@
                 {
                     this.widgets.panel = Alfresco.util.createYUIPanel(this.id, this.options.panelOptions);
 
-                    YAHOO.util.Dom.removeClass(this.id, "hidden");
+                    YAHOO.util.Dom.removeClass(this.id, 'hidden');
                 }
 
                 // Set the initial textbox value and validate
@@ -246,25 +246,25 @@
 
                 // show the panel
                 this.widgets.panel.show();
-                
+
                 // focus textbox and select all text in it
                 this.widgets.textBox.focus();
                 this.widgets.textBox.select();
-                
-                Event.addListener(this.id + "_mask", "click", this.cancelClicked, this, true);
+
+                Event.addListener(this.id + '_mask', 'click', this.cancelClicked, this, true);
             },
 
             /**
              * Builds the user interface
-             * 
+             *
              * @private
              * @method initUi
              */
-            initUi : function()
+            initUi: function()
             {
                 this.uiInitialiased = true;
             },
-            
+
             /**
              * Re-formats the text in the text box according to the following rules:
              * <ul>
@@ -273,53 +273,53 @@
              * <li>All chunks of whitespace are compressed into single spaces<li>
              * <li>Only letters A-Z are permitted</li>
              * </ul>
-             * 
+             *
              * @method sanitiseGroups
              */
-            sanitiseMarking : function()
+            sanitiseMarking: function()
             {
                 if (!this.widgets.textBox)
                 {
                     return;
                 }
-                
+
                 var value = this.widgets.textBox.value;
-                
+
                 // Trim, replace multiple whitespace and capitalise
-                value = YAHOO.lang.trim(value.toUpperCase()).replace(/\s+/g, " ").replace(/[^A-Z ]/g, "");
-                
+                value = YAHOO.lang.trim(value.toUpperCase()).replace(/\s+/g, ' ').replace(/[^A-Z ]/g, '');
+
                 this.widgets.textBox.value = value;
             },
-            
+
             /**
              * Called when a key is pressed in the textbox
-             * 
+             *
              * @private
              * @method keydown
              */
-            keydown : function(e)
+            keydown: function(e)
             {
                 var key = e.keyCode;
-                
+
                 // enter submits the dialog
                 if (key == 13)
                 {
                     this.saveClicked();
                     return;
                 }
-                
+
                 // spaces and all control codes are allowed
                 if (key <= 46)
                 {
                     return;
                 }
-                
+
                 // letters are allowed
                 if (key >= 65 && key <= 90)
                 {
                     return;
                 }
-                
+
                 // everything else is not allowed
                 YAHOO.util.Event.stopEvent(e);
             },
@@ -327,42 +327,42 @@
             /**
              * Called when the button with ID specified by the option
              * "saveButtonId" is clicked
-             * 
+             *
              * @private
              * @method saveClicked
              */
-            saveClicked : function()
+            saveClicked: function()
             {
                 this.sanitiseMarking();
-                this.options["saveCallback"].fn.call(this.options["saveCallback"].scope, this.widgets.textBox.value);
+                this.options['saveCallback'].fn.call(this.options['saveCallback'].scope, this.widgets.textBox.value);
                 this.widgets.panel.hide();
             },
 
             /**
              * Called when the button with ID specified by the option
              * "cancelButtonId" is clicked
-             * 
+             *
              * @private
              * @method cancelClicked
              */
-            cancelClicked : function()
+            cancelClicked: function()
             {
-                this.options["cancelCallback"].fn.call(this.options["cancelCallback"].scope);
+                this.options['cancelCallback'].fn.call(this.options['cancelCallback'].scope);
                 this.widgets.panel.hide();
             },
 
             /**
              * Gets a custom message
-             * 
+             *
              * @method _msg
              * @param messageId
              *            {string} The messageId to retrieve
              * @return {string} The custom message
              * @private
              */
-            _msg : function(messageId)
+            _msg: function(messageId)
             {
-                return Alfresco.util.message.call(this, messageId, "Alfresco.EnhancedSecurityFreeformMarkingsSelector",
+                return Alfresco.util.message.call(this, messageId, 'Alfresco.EnhancedSecurityFreeformMarkingsSelector',
                         Array.prototype.slice.call(arguments).slice(1));
             }
         };
@@ -370,14 +370,14 @@
     /**
      * A "static" method to find the singleton object from the Component Manager
      * and show it.
-     * 
+     *
      * @param options
      *            the options to use to display the dialog
      */
     Alfresco.EnhancedSecurityFreeformMarkingsSelector.show = function(options)
     {
         var instance = Alfresco.util.ComponentManager
-                .findFirst("Alfresco.EnhancedSecurityFreeformMarkingsSelector");
+                .findFirst('Alfresco.EnhancedSecurityFreeformMarkingsSelector');
 
         instance.setOptions(options);
 

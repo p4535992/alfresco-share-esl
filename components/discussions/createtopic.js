@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -22,7 +22,7 @@
 /**
  * CreateTopic component.
  * Logic for a topic creation form.
- * 
+ *
  * @namespace Alfresco
  * @class Alfresco.CreateTopic
  */
@@ -42,7 +42,7 @@
 
    /**
    * CreateTopic constructor.
-   * 
+   *
    * @param {String} htmlId The HTML id of the parent element
    * @return {Alfresco.CreateTopic} The new Topic instance
    * @constructor
@@ -50,22 +50,22 @@
    Alfresco.CreateTopic = function(htmlId)
    {
       /* Mandatory properties */
-      this.name = "Alfresco.CreateTopic";
+      this.name = 'Alfresco.CreateTopic';
       this.id = htmlId;
-      
+
       /* Initialise prototype properties */
       this.widgets = {};
       this.modules = {};
-      
+
       /* Register this component */
       Alfresco.util.ComponentManager.register(this);
 
       /* Load YUI Components */
-      Alfresco.util.YUILoaderHelper.require(["datasource", "json", "connection", "event", "button", "menu", "editor"], this.onComponentsLoaded, this);
-           
+      Alfresco.util.YUILoaderHelper.require(['datasource', 'json', 'connection', 'event', 'button', 'menu', 'editor'], this.onComponentsLoaded, this);
+
       return this;
    };
-   
+
    Alfresco.CreateTopic.prototype =
    {
       /**
@@ -78,19 +78,19 @@
       {
          /**
           * Current siteId.
-          * 
+          *
           * @property siteId
           * @type string
           */
-         siteId: "",
+         siteId: '',
 
          /**
           * Current containerId.
-          * 
+          *
           * @property containerId
           * @type string
-          */       
-         containerId: "discussions",
+          */
+         containerId: 'discussions',
 
          /**
           * True if the component should be in edit mode.
@@ -106,21 +106,21 @@
           * @property topicId
           * @type string
           */
-         topicId: ""
+         topicId: ''
 
       },
-      
+
       /**
        * Object container for storing YUI widget instances.
-       * 
+       *
        * @property widgets
        * @type object
        */
       widgets: null,
-      
+
       /**
        * Object container for storing module instances.
-       * 
+       *
        * @property modules
        * @type object
        */
@@ -134,7 +134,7 @@
        */
       discussionsTopicData: null,
 
-      
+
       /**
        * Set multiple initialization options at once.
        *
@@ -146,7 +146,7 @@
          this.options = YAHOO.lang.merge(this.options, obj);
          return this;
       },
-     
+
       /**
        * Set multiple initialization options at once.
        *
@@ -158,7 +158,7 @@
          Alfresco.util.addMessages(obj, this.name);
          return this;
       },
-     
+
       /**
        * Fired by YUILoaderHelper when required component script files have
        * been loaded into the browser.
@@ -169,7 +169,7 @@
       {
          YAHOO.util.Event.onContentReady(this.id, this.onReady, this, true);
       },
-  
+
       /**
        * Fired by YUI when parent element is available for scripting.
        * Component initialisation, including instantiation of YUI widgets and event listener binding.
@@ -208,9 +208,9 @@
          };
 
          // construct the request url
-         var url = YAHOO.lang.substitute(Alfresco.constants.URL_SERVICECONTEXT + "components/forum/post/site/{site}/{container}/{topicId}",
+         var url = YAHOO.lang.substitute(Alfresco.constants.URL_SERVICECONTEXT + 'components/forum/post/site/{site}/{container}/{topicId}',
          {
-            site : this.options.siteId,
+            site: this.options.siteId,
             container: this.options.containerId,
             topicId: this.options.topicId
          });
@@ -219,14 +219,14 @@
          Alfresco.util.Ajax.request(
          {
             url: url,
-            method: "GET",
-            responseContentType : "application/json",
+            method: 'GET',
+            responseContentType: 'application/json',
             successCallback:
             {
                fn: loadTopicPostDataSuccess,
                scope: this
             },
-            failureMessage: this._msg("message.loadpostdata.failure")
+            failureMessage: this._msg('message.loadpostdata.failure')
          });
       },
 
@@ -235,12 +235,12 @@
        * The html is already in the dom when the component gets loaded
        */
       _initializeDiscussionsTopicForm: function CreateTopic_initializeDiscussionsTopicForm()
-      {          
+      {
 
-         var actionUrl, draft = true, title = "", content = "";
+         var actionUrl, draft = true, title = '', content = '';
          if (this.options.editMode)
          {
-            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + "api/forum/post/site/{site}/{container}/{topicId}",
+            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + 'api/forum/post/site/{site}/{container}/{topicId}',
             {
                site: this.options.siteId,
                container: this.options.containerId,
@@ -249,7 +249,7 @@
          }
          else
          {
-            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + "api/forum/site/{site}/{container}/posts",
+            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + 'api/forum/site/{site}/{container}/posts',
             {
                site: this.options.siteId,
                container: this.options.containerId
@@ -257,9 +257,9 @@
          }
 
          // insert current values into the form
-         Dom.get(this.id + '-form').setAttribute("action", actionUrl);
-         Dom.get(this.id + "-site").setAttribute("value", this.options.siteId);
-         Dom.get(this.id + "-container").setAttribute("value", this.options.containerId);
+         Dom.get(this.id + '-form').setAttribute('action', actionUrl);
+         Dom.get(this.id + '-site').setAttribute('value', this.options.siteId);
+         Dom.get(this.id + '-container').setAttribute('value', this.options.containerId);
 
          // title
          if (this.options.editMode)
@@ -267,7 +267,7 @@
             title = this.discussionsTopicData.title;
             this.renderMarking();
          }
-         Dom.get(this.id + '-title').setAttribute("value", title);
+         Dom.get(this.id + '-title').setAttribute('value', title);
 
          // content
          if (this.options.editMode)
@@ -296,21 +296,21 @@
           var closedBox = YAHOO.util.Selector.query('div span.eslRenderClosed')[0];
           var orgBox = YAHOO.util.Selector.query('div span.eslRenderOrganisations')[0];
           var parentDiv = YAHOO.util.Selector.query('div[id=securityMarking]')[0];
-          
-          nodBox.innerHTML=this.discussionsTopicData.eslNod;
-          pmBox.innerHTML=this.discussionsTopicData.eslPM;
-          atomalBox.innerHTML=this.discussionsTopicData.eslAtomal;
-          freeformBox.innerHTML=this.discussionsTopicData.eslFreeFormCaveats;
-          eyesBox.innerHTML=this.discussionsTopicData.eslEyes;
-          openBox.innerHTML=this.discussionsTopicData.eslOpen;
-          closedBox.innerHTML=this.discussionsTopicData.eslClosed;
-          orgBox.innerHTML=this.discussionsTopicData.eslOrganisations;
-          Dom.addClass(parentDiv, "ESLInvisible"); //Hide the existing marking
-          
+
+          nodBox.innerHTML = this.discussionsTopicData.eslNod;
+          pmBox.innerHTML = this.discussionsTopicData.eslPM;
+          atomalBox.innerHTML = this.discussionsTopicData.eslAtomal;
+          freeformBox.innerHTML = this.discussionsTopicData.eslFreeFormCaveats;
+          eyesBox.innerHTML = this.discussionsTopicData.eslEyes;
+          openBox.innerHTML = this.discussionsTopicData.eslOpen;
+          closedBox.innerHTML = this.discussionsTopicData.eslClosed;
+          orgBox.innerHTML = this.discussionsTopicData.eslOrganisations;
+          Dom.addClass(parentDiv, 'ESLInvisible'); //Hide the existing marking
+
           //We can't always guarantee the order that client-side javascript is run - if the ribbon has already been
           //rendered, we'll need to refresh it
           var ribbon = Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector');
-          if (ribbon!=null)
+          if (ribbon != null)
           {
               ribbon.refreshAndRedraw(parentDiv.parentElement);
           }
@@ -335,23 +335,23 @@
          }
 
          // register the okButton
-         this.widgets.okButton = new YAHOO.widget.Button(this.id + "-submit",
+         this.widgets.okButton = new YAHOO.widget.Button(this.id + '-submit',
          {
-            type: "submit"
+            type: 'submit'
          });
-         
+
          // register the cancel button
-         this.widgets.cancelButton = new YAHOO.widget.Button(this.id + "-cancel");
-         this.widgets.cancelButton.subscribe("click", this.onFormCancelButtonClick, this, true);
-         
+         this.widgets.cancelButton = new YAHOO.widget.Button(this.id + '-cancel');
+         this.widgets.cancelButton.subscribe('click', this.onFormCancelButtonClick, this, true);
+
          // instantiate the simple editor we use for the form
-         this.widgets.editor = new Alfresco.util.RichEditor(Alfresco.constants.HTML_EDITOR,this.id + '-content', this.options.editorConfig);         
-         this.widgets.editor.addPageUnloadBehaviour(this._msg("message.unsavedChanges.discussion"));
+         this.widgets.editor = new Alfresco.util.RichEditor(Alfresco.constants.HTML_EDITOR, this.id + '-content', this.options.editorConfig);
+         this.widgets.editor.addPageUnloadBehaviour(this._msg('message.unsavedChanges.discussion'));
          this.widgets.editor.render();
-         
+
          // Add validation to the editor
          var keyUpIdentifier = (Alfresco.constants.HTML_EDITOR === 'YAHOO.widget.SimpleEditor') ? 'editorKeyUp' : 'onKeyUp';
-         this.widgets.editor.subscribe(keyUpIdentifier, function (e)
+         this.widgets.editor.subscribe(keyUpIdentifier, function(e)
          {
             /**
              * Doing a form validation on every key stroke is process consuming, below we try to make sure we only do
@@ -359,8 +359,8 @@
              * NOTE: Don't check for zero-length in commentsLength, due to HTML <br>, <span> tags, etc. possibly
              * being present. Only a "Select all" followed by delete will clean all tags, otherwise leftovers will
              * be there even if the form looks empty.
-             */                       
-            if (this.widgets.editor.getContent().length < 20 || this.widgets.okButton.get("disabled"))
+             */
+            if (this.widgets.editor.getContent().length < 20 || this.widgets.okButton.get('disabled'))
             {
                // Submit was disabled and something has been typed, validate and submit will be enabled
                this.widgets.editor.save();
@@ -369,27 +369,27 @@
          }, this, true);
 
          // create the form that does the validation/submit
-         this.widgets.topicForm = new Alfresco.forms.Form(this.id + "-form");
+         this.widgets.topicForm = new Alfresco.forms.Form(this.id + '-form');
          this.widgets.topicForm.setShowSubmitStateDynamically(true, false);
          // Title
-         this.widgets.topicForm.addValidation(this.id + "-title", Alfresco.forms.validation.mandatory, null, "keyup");
-         this.widgets.topicForm.addValidation(this.id + "-title", Alfresco.forms.validation.length,
+         this.widgets.topicForm.addValidation(this.id + '-title', Alfresco.forms.validation.mandatory, null, 'keyup');
+         this.widgets.topicForm.addValidation(this.id + '-title', Alfresco.forms.validation.length,
          {
             max: 256,
             crop: true
-         }, "keyup");
+         }, 'keyup');
          // Content
-         this.widgets.topicForm.addValidation(this.id + "-content", Alfresco.forms.validation.mandatory, null);
+         this.widgets.topicForm.addValidation(this.id + '-content', Alfresco.forms.validation.mandatory, null);
          this.widgets.topicForm.setSubmitElements(this.widgets.okButton);
          this.widgets.topicForm.setAJAXSubmit(true,
          {
-            successMessage: this._msg("message.savetopic.success"),
+            successMessage: this._msg('message.savetopic.success'),
             successCallback:
             {
                fn: this.onFormSubmitSuccess,
                scope: this
             },
-            failureMessage: this._msg("message.savetopic.failure"),
+            failureMessage: this._msg('message.savetopic.failure'),
             failureCallback:
             {
                fn: this.onFormSubmitFailure,
@@ -406,34 +406,34 @@
             fn: function(form, obj)
             {
                // disable buttons
-               this.widgets.okButton.set("disabled", false);
-               this.widgets.cancelButton.set("disabled", false);
-                
+               this.widgets.okButton.set('disabled', false);
+               this.widgets.cancelButton.set('disabled', false);
+
                //Put the HTML back into the text area
                this.widgets.editor.save();
-               
+
                // update the tags set in the form
                this.modules.tagLibrary.updateForm(this.id + '-form', 'tags');
-               
+
                // show a wait message
                this.widgets.feedbackMessage = Alfresco.util.PopupManager.displayMessage(
                {
-                  text: Alfresco.util.message(this._msg("message.submitting")),
-                  spanClass: "wait",
+                  text: Alfresco.util.message(this._msg('message.submitting')),
+                  spanClass: 'wait',
                   displayTime: 0
                });
             },
             scope: this
          };
-         
+
          this.modules.tagLibrary.initialize(this.widgets.topicForm);
          this.widgets.topicForm.init();
-         
+
          // show the form
-         Dom.removeClass(this.id + "-topic-create-div", "hidden");
+         Dom.removeClass(this.id + '-topic-create-div', 'hidden');
          Dom.get(this.id + '-title').focus();
       },
-      
+
       /**
        * Form submit success handler
        */
@@ -443,20 +443,20 @@
          var url = Alfresco.util.discussions.getTopicViewPage(this.options.siteId, this.options.containerId, response.json.item.name);
          window.location = url;
       },
-      
+
       /**
        * Reenables the inputs which got disabled as part of a comment submit
        */
       onFormSubmitFailure: function CreateComment_onFormSubmitFailure()
       {
          // enable buttons
-         this.widgets.okButton.set("disabled", false);
-         this.widgets.cancelButton.set("disabled", false);
-         
+         this.widgets.okButton.set('disabled', false);
+         this.widgets.cancelButton.set('disabled', false);
+
          // hide message
          this.widgets.feedbackMessage.destroy();
       },
-      
+
       /**
        * Form cancel button click handler
        */
@@ -476,7 +476,7 @@
        */
       _msg: function CreateTopic_msg(messageId)
       {
-         return Alfresco.util.message.call(this, messageId, "Alfresco.CreateTopic", Array.prototype.slice.call(arguments).slice(1));
+         return Alfresco.util.message.call(this, messageId, 'Alfresco.CreateTopic', Array.prototype.slice.call(arguments).slice(1));
       }
    };
 })();

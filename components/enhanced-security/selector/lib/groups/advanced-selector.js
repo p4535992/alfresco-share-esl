@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -33,7 +33,7 @@
 
     /**
      * EnhancedSecuritySelectorGroupsAdvancedSelector constructor.
-     * 
+     *
      * @param {String}
      *            htmlId The HTML id of the parent element
      * @return {Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector} The new
@@ -43,7 +43,7 @@
     Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector = function(htmlId)
     {
         /* Mandatory properties */
-        this.name = "Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector";
+        this.name = 'Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector';
         this.id = htmlId;
 
         /* Initialise prototype properties */
@@ -54,31 +54,31 @@
 
         this.controller.setOptions(
             {
-                validationCallback :
+                validationCallback:
                     {
-                        fn : this.validationStateChanged,
-                        scope : this
+                        fn: this.validationStateChanged,
+                        scope: this
                     }
             });
 
         /* Initialise the events */
         this.controller.onGroupsUpdated.subscribe(this.onGroupsUpdatedHandler, this, this);
 
-        YAHOO.Bubbling.on("enhancedSecuritySelector.onGroupsLoaded", this.groupsLoaded, this);
-        YAHOO.Bubbling.on("enhancedSecuritySelector.onGroupsLoadFailure", this.groupsLoadFailure, this);
-        YAHOO.Bubbling.on("enhancedSecuritySelector.onGroupSave", this.proceedWithSave, this);
+        YAHOO.Bubbling.on('enhancedSecuritySelector.onGroupsLoaded', this.groupsLoaded, this);
+        YAHOO.Bubbling.on('enhancedSecuritySelector.onGroupsLoadFailure', this.groupsLoadFailure, this);
+        YAHOO.Bubbling.on('enhancedSecuritySelector.onGroupSave', this.proceedWithSave, this);
 
-        
-        this.onTriggerVisibilityClick = new YAHOO.util.CustomEvent("onTriggerVisibilityClick", this);
+
+        this.onTriggerVisibilityClick = new YAHOO.util.CustomEvent('onTriggerVisibilityClick', this);
 
         /* Register this event */
         Alfresco.util.ComponentManager.register(this);
 
         /* Load YUI events */
         Alfresco.util.YUILoaderHelper
-                .require( [ "json", "connection", "event", "button" ], this.onContentsLoaded, this);
+                .require(['json', 'connection', 'event', 'button'], this.onContentsLoaded, this);
 
-        var parent = Alfresco.util.ComponentManager.findFirst("Alfresco.EnhancedSecuritySelector");
+        var parent = Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector');
         if (parent != null)
         {
             this.parent = controller;
@@ -94,161 +94,161 @@
         {
             /**
              * Object container for initialization options
-             * 
+             *
              * @property options
              * @type object
              */
-            options :
+            options:
                 {
                     /**
                      * The marking with which to maintain the users selection
                      */
-                    currentMarking : null,
+                    currentMarking: null,
 
                     /**
                      * Space separated string of recently used groups
                      */
-                    recentGroups : "",
+                    recentGroups: '',
 
                     /**
                      * Space separated list of the parent item's groups.
                      */
-                    parentGroups : null,
+                    parentGroups: null,
 
                     /**
                      * The parent item's open groups
                      */
-                    parentOpenGroups : null,
+                    parentOpenGroups: null,
 
                     /**
                      * The parent item's closed groups
                      */
-                    parentClosedGroups : null,
+                    parentClosedGroups: null,
 
                     /**
                      * Callback method for when the save button is clicked
                      * Function will be called with one parameter: the groups
                      * string (space separated)
                      */
-                    saveCallback :
+                    saveCallback:
                         {
-                            fn : function(groups)
+                            fn: function(groups)
                             {
                             },
-                            scope : this
+                            scope: this
                         },
 
                     /**
                      * Callback method for when the cancel button is clicked
                      * Function will be called with no parameters
                      */
-                    cancelCallback :
+                    cancelCallback:
                         {
-                            fn : function()
+                            fn: function()
                             {
                             },
-                            scope : this
+                            scope: this
                         },
-                        
+
                     /**
                      * If set to true the marking will be ignored and the selector will be
                      * blanked (i.e. nothing selected) when it is displayed
                      */
-                    startBlank : false
+                    startBlank: false
                 },
 
             /**
              * Object container for storing YUI widget instances.
-             * 
+             *
              * @property widgets
              * @type object
              */
-            widgets : null,
+            widgets: null,
 
             /**
              * Object container for storing module instances.
-             * 
+             *
              * @property modules
              * @type object
              */
-            modules : null,
+            modules: null,
 
             /**
              * The controller object
-             * 
+             *
              * @property controller
              * @type Alfresco.EnhancedSecuritySelectorAdvancedController
              */
-            controller : null,
+            controller: null,
 
             /**
              * The list of groups to display
-             * 
+             *
              * @property groups
              * @type string
              */
-            groups : null,
+            groups: null,
 
             /**
              * The parent item's groups
              */
-            parentGroups : null,
+            parentGroups: null,
 
             /**
              * Whether the user interface has been initialised
-             * 
+             *
              * @property uiInitialiased
              */
-            uiInitialiased : false,
+            uiInitialiased: false,
 
             /**
              * Whether to show the dialog when the groups are loaded
-             * 
+             *
              * @property displayDialogOnGroupLoad
              */
-            displayDialogOnGroupLoad : false,
+            displayDialogOnGroupLoad: false,
 
             /**
              * Whether to show the dialog when the children (list boxes) have been rendered
-             * 
+             *
              * @property displayDialogOnChildrenRendered
              */
-            displayDialogOnChildrenRendered : false,
+            displayDialogOnChildrenRendered: false,
 
             /**
              * Whether this dialog is currently displayed
              */
-            isVisible : false,
+            isVisible: false,
 
             /**
              * Reference to an enhanced security selector controller
              */
-            parent : null,
-            
+            parent: null,
+
             /**
              * Count of the number of children which haven't been rendered
              */
-            unrenderedChildren : 0,
-            
+            unrenderedChildren: 0,
+
             // +++ PUBLIC EVENTS
 
             /**
 			 * Event fired when the visibility drill-down button is clicked
-			 * 
+			 *
 			 * @property onTriggerVisibilityClick
 			 */
-            onTriggerVisibilityClick : null,
+            onTriggerVisibilityClick: null,
 
             /**
              * Set multiple initialization options at once.
-             * 
+             *
              * @method setOptions
              * @param obj
              *            {object} Object literal specifying a set of options
              * @return {Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector}
              *         returns 'this' for method chaining
              */
-            setOptions : function(obj)
+            setOptions: function(obj)
             {
                 this.options = YAHOO.lang.merge(this.options, obj);
                 return this;
@@ -256,14 +256,14 @@
 
             /**
              * Set messages for this ent.
-             * 
+             *
              * @method setMessages
              * @param obj
              *            {object} Object literal specifying a set of messages
              * @return {Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector}
              *         returns 'this' for method chaining
              */
-            setMessages : function(obj)
+            setMessages: function(obj)
             {
                 Alfresco.util.addMessages(obj, this.name);
                 this.controller.setMessages(obj);
@@ -274,10 +274,10 @@
             /**
              * Fired by YUILoaderHelper when required ent script files have been
              * loaded into the browser.
-             * 
+             *
              * @method onContentsLoaded
              */
-            onContentsLoaded : function()
+            onContentsLoaded: function()
             {
                 Event.onContentReady(this.id, this.onReady, this, true);
             },
@@ -286,23 +286,23 @@
              * Fired by YUI when parent element is available for scripting. ent
              * initialisation, including instantiation of YUI widgets and event
              * listener binding.
-             * 
+             *
              * @method onReady
              */
-            onReady : function()
+            onReady: function()
             {
                 this.widgets.singleGroupSelectors = [];
-                this.widgets.saveButton = Alfresco.util.createYUIButton(this, "saveButton", this.saveClicked,
+                this.widgets.saveButton = Alfresco.util.createYUIButton(this, 'saveButton', this.saveClicked,
                     {
-                        value : "save"
+                        value: 'save'
                     });
-                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, "cancelButton", this.cancelClicked,
+                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, 'cancelButton', this.cancelClicked,
                     {
-                        value : "cancel"
+                        value: 'cancel'
                     });
 
-                this.widgets.visibilityCount = Alfresco.util.ComponentManager.get(this.id + "-visibilityCount");
-                
+                this.widgets.visibilityCount = Alfresco.util.ComponentManager.get(this.id + '-visibilityCount');
+
                 this.widgets.visibilityCount.onTriggerVisibilityClick.subscribe(function() {
                 	this.onTriggerVisibilityClick.fire(this.options.currentMarking);
                 }, this, true);
@@ -312,10 +312,10 @@
 
             /**
              * Displays the dialog
-             * 
+             *
              * @method show
              */
-            show : function()
+            show: function()
             {
                 if (!this.uiInitialiased)
                 {
@@ -335,7 +335,7 @@
                         {
                             this.displayDialogOnGroupLoad = true;
                             this.showLoadingMessage();
-                            YAHOO.Bubbling.fire("enhancedSecuritySelector.loadGroups");
+                            YAHOO.Bubbling.fire('enhancedSecuritySelector.loadGroups');
                             return;
                         }
                     }
@@ -346,102 +346,102 @@
                 {
                     this.widgets.panel = Alfresco.util.createYUIPanel(this.id,
                         {
-                            close : false
+                            close: false
                         });
 
 					/* resize panel to fit however many group list boxes we have */
-		
+
 					var numBoxes = 0;
-					var groupListBoxes = Dom.getElementsByClassName("group-list-outer");
+					var groupListBoxes = Dom.getElementsByClassName('group-list-outer');
 					if (groupListBoxes)
 					{
 						numBoxes = groupListBoxes.length;
 					}
-		
+
 					if (numBoxes <= 1)
 					{
-						Dom.addClass(this.id, "columns1");
+						Dom.addClass(this.id, 'columns1');
 					}
 					else if (numBoxes == 2)
 					{
-						Dom.addClass(this.id, "columns2");
+						Dom.addClass(this.id, 'columns2');
 					}
 					else if (numBoxes == 3)
 					{
-						Dom.addClass(this.id, "columns3");
+						Dom.addClass(this.id, 'columns3');
 					}
 					else if (numBoxes == 4)
 					{
-						Dom.addClass(this.id, "columns4");
+						Dom.addClass(this.id, 'columns4');
 					}
-					else 
+					else
 					{
-						Dom.addClass(this.id, "columnsmorethan4");
+						Dom.addClass(this.id, 'columnsmorethan4');
 					}
-					
-                    YAHOO.util.Dom.removeClass(this.id, "hidden");
+
+                    YAHOO.util.Dom.removeClass(this.id, 'hidden');
                 }
 
                 this.hideLoadingMessage();
 
                 this.isVisible = true;
 
-                if(this.options.startBlank) {
+                if (this.options.startBlank) {
                     this.setToBlank();
                 } else {
                     this.resetGroups();
                 }
-                
+
                 this.controller.handleParentMarking();
 
                 this.securityMarkingChanged();
 
                 this.widgets.panel.show();
 
-                var firstInput = YAHOO.util.Selector.query("input", this.id, true);
+                var firstInput = YAHOO.util.Selector.query('input', this.id, true);
 
                 if (firstInput)
                 {
                     firstInput.focus();
                 }
-                
+
                 //In order to avoid showing two visibility counts and to prevent a UI issue in firefox, hide the existing visibility
                 //counter to make it look as if it has 'moved' into the panel
-                var containers=YAHOO.util.Selector.query('div.visibility-container'); //Should only be one but in a for loop as a guard
-                for (var i=0; i < containers.length; i++)
+                var containers = YAHOO.util.Selector.query('div.visibility-container'); //Should only be one but in a for loop as a guard
+                for (var i = 0; i < containers.length; i++)
                 {
-                	containers[i].style.visibility='hidden';
+                	containers[i].style.visibility = 'hidden';
                 }
 
-                Event.addListener(this.id + "_mask", "click", this.cancelClicked, this, true);
+                Event.addListener(this.id + '_mask', 'click', this.cancelClicked, this, true);
             },
 
             /**
              * Hides the dialog
-             * 
+             *
              * @public
              * @method hide
              */
-            hide : function()
+            hide: function()
             {
             	//'move' the visibility indicator back to where it was
-                var containers=YAHOO.util.Selector.query('div.visibility-container'); //Should only be one but in a for loop as a guard
-                for (var i=0; i < containers.length; i++)
+                var containers = YAHOO.util.Selector.query('div.visibility-container'); //Should only be one but in a for loop as a guard
+                for (var i = 0; i < containers.length; i++)
                 {
-                	containers[i].style.visibility='';
-                } 
+                	containers[i].style.visibility = '';
+                }
                 this.isVisible = false;
                 this.widgets.panel.hide();
             },
 
             /**
              * Updates the security marking
-             * 
+             *
              * @public
              * @method setSecurityMarking
              * @param securityMarking
              */
-            setSecurityMarking : function(securityMarking)
+            setSecurityMarking: function(securityMarking)
             {
                 this.options.currentMarking = securityMarking;
 
@@ -451,11 +451,11 @@
             /**
              * Called when the security marking has been changed. This will
              * update all the child widgets
-             * 
+             *
              * @private
              * @method securityMarkingChanged
              */
-            securityMarkingChanged : function()
+            securityMarkingChanged: function()
             {
                 /* Only update the visibility if we're visible */
                 if (this.isVisible && this.widgets.visibilityCount && this.options.currentMarking)
@@ -467,16 +467,16 @@
             /**
              * Called when the button with ID specified by the option
              * "saveButtonId" is clicked
-             * 
+             *
              * @private
              * @method saveClicked
              */
-            saveClicked : function()
+            saveClicked: function()
             {
-                
+
                 // We don't want to warn the user when they have not changed the number of organisations from the original marking
                 // i.e. if they updated a resource with a single organisation already on it.
-            	if (this.options.currentMarking.organisations.length===1 && this.controller.parentOrganisations.length !== 1)
+            	if (this.options.currentMarking.organisations.length === 1 && this.controller.parentOrganisations.length !== 1)
             	{
             		Alfresco.util.PopupManager.displayPrompt(
                	         {
@@ -484,16 +484,16 @@
                	            text: 'You have only selected one organisation.\n\nIf you choose to continue, the item will only\nbe visible to your organisation.',
                	            buttons: [
                	            {
-               	               text: 'Continue', 
+               	               text: 'Continue',
                	               handler: function()
                	               {
-               	            	  YAHOO.Bubbling.fire("enhancedSecuritySelector.onGroupSave");
+               	            	  YAHOO.Bubbling.fire('enhancedSecuritySelector.onGroupSave');
                	            	  this.destroy();
                	               },
                	               isDefault: false
                	            },
                	            {
-               	               text: 'Back', 
+               	               text: 'Back',
                	               handler: function()
                	               {
                	                  this.destroy();
@@ -502,75 +502,75 @@
                	            }
                	            ]
                	         }
-               	    );         
+               	    );
             	}
             	else
             	{
- 	                YAHOO.Bubbling.fire("enhancedSecuritySelector.onGroupSave");
+ 	                YAHOO.Bubbling.fire('enhancedSecuritySelector.onGroupSave');
             	}
-            	
+
             },
 
             proceedWithSave: function()
             {
-            	this.options["saveCallback"].fn.call(this.options["saveCallback"].scope, this.controller.getGroups());
+            	this.options['saveCallback'].fn.call(this.options['saveCallback'].scope, this.controller.getGroups());
             	this.hide();
             },
-            
+
             /**
              * Called when the button with ID specified by the option
              * "cancelButtonId" is clicked
-             * 
+             *
              * @private
              * @method cancelClicked
              */
-            cancelClicked : function()
+            cancelClicked: function()
             {
-                this.options["cancelCallback"].fn.call(this.options["cancelCallback"].scope);
+                this.options['cancelCallback'].fn.call(this.options['cancelCallback'].scope);
                 this.controller.options.messageBox.clearMessages();
                 this.hide();
             },
 
             /**
              * Sets the parent item open groups to the specified groups
-             * 
+             *
              * @param groups
              *            the array or group strings
              */
-            setParentOpenGroups : function(groups)
+            setParentOpenGroups: function(groups)
             {
                 this.controller.setParentOpenGroups(groups);
             },
 
             /**
              * Sets the parent item closed groups to the specified groups
-             * 
+             *
              * @param groups
              *            the array or group strings
              */
-            setParentClosedGroups : function(groups)
+            setParentClosedGroups: function(groups)
             {
                 this.controller.setParentClosedGroups(groups);
             },
 
             /**
              * Sets the parent item organisations to the specified groups
-             * 
+             *
              * @param groups
              *            the array or group strings
              */
-            setParentOrganisations : function(groups)
+            setParentOrganisations: function(groups)
             {
                 this.controller.setParentOrganisations(groups);
             },
 
             /**
              * Called if the groups load failed
-             * 
+             *
              * @private
              * @method groupsLoadFailure
              */
-            groupsLoadFailure : function()
+            groupsLoadFailure: function()
             {
                 this.hideLoadingMessage();
 
@@ -583,30 +583,30 @@
 
                 Alfresco.util.PopupManager.displayPrompt(
                     {
-                        title : this._msg("groups.loading-failed.title"),
-                        text : this._msg("groups.loading-failed")
+                        title: this._msg('groups.loading-failed.title'),
+                        text: this._msg('groups.loading-failed')
                     });
             },
 
             /**
              * Shows a loading message
-             * 
+             *
              * @private
              * @method showLoadingMessage
              */
-            showLoadingMessage : function()
+            showLoadingMessage: function()
             {
                 // show a wait message
-                this.widgets.loadingMessage = new YAHOO.widget.Panel("message",
+                this.widgets.loadingMessage = new YAHOO.widget.Panel('message',
                     {
-                        modal : false,
-                        visible : false,
-                        close : false,
-                        draggable : false
+                        modal: false,
+                        visible: false,
+                        close: false,
+                        draggable: false
                     });
 
-                this.widgets.loadingMessage.setBody("<span class='wait'>" + $html(this._msg("groups.loading"))
-                        + "</span>");
+                this.widgets.loadingMessage.setBody("<span class='wait'>" + $html(this._msg('groups.loading'))
+                        + '</span>');
 
                 this.widgets.loadingMessage.render(document.body);
                 this.widgets.loadingMessage.center();
@@ -615,11 +615,11 @@
 
             /**
              * Hides the loading message
-             * 
+             *
              * @private
              * @method hideLoadingMessage
              */
-            hideLoadingMessage : function()
+            hideLoadingMessage: function()
             {
                 if (this.widgets.loadingMessage)
                 {
@@ -630,14 +630,14 @@
 
             /**
              * Called when the groups list has been loaded.
-             * 
+             *
              * Populate the set of open groups, and the users set of open groups
              * in the controller as this will be used for validation.
-             * 
+             *
              * @private
              * @method groupsLoaded
              */
-            groupsLoaded : function(layer, params)
+            groupsLoaded: function(layer, params)
             {
                 this.groups = params[1].groups;
 
@@ -679,22 +679,22 @@
 
             /**
              * Builds the user interface
-             * 
+             *
              * @private
              * @method initUi
              */
-            initUi : function()
+            initUi: function()
             {
                 var groups = this.groups;
 
-                var groupsDiv = document.getElementById(this.id + "-groups");
+                var groupsDiv = document.getElementById(this.id + '-groups');
 
                 // Go through each of the priority constraints first
                 var i;
 
                 for (i in groups.constraints)
                 {
-                    if (groups.constraints[i].displayPriority == "High")
+                    if (groups.constraints[i].displayPriority == 'High')
                     {
                         this.appendConstraint(groups.constraints[i], groupsDiv);
                     }
@@ -704,7 +704,7 @@
                 // priority constraints)
                 for (i in groups.constraints)
                 {
-                    if (groups.constraints[i].displayPriority != "High")
+                    if (groups.constraints[i].displayPriority != 'High')
                     {
                         this.appendConstraint(groups.constraints[i], groupsDiv);
                     }
@@ -728,7 +728,7 @@
                     }
                 }
 
-                this.controller.createMessageBox(this.id + "-validationMessages");
+                this.controller.createMessageBox(this.id + '-validationMessages');
 
                 this.uiInitialiased = true;
             },
@@ -737,39 +737,39 @@
              * Is the given constraint an open constraint. As the code evolves,
              * it will derive this value from the model but for now the open
              * group constraint name is hard-coded
-             * 
+             *
              * @method isOpenLogic
              * @param constraintName
              *            Name of the constraint
              * @return True if the given constraint uses Open (ie. OR) logic
              */
-            isOpenLogic : function(constraintName)
+            isOpenLogic: function(constraintName)
             {
-                return (constraintName == "es_validOpenMarkings");
+                return (constraintName == 'es_validOpenMarkings');
             },
 
             /**
              * Is the given constraint an open constraint. As the code evolves,
              * it will derive this value from the model but for now the open
              * group constraint name is hard-coded
-             * 
+             *
              * @method isOpenLogic
              * @param constraintName
              *            Name of the constraint
              * @return True if the given constraint uses Open (ie. OR) logic
              */
-            isOrganisations : function(constraintName)
+            isOrganisations: function(constraintName)
             {
-                return (constraintName == "es_validOrganisations");
+                return (constraintName == 'es_validOrganisations');
             },
 
             /**
              * Creates the "open groups" or "closed groups" page sections
-             * 
+             *
              * @private
              * @method appendConstraint
              */
-            appendConstraint : function(constraint, parentElement)
+            appendConstraint: function(constraint, parentElement)
             {
                 // If we don't have any markings, do nothing
                 if (!constraint.markings)
@@ -780,7 +780,7 @@
                 var canSeeOneMarking = false;
                 // If we do have some markings, but can't see any of them, do
                 // nothing
-                for ( var i in constraint.markings)
+                for (var i in constraint.markings)
                 {
                     if (constraint.markings[i].hasAccess)
                     {
@@ -797,8 +797,8 @@
                 // see, so we can start rendering the list
 
                 // Create the container div
-                var outerDiv = document.createElement("div");
-                Dom.addClass(outerDiv, "constraint");
+                var outerDiv = document.createElement('div');
+                Dom.addClass(outerDiv, 'constraint');
                 Dom.addClass(outerDiv, constraint.constraintName);
 
                 // Go through the group list and work out what groups we have
@@ -806,7 +806,7 @@
 
                 var marking;
 
-                for ( var i in constraint.markings)
+                for (var i in constraint.markings)
                 {
                     marking = constraint.markings[i];
 
@@ -819,9 +819,9 @@
                     {
                         groupTypes[marking.type] =
                             {
-                                id : marking.type,
-                                title : marking.type,
-                                groups : [ marking ]
+                                id: marking.type,
+                                title: marking.type,
+                                groups: [marking]
                             };
                     }
                 }
@@ -831,7 +831,7 @@
                 var title;
 
                 // Then create our group list boxes
-                for ( var groupTypeId in groupTypes)
+                for (var groupTypeId in groupTypes)
                 {
                     title = groupTypes[groupTypeId].title;
                     this.createGroupList(groupTypes[groupTypeId].id, title, groupTypes[groupTypeId].groups, outerDiv,
@@ -841,36 +841,36 @@
 
             /**
              * Creates a selectable list of groups
-             * 
+             *
              * @private
              * @method createGroupList
              */
-            createGroupList : function(id, title, markings, parentElement, constraint)
+            createGroupList: function(id, title, markings, parentElement, constraint)
             {
                 // Create the container div
-                 var outerDiv = document.createElement("div");
-                Dom.addClass(outerDiv, "group-list-outer");
-                outerDiv.setAttribute("id", this.id + "groupLists-" + id);
- 
-                // The list container
-                var listDivId = this.id + "groupLists-" + id;
+                 var outerDiv = document.createElement('div');
+                Dom.addClass(outerDiv, 'group-list-outer');
+                outerDiv.setAttribute('id', this.id + 'groupLists-' + id);
 
-              
+                // The list container
+                var listDivId = this.id + 'groupLists-' + id;
+
+
                 parentElement.appendChild(outerDiv);
 
-                if(this.isOrganisations(constraint.constraintName)) {
-                    this.createSelectorForGroupType(title, markings, listDivId, "organisations");
-                } else if(this.isOpenLogic(constraint.constraintName)) {
-                    this.createSelectorForGroupType(title, markings, listDivId, "open");
+                if (this.isOrganisations(constraint.constraintName)) {
+                    this.createSelectorForGroupType(title, markings, listDivId, 'organisations');
+                } else if (this.isOpenLogic(constraint.constraintName)) {
+                    this.createSelectorForGroupType(title, markings, listDivId, 'open');
                 } else {
-                    this.createSelectorForGroupType(title, markings, listDivId, "closed");
+                    this.createSelectorForGroupType(title, markings, listDivId, 'closed');
                 }
             },
 
             /**
              * Handler which is called when the groups have been changed
              */
-            onGroupsUpdatedHandler : function(type, args, obj)
+            onGroupsUpdatedHandler: function(type, args, obj)
             {
                 var groups = args[0];
 
@@ -886,43 +886,43 @@
 
             /**
              * Resets the selected groups to the initial value
-             * 
+             *
              * @private
              * @method resetGroups
              */
-            resetGroups : function()
+            resetGroups: function()
             {
                 this.controller.setGroups(this.options.currentMarking.openGroups.concat(
-                        this.options.currentMarking.closedGroups, this.options.currentMarking.organisations).join(" "));
-                
+                        this.options.currentMarking.closedGroups, this.options.currentMarking.organisations).join(' '));
+
                 this.controller.showAllGroups();
             },
-            
+
             /**
              * Resets this group selector to a blank state (i.e. where
              * nothing is selected at all)
              */
-            setToBlank : function()
+            setToBlank: function()
             {
                 this.controller.reset();
-                
+
                 this.controller.showAllGroups();
             },
 
             /**
              * Called when the validation state of the underlying controller
              * changes
-             * 
+             *
              * @method validationStateChanged
              * @param isValid
              *            <code>true</code> if the current group is valid,
              *            <code>false</code> otherwise
              */
-            validationStateChanged : function(isValid)
+            validationStateChanged: function(isValid)
             {
                 if (this.widgets && this.widgets.saveButton)
                 {
-                    this.widgets.saveButton.set("disabled", !isValid);
+                    this.widgets.saveButton.set('disabled', !isValid);
                 }
 
                 if (this.widgets && this.widgets.visibilityCount)
@@ -936,7 +936,7 @@
              * Alfresco.EnhancedSecuritySelectorAdvancedSingleGroupSelector. This is
              * the recommend way of creating instances of
              * Alfresco.EnhancedSecuritySelectorAdvancedSingleGroupSelector.
-             * 
+             *
              * @param groupType
              *                Human readable String defining the name of the group
              *                type the selector to be created will manage
@@ -947,61 +947,61 @@
              *                which to render the HTML elements comprising this
              *                selector
              * @param groupLogic
-             *  	 		  
+             *
              * @method createSelectorForGroupType
              */
-            createSelectorForGroupType : function(groupType, markings, htmlId,
+            createSelectorForGroupType: function(groupType, markings, htmlId,
                     groupLogic)
             {
                 var selector;
-                
+
                 var groupsSimple = [];
-                for ( var i in markings)
+                for (var i in markings)
                 {
                     groupsSimple[groupsSimple.length] = markings[i].name;
                 }
-                
-                var groupsInType = groupsSimple.join(" ");
 
-                if (groupLogic == "organisations") {
+                var groupsInType = groupsSimple.join(' ');
+
+                if (groupLogic == 'organisations') {
                     selector = new Alfresco.EnhancedSecuritySelectorAdvancedOrganisationSelector(
                             htmlId);
                     selector.setOptions({
-                        groupsString : groupsInType,
-                        groupsDetailArray : markings,
-                        title : groupType,
-                        renderedCallback : { fn: this.childRendered, scope: this }
+                        groupsString: groupsInType,
+                        groupsDetailArray: markings,
+                        title: groupType,
+                        renderedCallback: { fn: this.childRendered, scope: this }
                     });
                 } else {
                     selector = new Alfresco.EnhancedSecuritySelectorAdvancedSingleGroupSelector(
                             htmlId);
                     selector.setOptions({
-                        groupsString : groupsInType,
-                        title : groupType,
-                        groupsDetailArray : markings,
-                        renderedCallback : { fn: this.childRendered, scope: this }
+                        groupsString: groupsInType,
+                        title: groupType,
+                        groupsDetailArray: markings,
+                        renderedCallback: { fn: this.childRendered, scope: this }
                     });
                 }
 
 
                 ++this.unrenderedChildren;
-                
+
                 Alfresco.util.copyMessages(this.name, selector.name);
 
                 this.controller.registerSingleGroupSelector(selector);
             },
-            
+
             /**
              * Called when a child element has been rendered.
              * When they all have we can display the dialog!
-             * 
+             *
              * @method childRendered
              */
-            childRendered : function()
+            childRendered: function()
             {
                 --this.unrenderedChildren;
-                
-                if((this.unrenderedChildren == 0) && this.displayDialogOnChildrenRendered) {
+
+                if ((this.unrenderedChildren == 0) && this.displayDialogOnChildrenRendered) {
                     this.displayDialogOnChildrenRendered = false;
                     this.show();
                 }
@@ -1009,17 +1009,17 @@
 
             /**
              * Gets a custom message
-             * 
+             *
              * @method _msg
              * @param messageId
              *            {string} The messageId to retrieve
              * @return {string} The custom message
              * @private
              */
-            _msg : function(messageId)
+            _msg: function(messageId)
             {
                 return Alfresco.util.message.call(this, messageId,
-                        "Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector", Array.prototype.slice
+                        'Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector', Array.prototype.slice
                                 .call(arguments).slice(1));
             }
         };
@@ -1027,7 +1027,7 @@
     /**
      * A "static" method to find the singleton object from the ent Manager and
      * show it.
-     * 
+     *
      * @param options
      *            the options to use to display the dialog The following options
      *            may be set: { saveCallback: function(groupsList),
@@ -1036,7 +1036,7 @@
     Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector.show = function(options)
     {
         var instance = Alfresco.util.ComponentManager
-                .findFirst("Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector");
+                .findFirst('Alfresco.EnhancedSecuritySelectorGroupsAdvancedSelector');
 
         instance.setOptions(options);
 

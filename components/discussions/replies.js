@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -32,10 +32,10 @@
     * Alfresco Slingshot aliases
     */
    var $html = Alfresco.util.encodeHTML;
-    
+
    /**
     * TopicReplies constructor.
-    * 
+    *
     * @param {String} htmlId The HTML id of the parent element
     * @return {Alfresco.TopicReplies} The new Reply instance
     * @constructor
@@ -43,30 +43,30 @@
    Alfresco.TopicReplies = function(htmlId)
    {
       /* Mandatory properties */
-      this.name = "Alfresco.TopicReplies";
+      this.name = 'Alfresco.TopicReplies';
       this.id = htmlId;
-      
+
       /* Initialise prototype properties */
       this.widgets = {};
       this.editData =
       {
-         formDiv : null,
-         viewDiv : null
+         formDiv: null,
+         viewDiv: null
       };
-      
+
       /* Register this component */
       Alfresco.util.ComponentManager.register(this);
 
       /* Load YUI Components */
-      Alfresco.util.YUILoaderHelper.require(["dom", "event", "element"], this.onComponentsLoaded, this);
-      
+      Alfresco.util.YUILoaderHelper.require(['dom', 'event', 'element'], this.onComponentsLoaded, this);
+
       /* Decoupled event listeners */
-      YAHOO.Bubbling.on("addReplyToPost", this.onAddReplyToPost, this);
-      YAHOO.Bubbling.on("topicDataChanged", this.onTopicDataChanged, this);
-            
+      YAHOO.Bubbling.on('addReplyToPost', this.onAddReplyToPost, this);
+      YAHOO.Bubbling.on('topicDataChanged', this.onTopicDataChanged, this);
+
       return this;
    };
-   
+
    Alfresco.TopicReplies.prototype =
    {
       /**
@@ -79,56 +79,56 @@
       {
          /**
           * Current siteId.
-          * 
+          *
           * @property siteId
           * @type string
           */
-         siteId: "",
-         
+         siteId: '',
+
          /**
           * Current containerId.
-          * 
+          *
           * @property containerId
           * @type string
           */
-         containerId: "discussions",
-         
+         containerId: 'discussions',
+
          /**
           * Reference to the topic for which to display replies.
           */
-         topicRef: "",
-         
+         topicRef: '',
+
          /**
           * Id of the topic to display
           * Note: this is solely used for generating the activities feed
           */
-         topicId: "",
-         
+         topicId: '',
+
          /**
           * Title of the topic for which replies are displayed
           * Note: this is solely used for generating the activities feed
           */
-         topicTitle: ""
+         topicTitle: ''
       },
-      
+
       /**
        * Stores editing related data
        */
-      editData : null,
-      
+      editData: null,
+
       /**
        * Stores the displayed data
        */
       repliesData: null,
-      
+
       /**
        * Object container for storing YUI widget instances.
-       * 
+       *
        * @property widgets
        * @type object
        */
       widgets: null,
-      
+
       /**
        * Set multiple initialization options at once.
        *
@@ -140,7 +140,7 @@
          this.options = YAHOO.lang.merge(this.options, obj);
          return this;
       },
-      
+
       /**
        * Set multiple initialization options at once.
        *
@@ -152,7 +152,7 @@
          Alfresco.util.addMessages(obj, this.name);
          return this;
       },
-      
+
       /**
        * Fired by YUILoaderHelper when required component script files have
        * been loaded into the browser.
@@ -163,7 +163,7 @@
       {
          Event.onContentReady(this.id, this.onReady, this, true);
       },
-   
+
       /**
        * Fired by YUI when parent element is available for scripting.
        * Component initialisation, including instantiation of YUI widgets and event listener binding.
@@ -171,17 +171,17 @@
        * @method onReady
        */
       onReady: function TopicReplies_onReady()
-      {   
+      {
          // Hook action events.
          var me = this;
          var fnActionHandlerDiv = function TopicReplies_fnActionHandlerDiv(layer, args)
          {
-            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
+            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, 'div');
             if (owner !== null)
             {
-               var action = "";
+               var action = '';
                action = owner.className;
-               if (typeof me[action] == "function")
+               if (typeof me[action] == 'function')
                {
                   var id = '';
                   id = owner.id;
@@ -194,17 +194,17 @@
             }
             return true;
          };
-         YAHOO.Bubbling.addDefaultAction("reply-action-link", fnActionHandlerDiv);
+         YAHOO.Bubbling.addDefaultAction('reply-action-link', fnActionHandlerDiv);
 
          // Hook the show/hide link
          var fnShowHideChildrenHandler = function TopicReplies_fnShowHideChildrenHandler(layer, args)
          {
-            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "a");
+            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, 'a');
             if (owner !== null)
             {
-               var action = "";
+               var action = '';
                action = owner.className;
-               if (typeof me[action] == "function")
+               if (typeof me[action] == 'function')
                {
                   var id = '';
                   id = owner.id;
@@ -217,15 +217,15 @@
             }
             return true;
          };
-         YAHOO.Bubbling.addDefaultAction("showHideChildren", fnShowHideChildrenHandler);
+         YAHOO.Bubbling.addDefaultAction('showHideChildren', fnShowHideChildrenHandler);
 
          // initialize the mouse over listener
          Alfresco.util.rollover.registerHandlerFunctions(this.id, this.onReplyElementMouseEntered, this.onReplyElementMouseExited, this);
       },
-      
-      
+
+
       // Bubble event management
-      
+
       /**
        * Tag selected handler (document details)
        *
@@ -241,7 +241,7 @@
             this.onAddReply(obj.postRef);
          }
       },
-      
+
       /**
        * onLoadReplies handler
        */
@@ -262,10 +262,10 @@
             }
          }
       },
-      
+
       /**
        * Loads the replies data and updates the ui.
-       */      
+       */
       _loadRepliesData: function TopicReplies__loadRepliesData()
       {
          // ajax request success handler
@@ -274,20 +274,20 @@
             // set the loaded data
             var data = response.json.items;
             this.repliesData = data;
-            
+
             // render the ui
             this.renderUI();
          };
-         
+
          // construct the url to call
-         var url = YAHOO.lang.substitute(Alfresco.constants.URL_SERVICECONTEXT + "components/forum/post/site/{site}/{container}/{topicId}/replies?levels={levels}",
+         var url = YAHOO.lang.substitute(Alfresco.constants.URL_SERVICECONTEXT + 'components/forum/post/site/{site}/{container}/{topicId}/replies?levels={levels}',
          {
-            site : this.options.siteId,
+            site: this.options.siteId,
             container: this.options.containerId,
             topicId: this.options.topicId,
             levels: 999
          });
-         
+
          // execute ajax request
          Alfresco.util.Ajax.request(
          {
@@ -297,13 +297,13 @@
                fn: loadRepliesDataSuccess,
                scope: this
             },
-            failureMessage: this._msg("message.loadreplies.failure")
+            failureMessage: this._msg('message.loadreplies.failure')
          });
       },
 
       /**
        * Converts a html-id safe nodeRef to a real one.
-       * 
+       *
        * @param safeRef {string} a nodeReference where the separators have been replaced by _
        * @return {string} a valid node reference
        */
@@ -311,10 +311,10 @@
       {
          return safeRef.replace(/_/, '://').replace(/_/, '/');
       },
-      
+
       /**
        * Converts a node reference to a html-id safe string.
-       * 
+       *
        * @param nodeRef {string} a nodeReference where the separators have been replaced by _
        * @return {string} a nodeRef string usable in html id values
        */
@@ -332,33 +332,33 @@
          var rootDiv = Dom.get(this.id + '-replies-root');
          rootDiv.innerHTML = '';
          var elem = new Element(rootDiv);
-         
+
          // add the reply form element
-         var replyFormDiv = document.createElement("div");
-         replyFormDiv.setAttribute("id", "reply-add-form-" + this.toSafeRef(this.options.topicRef));
+         var replyFormDiv = document.createElement('div');
+         replyFormDiv.setAttribute('id', 'reply-add-form-' + this.toSafeRef(this.options.topicRef));
          elem.appendChild(replyFormDiv);
-         
-         for (var x=0; x < this.repliesData.length; x++)
+
+         for (var x = 0; x < this.repliesData.length; x++)
          {
             this.renderReply(rootDiv, this.repliesData[x], false);
          }
-         
+
          // attach the rollover listeners
-         Alfresco.util.rollover.registerListenersByClassName(this.id, 'reply', 'div');  
-         
-         YAHOO.Bubbling.fire("afterRenderDiscussionReplies");
-         
+         Alfresco.util.rollover.registerListenersByClassName(this.id, 'reply', 'div');
+
+         YAHOO.Bubbling.fire('afterRenderDiscussionReplies');
+
          // finally show the root div
-         Dom.removeClass(rootDiv, "hidden");
+         Dom.removeClass(rootDiv, 'hidden');
       },
-      
+
       /**
        * Renders an individual reply element
        */
       renderReply: function TopicReplies_renderReply(parentDiv, data, highlight)
       {
-         var replyDiv = document.createElement("div");
-         
+         var replyDiv = document.createElement('div');
+
          // we first generate the general html for an element, this is the
          // edit and view divs, the child replies div including the add reply div.
          var safeRef = this.toSafeRef(data.nodeRef);
@@ -370,28 +370,28 @@
          html += '<div class="indented" id="replies-of-' + safeRef + '"></div>';
          replyDiv.innerHTML = html;
          parentDiv.appendChild(replyDiv);
-         
+
          // render the reply content
          var viewElem = Dom.get('reply-' + safeRef);
          this.renderReplyView(viewElem, data);
-         
+
          // render the children if they got already loaded
          if (data.children !== undefined)
          {
             var repliesElem = Dom.get('replies-of-' + safeRef);
-            for (var x=0; x < data.children.length; x++)
+            for (var x = 0; x < data.children.length; x++)
             {
                this.renderReply(repliesElem, data.children[x], false);
             }
          }
-         
+
          if (highlight)
          {
             //Alfresco.util.Anim.pulse(viewElem);
             this._scrollToElement(viewElem);
          }
       },
-      
+
       /**
        * Renders the view part of a reply element
        */
@@ -399,55 +399,55 @@
       {
          var safeRef = this.toSafeRef(data.nodeRef);
          var html = '';
-                  
+
          // render the actions
          html += '<div class="nodeEdit">';
          if (data.permissions.reply)
          {
             html += '<div class="onAddReply" id="' + this.id + '-onAddReply-' + safeRef + '">';
-            html += '<a href="#" class="reply-action-link">' + this._msg("action.reply") + '</a>';
+            html += '<a href="#" class="reply-action-link">' + this._msg('action.reply') + '</a>';
             html += '</div>';
          }
-        
+
          if (data.permissions.edit)
          {
             html += '<div class="onEditReply" id="' + this.id + '-onEditReply-' + safeRef + '">';
-            html += '<a href="#" class="reply-action-link">' + this._msg("action.edit") + '</a>';
+            html += '<a href="#" class="reply-action-link">' + this._msg('action.edit') + '</a>';
             html += '</div>';
          }
          html += '</div>';
-          
+
          // avatar
          html += '<div class="authorPicture">' + Alfresco.util.people.generateUserAvatarImg(data.author) + '</div>';
 
-         // content            
+         // content
          html += '<div class="nodeContent">';
-         html += '<div class="userLink">' + Alfresco.util.people.generateUserLink(data.author) + ' ' + this._msg("post.said") + ': ';
+         html += '<div class="userLink">' + Alfresco.util.people.generateUserLink(data.author) + ' ' + this._msg('post.said') + ': ';
          if (data.isUpdated)
          {
-            html += '<span class="theme-color-2 nodeStatus">(' + this._msg("post.updated") + ')</span>';
+            html += '<span class="theme-color-2 nodeStatus">(' + this._msg('post.updated') + ')</span>';
          }
          html += '</div>';
-         html +='<div class="eslPMDiscussion'+data.eslPM.replace(/ /g,'')+'"> <span class="eslRenderNod">'+data.eslNod+'</span> <span class="eslRenderPM">'+data.eslPM+'</span> <span class="eslRenderAtomal">'+data.eslAtomal+'</span> <span class="eslRenderFreeForm">'+data.eslFreeFormCaveats+'</span> <span class="eslRenderEyes">'+data.eslEyes+'</span><br/>';
-         html +='<span class="eslRenderClosed">'+data.eslClosed+' </span> <span class="eslRenderOrganisations">'+data.eslOrganisations+'</span> <span class="eslRenderOpen">'+data.eslOpen+'</span> </div>';
+         html += '<div class="eslPMDiscussion' + data.eslPM.replace(/ /g, '') + '"> <span class="eslRenderNod">' + data.eslNod + '</span> <span class="eslRenderPM">' + data.eslPM + '</span> <span class="eslRenderAtomal">' + data.eslAtomal + '</span> <span class="eslRenderFreeForm">' + data.eslFreeFormCaveats + '</span> <span class="eslRenderEyes">' + data.eslEyes + '</span><br/>';
+         html += '<span class="eslRenderClosed">' + data.eslClosed + ' </span> <span class="eslRenderOrganisations">' + data.eslOrganisations + '</span> <span class="eslRenderOpen">' + data.eslOpen + '</span> </div>';
          html += '<div class="content yuieditor">' + data.content + '</div>';
          html += '</div>';
-         
+
          // footer part
          html += '<div class="nodeFooter">';
-         html += '<span class="nodeAttrLabel replyTo">' + this._msg("replies") + ': </span>';
+         html += '<span class="nodeAttrLabel replyTo">' + this._msg('replies') + ': </span>';
          html += '<span class="nodeAttrValue">(' + (data.children !== undefined ? data.children.length : 0) + ') </span>';
          if (data.replyCount > 0)
          {
             html += '<span class="nodeAttrValue">';
-            html += '<a href="#" class="showHideChildren" id="' + this.id + '-showHideChildren-' + safeRef + '">' + this._msg("replies.hide") + '</a>';
+            html += '<a href="#" class="showHideChildren" id="' + this.id + '-showHideChildren-' + safeRef + '">' + this._msg('replies.hide') + '</a>';
             html += '</span>';
          }
          html += '<span class="separator">&nbsp;</span>';
-         html += '<span class="nodeAttrLabel">' + this._msg("post.postedOn") + ': ' + '</span>';
+         html += '<span class="nodeAttrLabel">' + this._msg('post.postedOn') + ': ' + '</span>';
          html += '<span class="nodeAttrValue">' + Alfresco.util.formatDate(data.createdOn) + '</span>';
          html += '</div>';
-         
+
          div.innerHTML = html;
       },
 
@@ -458,9 +458,9 @@
        */
       fixEmptySpans: function TopicReplies_fixEmptySpan(spanContents)
       {
-          if (spanContents==null || YAHOO.lang.trim(spanContents).length<1)
+          if (spanContents == null || YAHOO.lang.trim(spanContents).length < 1)
           {
-              return "&nbsp;";
+              return '&nbsp;';
           }
           return spanContents;
       },
@@ -474,16 +474,16 @@
          var viewElem = Dom.get('reply-' + this.toSafeRef(nodeRef));
          var data = this.findReplyDataObject(nodeRef);
          this.renderReplyView(viewElem, data);
-         
+
          if (highlight)
          {
             Alfresco.util.Anim.pulse(viewElem);
          }
       },
-      
-      
+
+
       // Actions handlers
-      
+
       /**
        * Handler for the add reply action links.
        */
@@ -499,7 +499,7 @@
       {
          this._loadEditForm(nodeRef, true);
       },
-      
+
       /**
        * Handler for the show/hide replies toggle links
        */
@@ -507,7 +507,7 @@
       {
          // get the replies element
          var repliesElem = Dom.get('replies-of-' + this.toSafeRef(nodeRef));
-         if (Dom.hasClass(repliesElem, "hidden"))
+         if (Dom.hasClass(repliesElem, 'hidden'))
          {
             this._showChildren(nodeRef);
          }
@@ -519,22 +519,22 @@
 
       /**
        * Loads the reply add or edit form.
-       * 
+       *
        * @param nodeRef {string} the parent nodeRef to which a child should be added or the reply that should be edited
        * @param isEdit {boolean} if true nodeRef is edited, otherwise nodeRef is the parent of the new reply to be created
-       */      
+       */
       _loadEditForm: function TopicReplies__loadEditForm(nodeRef, isEdit)
-      {          
+      {
          // construct the id to use for the form elements
-         var formId = this.id + this.toSafeRef(nodeRef) + (isEdit ? "-edit" : "-add");
-         
+         var formId = this.id + this.toSafeRef(nodeRef) + (isEdit ? '-edit' : '-add');
+
          // execute ajax request to load the form
          Alfresco.util.Ajax.request(
          {
-            url: Alfresco.constants.URL_SERVICECONTEXT + "modules/discussions/replies/reply-form",
+            url: Alfresco.constants.URL_SERVICECONTEXT + 'modules/discussions/replies/reply-form',
             dataObj:
             {
-               htmlid : formId
+               htmlid: formId
             },
             successCallback:
             {
@@ -547,10 +547,10 @@
                   formId: formId
                }
             },
-            failureMessage: this._msg("message.loadeditform.failure")
+            failureMessage: this._msg('message.loadeditform.failure')
          });
       },
-      
+
       /**
        * Request success handler for the loadReplyEditForm ajax request
        */
@@ -558,7 +558,7 @@
       {
          // make sure no other forms are displayed
          this._hideOpenForms();
-         
+
          // insert the form at the right location
          var safeRef = this.toSafeRef(obj.nodeRef);
          var formDiv = null;
@@ -571,11 +571,11 @@
             formDiv = Dom.get('reply-add-form-' + safeRef);
          }
          formDiv.innerHTML = response.serverResponse.responseText;
-         
+
          // find the data object for nodeRef.
          // Note: this will be null in case of a reply to the topic itself.
          var data = this.findReplyDataObject(obj.nodeRef);
-         
+
          // insert current values into the form
          var actionUrl = '';
          var formTitle = '';
@@ -585,7 +585,7 @@
          if (obj.isEdit)
          {
             viewDiv = Dom.get('reply-' + safeRef);
-            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + "api/forum/post/node/{nodeRef}",
+            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + 'api/forum/post/node/{nodeRef}',
             {
                nodeRef: obj.nodeRef.replace(':/', '')
             });
@@ -595,11 +595,11 @@
          }
          else
          {
-            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + "api/forum/post/node/{nodeRef}/replies",
+            actionUrl = YAHOO.lang.substitute(Alfresco.constants.PROXY_URI + 'api/forum/post/node/{nodeRef}/replies',
             {
                nodeRef: obj.nodeRef.replace(':/', '')
             });
-            
+
             // for root replies we don't have a parent data object and therefore can
             // tell whom to reply to
             if (data !== null)
@@ -612,16 +612,16 @@
             }
             submitButtonLabel = this._msg('action.create');
          }
-         
+
          // set the values in the dom
          var formId = obj.formId;
-         Dom.get(formId + "-form-title").innerHTML = formTitle;
-         Dom.get(formId + "-form").setAttribute("action", actionUrl);
-         Dom.get(formId + "-site").setAttribute("value", this.options.siteId);
-         Dom.get(formId + "-container").setAttribute("value", this.options.containerId);
-         Dom.get(formId + "-submit").setAttribute("value", submitButtonLabel);
-         Dom.get(formId + "-content").value = content;
-         
+         Dom.get(formId + '-form-title').innerHTML = formTitle;
+         Dom.get(formId + '-form').setAttribute('action', actionUrl);
+         Dom.get(formId + '-site').setAttribute('value', this.options.siteId);
+         Dom.get(formId + '-container').setAttribute('value', this.options.containerId);
+         Dom.get(formId + '-submit').setAttribute('value', submitButtonLabel);
+         Dom.get(formId + '-content').value = content;
+
          // store edit related data.
          this.editData =
          {
@@ -631,37 +631,37 @@
             viewDiv: viewDiv,
             formDiv: formDiv
          };
-         
-         // register the form logic        
+
+         // register the form logic
          this._registerEditForm(obj.nodeRef, formId, obj.isEdit);
       },
-      
+
       /**
        * Registers the form logic
        */
       _registerEditForm: function TopicReplies__registerEditForm(nodeRef, formId, isEdit)
       {
          // register the okButton
-         this.widgets.okButton = new YAHOO.widget.Button(formId + "-submit",
+         this.widgets.okButton = new YAHOO.widget.Button(formId + '-submit',
          {
-            type: "submit"
+            type: 'submit'
          });
-         
+
          // register the cancel button
-         this.widgets.cancelButton = new YAHOO.widget.Button(formId + "-cancel",
+         this.widgets.cancelButton = new YAHOO.widget.Button(formId + '-cancel',
          {
-            type: "button"
+            type: 'button'
          });
-         this.widgets.cancelButton.subscribe("click", this.onFormCancelButtonClick, this, true);
-         
+         this.widgets.cancelButton.subscribe('click', this.onFormCancelButtonClick, this, true);
+
          // Instantiate and render the simple editor we use for the form
-         this.widgets.editor = new Alfresco.util.RichEditor(Alfresco.constants.HTML_EDITOR, formId + '-content',this.options.editorConfig);
-         this.widgets.editor.addPageUnloadBehaviour(this._msg("message.unsavedChanges.reply"));
+         this.widgets.editor = new Alfresco.util.RichEditor(Alfresco.constants.HTML_EDITOR, formId + '-content', this.options.editorConfig);
+         this.widgets.editor.addPageUnloadBehaviour(this._msg('message.unsavedChanges.reply'));
          this.widgets.editor.render();
-         
+
          // Add validation to the rich text editor
          var keyUpIdentifier = (Alfresco.constants.HTML_EDITOR === 'YAHOO.widget.SimpleEditor') ? 'editorKeyUp' : 'onKeyUp';
-         this.widgets.editor.subscribe(keyUpIdentifier, function (e)
+         this.widgets.editor.subscribe(keyUpIdentifier, function(e)
          {
             /**
              * Doing a form validation on every key stroke is process consuming, below we try to make sure we only do
@@ -669,8 +669,8 @@
              * NOTE: Don't check for zero-length in commentsLength, due to HTML <br>, <span> tags, etc. possibly
              * being present. Only a "Select all" followed by delete will clean all tags, otherwise leftovers will
              * be there even if the form looks empty.
-             */                       
-            if (this.widgets.editor.getContent().length < 20 || this.widgets.okButton.get("disabled"))
+             */
+            if (this.widgets.editor.getContent().length < 20 || this.widgets.okButton.get('disabled'))
             {
                // Submit was disabled and something has been typed, validate and submit will be enabled
                this.widgets.editor.save();
@@ -679,10 +679,10 @@
          }, this, true);
 
          // create the form that does the validation/submit
-         this.widgets.form = new Alfresco.forms.Form(formId + "-form");
+         this.widgets.form = new Alfresco.forms.Form(formId + '-form');
          var replyForm = this.widgets.form;
          replyForm.setShowSubmitStateDynamically(true, false);
-         replyForm.addValidation(formId + "-content", Alfresco.forms.validation.mandatory, null);         
+         replyForm.addValidation(formId + '-content', Alfresco.forms.validation.mandatory, null);
          replyForm.setSubmitElements(this.widgets.okButton);
          if (isEdit)
          {
@@ -690,7 +690,7 @@
          }
          replyForm.setAJAXSubmit(true,
          {
-            successMessage: this._msg("message.savereply.success"),
+            successMessage: this._msg('message.savereply.success'),
             successCallback:
             {
                fn: this.onFormSubmitSuccess,
@@ -701,7 +701,7 @@
                   isEdit: isEdit
                }
             },
-            failureMessage: this._msg("message.savereply.failure"),
+            failureMessage: this._msg('message.savereply.failure'),
             failureCallback:
             {
                fn: this.onFormSubmitFailure,
@@ -714,50 +714,50 @@
             fn: function(form, obj)
             {
                // disable buttons
-               this.widgets.okButton.set("disabled", true);
-               this.widgets.cancelButton.set("disabled", true);
-         
+               this.widgets.okButton.set('disabled', true);
+               this.widgets.cancelButton.set('disabled', true);
+
                //Put the HTML back into the text area
                this.widgets.editor.save();
-               
+
                // show a wait message
                this.widgets.feedbackMessage = Alfresco.util.PopupManager.displayMessage(
                {
-                  text: Alfresco.util.message(this._msg("message.submitting")),
-                  spanClass: "wait",
+                  text: Alfresco.util.message(this._msg('message.submitting')),
+                  spanClass: 'wait',
                   displayTime: 0
                });
             },
             scope: this
          };
          replyForm.init();
-         
+
          // now show the form
          this._showForm();
-         
+
          // finally scroll to the form
          this._scrollToElement(this.editData.formDiv);
       },
-      
+
       /**
        * Form submit success handler
        */
       onFormSubmitSuccess: function TopicReplies_onFormSubmitSuccess(response, obj)
       {
-         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState("");
+         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState('');
 
          // remove wait message
          this.widgets.feedbackMessage.destroy();
-         
+
          var data, parentElem;
-          
+
          // in case of an edit reply, simply update the data/ui
          if (obj.isEdit)
          {
             // update the data object for the reply
             data = this.findReplyDataObject(obj.nodeRef);
             YAHOO.lang.augmentObject(data, response.json.item, true);
-            
+
             // rerender the ui
             this.rerenderReplyUI(data.nodeRef, true);
          }
@@ -769,7 +769,7 @@
             {
                // add the data object
                this.repliesData.push(response.json.item);
-               
+
                // render the new reply
                parentElem = Dom.get(this.id + '-replies-root');
                this.renderReply(parentElem, response.json.item, true);
@@ -784,19 +784,19 @@
                   data.children = [];
                }
                data.children.push(response.json.item);
-               
+
                // render the new reply
                parentElem = Dom.get('replies-of-' + this.toSafeRef(obj.nodeRef));
                this.renderReply(parentElem, response.json.item, true);
-               
+
                // rerender the parent reply, which will update the reply count
                this.rerenderReplyUI(obj.nodeRef, false);
             }
-            
+
             // make sure the rolover listener gets attached to the new element
-            Alfresco.util.rollover.registerListenersByClassName(this.id, 'reply', 'div');  
+            Alfresco.util.rollover.registerListenersByClassName(this.id, 'reply', 'div');
          }
-         
+
          // finally hide the form / show the updated view in case of an edit
          this._hideOpenForms();
       },
@@ -807,9 +807,9 @@
       onFormSubmitFailure: function TopicReplies_onFormSubmitFailure(response, obj)
       {
          // enable buttons
-         this.widgets.okButton.set("disabled", false);
-         this.widgets.cancelButton.set("disabled", false);
-         
+         this.widgets.okButton.set('disabled', false);
+         this.widgets.cancelButton.set('disabled', false);
+
          // hide message
          this.widgets.feedbackMessage.destroy();
       },
@@ -819,13 +819,13 @@
        */
       onFormCancelButtonClick: function TopicReplies_onFormCancelButtonClick(type, args)
       {
-         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState("");
+         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState('');
          this._hideOpenForms();
       },
-      
+
       /**
        * Find the data object for a reply given its node reference.
-       * 
+       *
        * @param nodeRef {string} the nodeRef of the reply to find the data for
        * @return {string} a reply data object or null if not found
        */
@@ -833,13 +833,13 @@
       {
          return this._findReplyDataObjectImpl(this.repliesData, nodeRef);
       },
-      
+
       /**
        * Implementation of findReplyDataObject
        */
       _findReplyDataObjectImpl: function TopicReplies__findReplyDataObjectImpl(arr, nodeRef)
       {
-         for (var  x=0; x < arr.length; x++)
+         for (var x = 0; x < arr.length; x++)
          {
             // check the element
             if (arr[x].nodeRef == nodeRef)
@@ -858,39 +858,39 @@
          }
          return null;
       },
-      
+
       /**
        * Shows the children of a reply
-       * 
+       *
        * @param nodeRef the nodeRef of the reply for which children should be shown
        */
       _showChildren: function TopicReplies__showChildren(nodeRef)
       {
           // show the replies element
           var repliesElem = Dom.get('replies-of-' + this.toSafeRef(nodeRef));
-          Dom.removeClass(repliesElem, "hidden");
-          
+          Dom.removeClass(repliesElem, 'hidden');
+
           // the show/hide replies toggle link might not exist if there are no replies
           var linkElem = Dom.get(this.id + '-showHideChildren-' + this.toSafeRef(nodeRef));
           if (linkElem !== null)
           {
-             linkElem.innerHTML = this._msg("replies.hide");
+             linkElem.innerHTML = this._msg('replies.hide');
           }
       },
-      
+
       /**
        * Hides the children of a reply
-       * 
+       *
        * @param nodeRef the nodeRef of the reply for which children should be hidden
        */
       _hideChildren: function TopicReplies__hideChildren(nodeRef)
       {
           var repliesElem = Dom.get('replies-of-' + this.toSafeRef(nodeRef));
-          Dom.addClass(repliesElem, "hidden");
+          Dom.addClass(repliesElem, 'hidden');
           var linkElem = Dom.get(this.id + '-showHideChildren-' + this.toSafeRef(nodeRef));
-          linkElem.innerHTML = this._msg("replies.show");
+          linkElem.innerHTML = this._msg('replies.show');
       },
-      
+
       /**
        * Hides any open form, displays any hidden view element
        */
@@ -898,22 +898,22 @@
       {
          if (this.editData.formDiv !== null)
          {
-            if (!Dom.hasClass(this.editData.formDiv, "hidden"))
-            {  
-                Dom.addClass(this.editData.formDiv, "hidden");
+            if (!Dom.hasClass(this.editData.formDiv, 'hidden'))
+            {
+                Dom.addClass(this.editData.formDiv, 'hidden');
 
-                YAHOO.Bubbling.fire("afterHideDiscussionReplyForm", { formDiv: this.editData.formDiv, viewDiv: this.editData.viewDiv } );
+                YAHOO.Bubbling.fire('afterHideDiscussionReplyForm', { formDiv: this.editData.formDiv, viewDiv: this.editData.viewDiv });
             }
             this.editData.formDiv.innerHTML = '';
             this.editData.formDiv = null;
          }
          if (this.editData.viewDiv !== null)
          {
-            Dom.removeClass(this.editData.viewDiv, "hidden");
+            Dom.removeClass(this.editData.viewDiv, 'hidden');
             this.editData.viewDiv = null;
          }
       },
-      
+
       /**
        * Shows the already prepared form and hides the associated view element if any.
        */
@@ -922,15 +922,15 @@
          // hide the view element if any
          if (this.editData.viewDiv !== null)
          {
-            Dom.addClass(this.editData.viewDiv, "hidden");
+            Dom.addClass(this.editData.viewDiv, 'hidden');
          }
-         
-         YAHOO.Bubbling.fire("beforeShowDiscussionReplyForm", { formDiv: this.editData.formDiv, viewDiv: this.editData.viewDiv } );
-         
+
+         YAHOO.Bubbling.fire('beforeShowDiscussionReplyForm', { formDiv: this.editData.formDiv, viewDiv: this.editData.viewDiv });
+
          // show the form element
-         Dom.removeClass(this.editData.formDiv, "hidden");
+         Dom.removeClass(this.editData.formDiv, 'hidden');
       },
-      
+
       /**
        * Vertically scrolls the browser window to the passed element
        */
@@ -947,25 +947,25 @@
          }
          window.scrollTo(0, yPos);
       },
-      
+
       // mouse hover functionality
-      
+
       /** Called when the mouse enters into a list item. */
       onReplyElementMouseEntered: function TopicReplies_onReplyElementMouseEntered(layer, args)
       {
          // only highlight if there are actions on the specific element
          var nodeRef = args[1].target.id.substring(('reply-').length);
          nodeRef = this.toNodeRef(nodeRef);
-         
+
          var data = this.findReplyDataObject(nodeRef), permissions = data.permissions;
          if (!(permissions.edit || permissions.reply || permissions['delete']))
          {
             return;
          }
-         
+
          Dom.addClass(args[1].target, 'over');
       },
-      
+
       /** Called whenever the mouse exits a list item. */
       onReplyElementMouseExited: function TopicReplies_onReplyElementMouseExited(layer, args)
       {
@@ -982,8 +982,8 @@
        */
       _msg: function TopicReplies__msg(messageId)
       {
-         return Alfresco.util.message.call(this, messageId, "Alfresco.TopicReplies", Array.prototype.slice.call(arguments).slice(1));
+         return Alfresco.util.message.call(this, messageId, 'Alfresco.TopicReplies', Array.prototype.slice.call(arguments).slice(1));
       }
-      
+
    };
 })();

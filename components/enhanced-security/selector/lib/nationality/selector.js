@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -33,7 +33,7 @@
 
     /**
      * EnhancedSecurityNationalityMarkingSelector constructor.
-     * 
+     *
      * @param {String}
      *            htmlId The HTML id of the parent element
      * @return {Alfresco.EnhancedSecurityNationalityMarkingSelector} The new
@@ -43,7 +43,7 @@
     Alfresco.EnhancedSecurityNationalityMarkingSelector = function(htmlId)
     {
         /* Mandatory properties */
-        this.name = "Alfresco.EnhancedSecurityNationalityMarkingSelector";
+        this.name = 'Alfresco.EnhancedSecurityNationalityMarkingSelector';
         this.id = htmlId;
 
         /* Initialise prototype properties */
@@ -54,7 +54,7 @@
         Alfresco.util.ComponentManager.register(this);
 
         /* Load YUI Components */
-        Alfresco.util.YUILoaderHelper.require( [ "event", "button" ], this.onComponentsLoaded, this);
+        Alfresco.util.YUILoaderHelper.require(['event', 'button'], this.onComponentsLoaded, this);
 
         return this;
     };
@@ -63,52 +63,52 @@
         {
             /**
              * Object container for initialization options
-             * 
+             *
              * @property options
              * @type object
              */
-            options :
+            options:
                 {
                     /**
                      * This value will always have to be selected if one of the
                      * other values is selected
                      */
-                    forcedValue : null,
+                    forcedValue: null,
 
                     /**
                      * The suffix to append to the string
                      */
-                    suffix : "",
+                    suffix: '',
 
                     /**
                      * The separator for the values
                      */
-                    separator : "/",
+                    separator: '/',
 
                     /**
                      * The list of recent markings. Array of strings.
-                     * 
+                     *
                      * @type array
                      */
-                    recentMarkings : [],
+                    recentMarkings: [],
 
                     /**
                      * The string value to set the selector to
-                     * 
+                     *
                      * @type string
                      */
-                    currentValue : "",
+                    currentValue: '',
 
                     /**
                      * The list of options to pass to the panel
                      */
-                    panelOptions :
+                    panelOptions:
                         {
-                            close : false,
-                            width : "auto",
-                            modal : true,
-                            constraintoviewport : true,
-                            fixedcenter : false
+                            close: false,
+                            width: 'auto',
+                            modal: true,
+                            constraintoviewport: true,
+                            fixedcenter: false
                         },
 
                     /**
@@ -116,69 +116,69 @@
                      * Function will be called with one parameter: the value
                      * string
                      */
-                    saveCallback :
+                    saveCallback:
                         {
-                            fn : function(value)
+                            fn: function(value)
                             {
                             },
-                            scope : this
+                            scope: this
                         },
 
                     /**
                      * Callback method for when the cancel button is clicked
                      * Function will be called with no parameters
                      */
-                    cancelCallback :
+                    cancelCallback:
                         {
-                            fn : function()
+                            fn: function()
                             {
                             },
-                            scope : this
+                            scope: this
                         }
                 },
 
             /**
              * Object container for storing YUI widget instances.
-             * 
+             *
              * @property widgets
              * @type object
              */
-            widgets : null,
+            widgets: null,
 
             /**
              * Object container for storing module instances.
-             * 
+             *
              * @property modules
              * @type object
              */
-            modules : null,
+            modules: null,
 
             /**
              * Whether the user interface has been initialised
-             * 
+             *
              * @property uiInitialiased
              */
-            uiInitialiased : false,
+            uiInitialiased: false,
 
             /**
              * Simple flag to stop recursive calls to onCheckboxChanged() when
              * the buttons become programatically checked/unchecked as the
              * forced value logic is carried out.
-             * 
+             *
              * @property checkboxChangeEventEnabled
              */
-            checkboxChangeEventEnabled : true,
+            checkboxChangeEventEnabled: true,
 
             /**
              * Set multiple initialization options at once.
-             * 
+             *
              * @method setOptions
              * @param obj
              *            {object} Object literal specifying a set of options
              * @return {Alfresco.EnhancedSecurityNationalityMarkingSelector}
              *         returns 'this' for method chaining
              */
-            setOptions : function(obj)
+            setOptions: function(obj)
             {
                 if (obj.panelOptions)
                 {
@@ -196,14 +196,14 @@
 
             /**
              * Set messages for this component.
-             * 
+             *
              * @method setMessages
              * @param obj
              *            {object} Object literal specifying a set of messages
              * @return {Alfresco.EnhancedSecurityNationalityMarkingSelector}
              *         returns 'this' for method chaining
              */
-            setMessages : function(obj)
+            setMessages: function(obj)
             {
                 Alfresco.util.addMessages(obj, this.name);
 
@@ -213,10 +213,10 @@
             /**
              * Fired by YUILoaderHelper when required component script files
              * have been loaded into the browser.
-             * 
+             *
              * @method onComponentsLoaded
              */
-            onComponentsLoaded : function()
+            onComponentsLoaded: function()
             {
                 Event.onContentReady(this.id, this.onReady, this, true);
             },
@@ -225,12 +225,12 @@
              * Fired by YUI when parent element is available for scripting.
              * Component initialisation, including instantiation of YUI widgets
              * and event listener binding.
-             * 
+             *
              * @method onReady
              */
-            onReady : function()
+            onReady: function()
             {
-                var checkboxes = YAHOO.util.Selector.query("#" + this.id + "-valueList input");
+                var checkboxes = YAHOO.util.Selector.query('#' + this.id + '-valueList input');
 
                 this.widgets.checkboxButtons = {};
 
@@ -243,8 +243,8 @@
                     value = checkboxElement.value;
 
                     /* First get the content of the label(s) and hide them */
-                    labelElements = YAHOO.util.Selector.query("label[for=\"" + checkboxElement.getAttribute("id")
-                            + "\"]");
+                    labelElements = YAHOO.util.Selector.query('label[for=\"' + checkboxElement.getAttribute('id')
+                            + '\"]');
 
                     label = null;
 
@@ -260,26 +260,26 @@
                         label = value;
                     }
 
-                    this.widgets.checkboxButtons[value] = Alfresco.util.createYUIButton(this, "value-" + value, null,
+                    this.widgets.checkboxButtons[value] = Alfresco.util.createYUIButton(this, 'value-' + value, null,
                         {
-                            label : label,
-                            type : "checkbox"
+                            label: label,
+                            type: 'checkbox'
                         });
 
-                    this.widgets.checkboxButtons[value].addListener("checkedChange", this.onCheckboxChanged, value,
+                    this.widgets.checkboxButtons[value].addListener('checkedChange', this.onCheckboxChanged, value,
                             this);
                 }
 
-                this.widgets.saveButton = Alfresco.util.createYUIButton(this, "saveButton", this.saveClicked);
-                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, "cancelButton", this.cancelClicked);
+                this.widgets.saveButton = Alfresco.util.createYUIButton(this, 'saveButton', this.saveClicked);
+                this.widgets.cancelButton = Alfresco.util.createYUIButton(this, 'cancelButton', this.cancelClicked);
             },
 
             /**
              * Displays the dialog
-             * 
+             *
              * @method show
              */
-            show : function(options)
+            show: function(options)
             {
                 if (options)
                 {
@@ -295,23 +295,23 @@
                 {
                     this.widgets.panel = Alfresco.util.createYUIPanel(this.id, this.options.panelOptions);
 
-                    YAHOO.util.Dom.removeClass(this.id, "hidden");
+                    YAHOO.util.Dom.removeClass(this.id, 'hidden');
                 }
 
                 this.resetValues();
 
                 this.widgets.panel.show();
 
-                Event.addListener(this.id + "_mask", "click", this.cancelClicked, this, true);
+                Event.addListener(this.id + '_mask', 'click', this.cancelClicked, this, true);
             },
 
             /**
              * Builds the user interface
-             * 
+             *
              * @private
              * @method initUi
              */
-            initUi : function()
+            initUi: function()
             {
                 this.uiInitialiased = true;
             },
@@ -319,39 +319,39 @@
             /**
              * Called when the button with ID specified by the option
              * "saveButtonId" is clicked
-             * 
+             *
              * @private
              * @method saveClicked
              */
-            saveClicked : function()
+            saveClicked: function()
             {
-                this.options["saveCallback"].fn.call(this.options["saveCallback"].scope, this.getMarkingString());
+                this.options['saveCallback'].fn.call(this.options['saveCallback'].scope, this.getMarkingString());
                 this.widgets.panel.hide();
             },
 
             /**
              * Called when the button with ID specified by the option
              * "cancelButtonId" is clicked
-             * 
+             *
              * @private
              * @method cancelClicked
              */
-            cancelClicked : function()
+            cancelClicked: function()
             {
-                this.options["cancelCallback"].fn.call(this.options["cancelCallback"].scope);
+                this.options['cancelCallback'].fn.call(this.options['cancelCallback'].scope);
                 this.widgets.panel.hide();
             },
 
             /**
              * Event handler called when a checkbox is changed
-             * 
+             *
              * @method onCheckboxChanged
              * @param args
              *            the event arguments
              * @param value
              *            the value which has been changed
              */
-            onCheckboxChanged : function(args, value)
+            onCheckboxChanged: function(args, value)
             {
                 if (this.checkboxChangeEventEnabled)
                 {
@@ -370,11 +370,11 @@
 
             /**
              * Resets the ui to the initial options values
-             * 
+             *
              * @private
              * @method resetValues
              */
-            resetValues : function()
+            resetValues: function()
             {
                 try
                 {
@@ -393,11 +393,11 @@
             /**
              * Updates options.currentValue with the current marking and updates
              * the display. Should be called whenever the marking has changed.
-             * 
+             *
              * @method markingChanged
              * @private
              */
-            markingChanged : function()
+            markingChanged: function()
             {
                 this.options.currentValue = this.getMarkingString();
                 this.updateMarkingDisplay();
@@ -405,17 +405,17 @@
 
             /**
              * Updates the current marking display
-             * 
+             *
              * @method updatupdateMarkingDisplay
              * @private
              */
-            updateMarkingDisplay : function()
+            updateMarkingDisplay: function()
             {
-                var el = Dom.get(this.id + "-currentMarking");
+                var el = Dom.get(this.id + '-currentMarking');
 
-                if (this.options.currentValue == "")
+                if (this.options.currentValue == '')
                 {
-                    el.innerHTML = $html(this._msg("control.nationality.none"));
+                    el.innerHTML = $html(this._msg('control.nationality.none'));
                 }
                 else
                 {
@@ -428,24 +428,24 @@
                      * RegEx escape method :(
                      */
                     el.innerHTML = $html(this.options.currentValue).replace(
-                            new RegExp("(" + this.options.separator + ")", "g"),
+                            new RegExp('(' + this.options.separator + ')', 'g'),
                             '<span class="zwsp"> </span>$1<span class="zwsp"> </span>');
                 }
             },
 
             /**
              * Gets the marking string from the checkboxes.
-             * 
+             *
              * @method getMarkingString
              * @private
              */
-            getMarkingString : function()
+            getMarkingString: function()
             {
                 var selectedValues = this.getSelectedValues();
 
                 if (selectedValues.length == 0)
                 {
-                    return "";
+                    return '';
                 }
 
                 var retVal = selectedValues.join(this.options.separator);
@@ -461,7 +461,7 @@
             /**
              * Sets the current state of the dialog to match a given marking
              * string. Unrecognised values will be ignored.
-             * 
+             *
              * @method setMarkingString
              * @param value
              *            string the marking string to set the selector to.
@@ -469,14 +469,14 @@
              *             if the the marking string doesn't contain the correct
              *             suffix
              */
-            setMarkingString : function(value)
+            setMarkingString: function(value)
             {
                 value = YAHOO.lang.trim(value);
 
                 /* Deselect all the values */
                 this.setAllValuesSelected(false);
 
-                if (value == "")
+                if (value == '')
                 {
                     return;
                 }
@@ -489,7 +489,7 @@
 
                 if (indexOfSuffix < 0)
                 {
-                    alert("not found " + indexOfSuffix);
+                    alert('not found ' + indexOfSuffix);
                     throw new Error(value + " doesn't contain " + this.options.suffix);
                 }
 
@@ -497,7 +497,7 @@
 
                 var values = valuesString.split(this.options.separator);
 
-                for ( var i in values)
+                for (var i in values)
                 {
                     try
                     {
@@ -512,23 +512,23 @@
 
             /**
              * Selects/deselects a given value
-             * 
+             *
              * @method setValueSelected
              * @param value
              *            string the value to select/deselect.
              * @param selected
              *            boolean whether to select/delselect the value.
              */
-            setValueSelected : function(value, selected)
+            setValueSelected: function(value, selected)
             {
                 var checkbox = this.widgets.checkboxButtons[value];
 
                 if (!checkbox)
                 {
-                    throw new Error(value + " is not a valid value");
+                    throw new Error(value + ' is not a valid value');
                 }
 
-                checkbox.set("checked", selected);
+                checkbox.set('checked', selected);
 
                 this.onValueSelected(value, selected);
             },
@@ -536,17 +536,17 @@
             /**
              * Called after a value has been selected. Implements the forced
              * value logic.
-             * 
+             *
              * @method setValueSelected
              * @private
              */
-            onValueSelected : function(value, selected)
+            onValueSelected: function(value, selected)
             {
                 var checkbox = this.widgets.checkboxButtons[value];
 
                 if (!checkbox)
                 {
-                    throw new Error(value + " is not a valid value");
+                    throw new Error(value + ' is not a valid value');
                 }
 
                 if (this.options.forcedValue)
@@ -570,9 +570,9 @@
                          */
                         if (selected)
                         {
-                            if (!this.widgets.checkboxButtons[this.options.forcedValue].get("checked"))
+                            if (!this.widgets.checkboxButtons[this.options.forcedValue].get('checked'))
                             {
-                                this.widgets.checkboxButtons[this.options.forcedValue].set("checked", true);
+                                this.widgets.checkboxButtons[this.options.forcedValue].set('checked', true);
                             }
                         }
                     }
@@ -584,39 +584,39 @@
 
             /**
              * Gets whether a value is selected.
-             * 
+             *
              * @method isValueSelected
              * @param value
              *            string the value to interrogate.
              * @return boolean whether the value is selected.
              */
-            isValueSelected : function(value)
+            isValueSelected: function(value)
             {
                 var checkbox = this.widgets.checkboxButtons[value];
 
                 if (!checkbox)
                 {
-                    throw new Error(value + " is not a valid value");
+                    throw new Error(value + ' is not a valid value');
                 }
 
-                return checkbox.get("checked");
+                return checkbox.get('checked');
             },
 
             /**
              * Get selected values
-             * 
+             *
              * @method getSelectedValues
              * @return array selected value strings.
              */
-            getSelectedValues : function()
+            getSelectedValues: function()
             {
                 var checkboxButton;
 
                 var selectedValues = [];
 
-                for ( var value in this.widgets.checkboxButtons)
+                for (var value in this.widgets.checkboxButtons)
                 {
-                    if (this.widgets.checkboxButtons[value].get("checked"))
+                    if (this.widgets.checkboxButtons[value].get('checked'))
                     {
                         selectedValues.push(value);
                     }
@@ -627,16 +627,16 @@
 
             /**
              * Select/deselect all values
-             * 
+             *
              * @method setAllValuesSelected
              * @param selected
              *            boolean whether to select or deselect all the values.
              */
-            setAllValuesSelected : function(selected)
+            setAllValuesSelected: function(selected)
             {
-                for ( var value in this.widgets.checkboxButtons)
+                for (var value in this.widgets.checkboxButtons)
                 {
-                    this.widgets.checkboxButtons[value].set("checked", selected);
+                    this.widgets.checkboxButtons[value].set('checked', selected);
                 }
 
                 this.markingChanged();
@@ -644,17 +644,17 @@
 
             /**
              * Gets a custom message
-             * 
+             *
              * @method _msg
              * @param messageId
              *            {string} The messageId to retrieve
              * @return {string} The custom message
              * @private
              */
-            _msg : function(messageId)
+            _msg: function(messageId)
             {
                 return Alfresco.util.message.call(this, messageId,
-                        "Alfresco.EnhancedSecurityNationalityMarkingSelector", Array.prototype.slice.call(arguments)
+                        'Alfresco.EnhancedSecurityNationalityMarkingSelector', Array.prototype.slice.call(arguments)
                                 .slice(1));
             }
         };
@@ -662,13 +662,13 @@
     /**
      * A "static" method to find the singleton object from the Component Manager
      * and show it.
-     * 
+     *
      * @param options
      *            the options to use to display the dialog
      */
     Alfresco.EnhancedSecurityNationalityMarkingSelector.show = function(options)
     {
-        var instance = Alfresco.util.ComponentManager.findFirst("Alfresco.EnhancedSecurityNationalityMarkingSelector");
+        var instance = Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecurityNationalityMarkingSelector');
 
         instance.setOptions(options);
 

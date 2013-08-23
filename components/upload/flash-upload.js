@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -52,7 +52,7 @@
       Element = YAHOO.util.Element,
       KeyListener = YAHOO.util.KeyListener;
 
-   var isSurevine = false; 
+   var isSurevine = false;
    /* @@IS_SUREVINE@@ */
 
    /**
@@ -68,11 +68,11 @@
     */
    Alfresco.FlashUpload = function(htmlId)
    {
-      Alfresco.FlashUpload.superclass.constructor.call(this, "Alfresco.FlashUpload", htmlId, ["button", "container", "datatable", "datasource", "cookie", "uploader"]);
+      Alfresco.FlashUpload.superclass.constructor.call(this, 'Alfresco.FlashUpload', htmlId, ['button', 'container', 'datatable', 'datasource', 'cookie', 'uploader']);
 
-      this.swf = Alfresco.constants.URL_CONTEXT + "yui/uploader/assets/uploader.swf?dt=" + (new Date()).getTime();
+      this.swf = Alfresco.constants.URL_CONTEXT + 'yui/uploader/assets/uploader.swf?dt=' + (new Date()).getTime();
       this.hasRequiredFlashPlayer = Alfresco.util.hasRequiredFlashPlayer(9, 0, 45);
-      
+
       this.fileStore = {};
       this.addedFiles = {};
       this.defaultShowConfig =
@@ -83,7 +83,7 @@
          uploadDirectory: null,
          updateNodeRef: null,
          updateFilename: null,
-         updateVersion: "1.0",
+         updateVersion: '1.0',
          mode: this.MODE_SINGLE_UPLOAD,
          filter: [],
          onFileUploadComplete: null,
@@ -96,7 +96,7 @@
       this.suppliedConfig = {};
       this.showConfig = {};
       this.fileItemTemplates = {};
-      
+
       return this;
    };
 
@@ -110,7 +110,7 @@
        * @type boolean
        */
       contentReady: false,
-      
+
       /**
        * The user is browsing and adding files to the file list
        *
@@ -135,7 +135,7 @@
        * @type int
        */
       STATE_FINISHED: 3,
-      
+
       /**
        * File failed to upload.
        *
@@ -154,7 +154,7 @@
 
        /**
        * The filename contains characters that are illegal (for Windows at least)
-       * 
+       *
        * @property STATE_ILLEGAL_FILENAME
        * @type int
        */
@@ -163,7 +163,7 @@
       STATE_RETRY: 7,
 
       STATE_RETRYING: 8,
-      
+
        /**
        * The state of which the uploader currently is, where the flow is.
        * STATE_BROWSING > STATE_UPLOADING > STATE_FINISHED
@@ -247,7 +247,7 @@
        * @type int
        */
       MODE_MULTI_UPLOAD: 3,
-      
+
       /**
        * The default config for the gui state for the uploader.
        * The user can override these properties in the show() method to use the
@@ -342,7 +342,7 @@
       statusText: null,
 
       /**
-       * HTMLElement of type radio button for major or minor version 
+       * HTMLElement of type radio button for major or minor version
        *
        * @property description
        * @type HTMLElement
@@ -358,7 +358,7 @@
        * @type HTMLElement
        */
       description: null,
-      
+
       /**
        * Enhanced security metadata
        */
@@ -405,11 +405,11 @@
          // Tell the YUI class where the swf is
          YAHOO.widget.Uploader.SWFURL = this.swf;
 
-         Dom.removeClass(this.id + "-dialog", "hidden");
+         Dom.removeClass(this.id + '-dialog', 'hidden');
 
          // Create the panel
-         this.panel = Alfresco.util.createYUIPanel(this.id + "-dialog");
-         this.panel.width="20px";
+         this.panel = Alfresco.util.createYUIPanel(this.id + '-dialog');
+         this.panel.width = '20px';
 
          // Hook close button
          this.panel.hideEvent.subscribe(this.onCancelOkButtonClick, null, this);
@@ -423,7 +423,7 @@
           *
           * (https://bugzilla.mozilla.org/show_bug.cgi?id=187435)
           */
-         if (this.panel.platform == "mac" && YAHOO.env.ua.gecko)
+         if (this.panel.platform == 'mac' && YAHOO.env.ua.gecko)
          {
             /**
              * Remove the already added event listeners that toggles
@@ -442,63 +442,63 @@
             }
 
             // Remove the toggling of the "overview" style property for the dialog itself.
-            p.showMacGeckoScrollbars = function(){};
-            p.hideMacGeckoScrollbars = function(){};
+            p.showMacGeckoScrollbars = function() {};
+            p.hideMacGeckoScrollbars = function() {};
 
             // Add a class for special bug fix css classes
-            Dom.addClass(p.element, "reinstantiated-fix");
+            Dom.addClass(p.element, 'reinstantiated-fix');
          }
 
          // Save a reference to the file row template that is hidden inside the markup
-         this.fileItemTemplates.left = Dom.get(this.id + "-left-div");
-         this.fileItemTemplates.center = Dom.get(this.id + "-center-div");
-         this.fileItemTemplates.right = Dom.get(this.id + "-right-div");
+         this.fileItemTemplates.left = Dom.get(this.id + '-left-div');
+         this.fileItemTemplates.center = Dom.get(this.id + '-center-div');
+         this.fileItemTemplates.right = Dom.get(this.id + '-right-div');
 
          // Create the YIU datatable object
          this._createEmptyDataTable();
 
          // Save a reference to the HTMLElement displaying texts so we can alter the texts later
-         this.titleText = Dom.get(this.id + "-title-span");
-         this.multiUploadTip = Dom.get(this.id + "-multiUploadTip-span");
-         this.singleUpdateTip = Dom.get(this.id + "-singleUpdateTip-span");
-         this.statusText = Dom.get(this.id + "-status-span");
-         this.description = Dom.get(this.id + "-description-textarea");
-         
+         this.titleText = Dom.get(this.id + '-title-span');
+         this.multiUploadTip = Dom.get(this.id + '-multiUploadTip-span');
+         this.singleUpdateTip = Dom.get(this.id + '-singleUpdateTip-span');
+         this.statusText = Dom.get(this.id + '-status-span');
+         this.description = Dom.get(this.id + '-description-textarea');
+
          //Save references to the Enhanced Security Label controls so we can push them into the upload
          //webscript later
-         this.eslNod=Dom.get(this.id+"-esl-hidden-nod");
-         this.eslPM=Dom.get(this.id+"-esl-hidden-classification");
-         this.eslAtomal=Dom.get(this.id+"-esl-hidden-atomal");
-         this.eslOpenGroups=Dom.get(this.id+"-eslOpenGroupsHidden");
-         this.eslClosedGroups=Dom.get(this.id+"-eslClosedGroupsHidden");
-         this.eslOrganisations=Dom.get(this.id+"-eslOrganisationsHidden");
-         this.eslFreeFormCaveats=Dom.get(this.id+"-esl-hidden-freeform");
-         this.eslEyes=Dom.get(this.id+"-esl-hidden-nationality");
+         this.eslNod = Dom.get(this.id + '-esl-hidden-nod');
+         this.eslPM = Dom.get(this.id + '-esl-hidden-classification');
+         this.eslAtomal = Dom.get(this.id + '-esl-hidden-atomal');
+         this.eslOpenGroups = Dom.get(this.id + '-eslOpenGroupsHidden');
+         this.eslClosedGroups = Dom.get(this.id + '-eslClosedGroupsHidden');
+         this.eslOrganisations = Dom.get(this.id + '-eslOrganisationsHidden');
+         this.eslFreeFormCaveats = Dom.get(this.id + '-esl-hidden-freeform');
+         this.eslEyes = Dom.get(this.id + '-esl-hidden-nationality');
 
          // Save reference to version radio so we can reset and get its value later
-         this.minorVersion = Dom.get(this.id + "-minorVersion-radioButton");
+         this.minorVersion = Dom.get(this.id + '-minorVersion-radioButton');
 
-         this.majorVersion = Dom.get(this.id + "-majorVersion-radioButton");
+         this.majorVersion = Dom.get(this.id + '-majorVersion-radioButton');
 
          // Save a reference to the HTMLElement displaying version input so we can hide or show it
-         this.versionSection = Dom.get(this.id + "-versionSection-div");
+         this.versionSection = Dom.get(this.id + '-versionSection-div');
 
          // Create and save a reference to the uploadButton so we can alter it later
-         this.widgets.uploadButton = Alfresco.util.createYUIButton(this, "upload-button", this.onUploadButtonClick);
+         this.widgets.uploadButton = Alfresco.util.createYUIButton(this, 'upload-button', this.onUploadButtonClick);
 
          // Create and save a reference to the cancelOkButton so we can alter it later
-         this.widgets.cancelOkButton = Alfresco.util.createYUIButton(this, "cancelOk-button", this.onCancelOkButtonClick);
+         this.widgets.cancelOkButton = Alfresco.util.createYUIButton(this, 'cancelOk-button', this.onCancelOkButtonClick);
 
          // Create and save a reference to the uploader so we can call it later
-         this.uploader = new YAHOO.widget.Uploader(this.id + "-flashuploader-div", Alfresco.constants.URL_RESCONTEXT + "themes/" + Alfresco.constants.THEME + "/images/upload-button-sprite.png", true);
-         this.uploader.subscribe("fileSelect", this.onFileSelect, this, true);
-         this.uploader.subscribe("uploadComplete",this.onUploadComplete, this, true);
-         this.uploader.subscribe("uploadProgress",this.onUploadProgress, this, true);
-         this.uploader.subscribe("uploadStart",this.onUploadStart, this, true);
-         this.uploader.subscribe("uploadCancel",this.onUploadCancel, this, true);
-         this.uploader.subscribe("uploadCompleteData",this.onUploadCompleteData, this, true);
-         this.uploader.subscribe("uploadError",this.onUploadError, this, true);
-         this.uploader.subscribe("contentReady", this.onContentReady, this, true);
+         this.uploader = new YAHOO.widget.Uploader(this.id + '-flashuploader-div', Alfresco.constants.URL_RESCONTEXT + 'themes/' + Alfresco.constants.THEME + '/images/upload-button-sprite.png', true);
+         this.uploader.subscribe('fileSelect', this.onFileSelect, this, true);
+         this.uploader.subscribe('uploadComplete', this.onUploadComplete, this, true);
+         this.uploader.subscribe('uploadProgress', this.onUploadProgress, this, true);
+         this.uploader.subscribe('uploadStart', this.onUploadStart, this, true);
+         this.uploader.subscribe('uploadCancel', this.onUploadCancel, this, true);
+         this.uploader.subscribe('uploadCompleteData', this.onUploadCompleteData, this, true);
+         this.uploader.subscribe('uploadError', this.onUploadError, this, true);
+         this.uploader.subscribe('contentReady', this.onContentReady, this, true);
 
          // Register the ESC key to close the dialog
          this.widgets.escapeListener = new KeyListener(document,
@@ -510,10 +510,10 @@
             scope: this,
             correctScope: true
          });
-         
+
          YAHOO.lang.later(this, 2000, function()
          {
-            Dom.addClass(this.id + "-flashuploader-div", "hidden");
+            Dom.addClass(this.id + '-flashuploader-div', 'hidden');
          });
       },
 
@@ -530,7 +530,7 @@
 
       /**
        * Show can be called multiple times and will display the uploader dialog
-       * in different ways depending on the config parameter.      
+       * in different ways depending on the config parameter.
        *
        * @method show
        * @param config {object} describes how the upload dialog should be displayed
@@ -555,14 +555,14 @@
       show: function FlashUpload_show(config)
       {
          if (isSurevine) {
-        	 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading..."
+        	 Dom.get(this.id + '-tag-picker-currentValueDisplay').innerHTML = 'Loading...';
          }
 
          if (!this.hasRequiredFlashPlayer)
          {
             Alfresco.util.PopupManager.displayPrompt(
             {
-               text: this.msg("label.noFlash")
+               text: this.msg('label.noFlash')
             });
          }
 
@@ -571,15 +571,15 @@
          this.showConfig = YAHOO.lang.merge(this.defaultShowConfig, config);
          if (this.showConfig.uploadDirectory === undefined && this.showConfig.updateNodeRef === undefined)
          {
-             throw new Error("An updateNodeRef OR uploadDirectory must be provided");
+             throw new Error('An updateNodeRef OR uploadDirectory must be provided');
          }
          if (this.showConfig.uploadDirectory !== null && this.showConfig.uploadDirectory.length === 0)
          {
-            this.showConfig.uploadDirectory = "/";
+            this.showConfig.uploadDirectory = '/';
          }
 
-         var swfWrapper = this.id + "-flashuploader-div";
-         Dom.removeClass(swfWrapper, "hidden");
+         var swfWrapper = this.id + '-flashuploader-div';
+         Dom.removeClass(swfWrapper, 'hidden');
 
          // Apply the config before it is shown
          this._resetGUI();
@@ -591,14 +591,14 @@
          this.widgets.escapeListener.enable();
 
          // Remove the a elements to make tabbing work as expeceted
-         var swfObjectCreatedElements = Dom.getChildren(this.id + "-flashuploader-div"),
+         var swfObjectCreatedElements = Dom.getChildren(this.id + '-flashuploader-div'),
             el,
             tagName;
          for (var i = 0, il = swfObjectCreatedElements.length; i < il; i++)
          {
             el = swfObjectCreatedElements[i];
             tagName = el.tagName.toLowerCase();
-            if (tagName == "a")
+            if (tagName == 'a')
             {
                el.parentNode.removeChild(el);
             }
@@ -607,13 +607,13 @@
 
          // Show the upload panel
          this.panel.show();
-         this.panel.width="800px";
+         this.panel.width = '800px';
 
          // Need to resize FF in Ubuntu so the button appears
-         if (navigator.userAgent && navigator.userAgent.indexOf("Ubuntu") != -1 &&
-            YAHOO.env.ua.gecko > 1 && !Dom.hasClass(swfWrapper, "button-fix"))
+         if (navigator.userAgent && navigator.userAgent.indexOf('Ubuntu') != -1 &&
+            YAHOO.env.ua.gecko > 1 && !Dom.hasClass(swfWrapper, 'button-fix'))
          {
-            Dom.addClass(swfWrapper, "button-fix");
+            Dom.addClass(swfWrapper, 'button-fix');
          }
       },
 
@@ -621,7 +621,7 @@
        * Reset GUI to start state
        *
        * @method _resetGUI
-       * @private       
+       * @private
        */
       _resetGUI: function FlashUpload__resetGUI()
       {
@@ -629,22 +629,22 @@
          this.state = this.STATE_BROWSING;
          this.noOfFailedUploads = 0;
          this.noOfSuccessfulUploads = 0;
-         this.statusText.innerHTML = "&nbsp;";
-         this.description.value = "";
+         this.statusText.innerHTML = '&nbsp;';
+         this.description.value = '';
          this.minorVersion.checked = true;
          this.minorVersion.disabled = false;
          this.majorVersion.disabled = false;
-         this.widgets.uploadButton.set("label", this.msg("button.upload"));
-         this.widgets.uploadButton.set("disabled", true);
-         Dom.removeClass(this.id + "-upload-button", "hidden");
-         this.widgets.cancelOkButton.set("label", this.msg("button.cancel"));
-         this.widgets.cancelOkButton.set("disabled", false);
+         this.widgets.uploadButton.set('label', this.msg('button.upload'));
+         this.widgets.uploadButton.set('disabled', true);
+         Dom.removeClass(this.id + '-upload-button', 'hidden');
+         this.widgets.cancelOkButton.set('label', this.msg('button.cancel'));
+         this.widgets.cancelOkButton.set('disabled', false);
       },
 
       /**
        * Fired by YUI:s DataTable when the added row has been rendered to the data table list.
        *
-       * @method onPostRenderEvent       
+       * @method onPostRenderEvent
        */
       onPostRenderEvent: function FlashUpload_onPostRenderEvent()
       {
@@ -654,45 +654,45 @@
             var fileInfo = this.fileStore[id];
             if (fileInfo != null && fileInfo.state == this.STATE_ILLEGAL_FILENAME)
             {
-               
+
                // Add the failure label to the filename & and as a title attribute
-               var msg = this.msg("label.illegalChars");
-               fileInfo.progressInfo["innerHTML"] = fileInfo.progressInfo["innerHTML"] + " " + msg;
-               fileInfo.progressInfoCell.setAttribute("title", msg);
+               var msg = this.msg('label.illegalChars');
+               fileInfo.progressInfo['innerHTML'] = fileInfo.progressInfo['innerHTML'] + ' ' + msg;
+               fileInfo.progressInfoCell.setAttribute('title', msg);
 
                // Change the style of the progress bar
-               Dom.removeClass(fileInfo.progress, "fileupload-progressSuccess-span");
-               Dom.addClass(fileInfo.progress, "fileupload-progressFailure-span");
+               Dom.removeClass(fileInfo.progress, 'fileupload-progressSuccess-span');
+               Dom.addClass(fileInfo.progress, 'fileupload-progressFailure-span');
 
                // Set the progress bar to "full" progress
-               Dom.setStyle(fileInfo.progress, "left", 0 + "px");
-               
+               Dom.setStyle(fileInfo.progress, 'left', 0 + 'px');
+
                // Switch the state to a general failure message to ensure that we don't
                // keep processing this same error.
                fileInfo.state = this.STATE_FAILURE;
-               
+
                // Log the failure and update the status message...
                this.noOfFailedUploads++;
                this._updateStatus();
             }
          }
-         
+
          // If there are currently no failures then clear any status message that may have been
          // previously set by adding a file with a name containing illegal characters...
          if (this.noOfFailedUploads == 0)
          {
             this._clearStatus();
          }
-         
+
          // Display the upload button since all files are rendered
          var numRecords = this.dataTable.getRecordSet().getLength();
          if (numRecords > 0 && numRecords > this.noOfFailedUploads)
          {
-            this.widgets.uploadButton.set("disabled", false);
+            this.widgets.uploadButton.set('disabled', false);
             this.panel.setFirstLastFocusable();
             this.panel.focusFirst();
          }
-         if (this.showConfig.mode === this.MODE_SINGLE_UPDATE && this.panel.cfg.getProperty("visible"))
+         if (this.showConfig.mode === this.MODE_SINGLE_UPDATE && this.panel.cfg.getProperty('visible'))
          {
             if (this.dataTable.getRecordSet().getLength() === 0)
             {
@@ -716,7 +716,7 @@
       {
          // Update tabbing and focus
          this.panel.setFirstLastFocusable();
-         this.panel.focusFirst();         
+         this.panel.focusFirst();
       },
 
       /**
@@ -730,7 +730,7 @@
       onFileSelect: function FlashUpload_onFileSelect(event)
       {
          // Disable upload button until all files have been rendered and added
-         this.widgets.uploadButton.set("disabled", true);
+         this.widgets.uploadButton.set('disabled', true);
 
          // For each time the user select new files, all the previous selected
          // files also are included in the event.fileList. Make sure we only
@@ -740,9 +740,9 @@
             uniqueFileToken;
          for (var i in event.fileList)
          {
-            if (this.dataTable.get("renderLoopSize") === 0)
+            if (this.dataTable.get('renderLoopSize') === 0)
             {
-               this.dataTable.set("renderLoopSize", 1);
+               this.dataTable.set('renderLoopSize', 1);
             }
             data = YAHOO.widget.DataTable._cloneObject(event.fileList[i]);
             uniqueFileToken = this._getUniqueFileToken(data);
@@ -752,7 +752,7 @@
                {
                   Alfresco.util.PopupManager.displayMessage(
                   {
-                     text: this.msg("message.zeroByteFileSelected", data.name)
+                     text: this.msg('message.zeroByteFileSelected', data.name)
                   });
                }
                else
@@ -788,15 +788,15 @@
          // Hide the contentType drop down if it wasn't hidden already
          if (fileInfo.contentType)
          {
-            Dom.addClass(fileInfo.contentType, "hidden");
+            Dom.addClass(fileInfo.contentType, 'hidden');
          }
 
          // Show the progress percentage if it wasn't visible already
-         fileInfo.progressPercentage.innerHTML = "0%";
-         Dom.removeClass(fileInfo.progressPercentage, "hidden");
+         fileInfo.progressPercentage.innerHTML = '0%';
+         Dom.removeClass(fileInfo.progressPercentage, 'hidden');
 
          // Make sure we know we are in upload state
-         if (fileInfo.state === this.STATE_RETRY )
+         if (fileInfo.state === this.STATE_RETRY)
          {
               fileInfo.state = this.STATE_RETRYING;
          }
@@ -817,11 +817,11 @@
           var flashId = event.id;
           var fileInfo = this.fileStore[flashId];
 
-          if ( fileInfo.state !== this.STATE_FAILURE ) {
+          if (fileInfo.state !== this.STATE_FAILURE) {
             // Set percentage
             var percentage = event.bytesLoaded / event.bytesTotal;
-            fileInfo.progressPercentage.innerHTML = Math.round(percentage * 90) + "%";
-            
+            fileInfo.progressPercentage.innerHTML = Math.round(percentage * 90) + '%';
+
             //If we're at 90% (ie. upload complete), start a 15 second timer, after which we will treat the upload as failed if it has not changed state
             if (Math.round(percentage * 90) === 90) {
             	YAHOO.lang.later(15000, this, this.failIfStateNotChanged, [fileInfo, fileInfo.state, flashId], false);
@@ -829,18 +829,18 @@
 
             // Set progress position
             var left = (-400 + (percentage * 400));
-            Dom.setStyle(fileInfo.progress, "left", left + "px");
+            Dom.setStyle(fileInfo.progress, 'left', left + 'px');
           }
       },
-      
+
       failIfStateNotChanged: function FlashUpload_failIfStateNotChanged(fileInfo, oldState, flashId) 
       {
-    	  if ( fileInfo.state === oldState) {
+    	  if (fileInfo.state === oldState) {
     		  var event = { //Construct a fake 'event' object that has the minimum info needed by the uploadError event and call it manually
-    				  status: "Processing Timeout",
-    				  id : flashId
+    				  status: 'Processing Timeout',
+    				  id: flashId
     		  };
-    		  this.onUploadError(event)
+    		  this.onUploadError(event);
     	  }
       },
 
@@ -874,7 +874,7 @@
          // Now adjust the gui for the individual file row
          var fileInfo = this.fileStore[event.id];
          fileInfo.state = this.STATE_SUCCESS;
-         fileInfo.fileButton.set("disabled", true);
+         fileInfo.fileButton.set('disabled', true);
 
          // Extract the nodeRef and (possibly changed) fileName from the JSON response
          var oldFileName = fileInfo.fileName;
@@ -886,15 +886,15 @@
          }
 
          // Add the label "Successful" after the filename, updating the fileName from the response
-         fileInfo.progressInfo.innerHTML = fileInfo.progressInfo.innerHTML.replace(oldFileName, fileInfo.fileName) + " " + this.msg("label.success");
+         fileInfo.progressInfo.innerHTML = fileInfo.progressInfo.innerHTML.replace(oldFileName, fileInfo.fileName) + ' ' + this.msg('label.success');
 
          // Change the style of the progress bar
-         Dom.removeClass(fileInfo.progress, "fileupload-progressSuccess-span");
-         Dom.addClass(fileInfo.progress, "fileupload-progressFinished-span");
+         Dom.removeClass(fileInfo.progress, 'fileupload-progressSuccess-span');
+         Dom.addClass(fileInfo.progress, 'fileupload-progressFinished-span');
 
          // Move the progress bar to "full" progress
-         Dom.setStyle(fileInfo.progress, "left", 0 + "px");
-         fileInfo.progressPercentage.innerHTML = "100%";
+         Dom.setStyle(fileInfo.progress, 'left', 0 + 'px');
+         fileInfo.progressPercentage.innerHTML = '100%';
          this.noOfSuccessfulUploads++;
 
          // Adjust the rest of the gui
@@ -930,35 +930,35 @@
          if (fileInfo.state !== this.STATE_FAILURE)
          {
             // Add the failure label to the filename & and as a title attribute
-            var key = "label.failure." + event.status,
+            var key = 'label.failure.' + event.status,
                msg = Alfresco.util.message(key, this.name);
-            if(msg == key)
+            if (msg == key)
             {
-               msg = Alfresco.util.message("label.failure", this.name);
+               msg = Alfresco.util.message('label.failure', this.name);
             }
 
             // Disable the remove button
-            fileInfo.fileButton.set("disabled", true);
-            
+            fileInfo.fileButton.set('disabled', true);
+
         // Commenting out retry code as it doesn't work in a lotof OS/Browser/Flash combinations
 	    //if (fileInfo.state === this.STATE_RETRYING) {
-            	fileInfo.state=this.STATE_FAILURE;
+            	fileInfo.state = this.STATE_FAILURE;
                 this.noOfFailedUploads++;
-                Dom.removeClass(fileInfo.progress, "fileupload-progressSuccess-span");
-                Dom.addClass(fileInfo.progress, "fileupload-progressFailure-span");
-                fileInfo.progressInfo["innerHTML"] = fileInfo.progressInfo["innerHTML"] + " " + msg;
-                fileInfo.progressInfoCell.setAttribute("title", msg);
-                fileInfo.progressPercentage.innerHTML = "100%";
+                Dom.removeClass(fileInfo.progress, 'fileupload-progressSuccess-span');
+                Dom.addClass(fileInfo.progress, 'fileupload-progressFailure-span');
+                fileInfo.progressInfo['innerHTML'] = fileInfo.progressInfo['innerHTML'] + ' ' + msg;
+                fileInfo.progressInfoCell.setAttribute('title', msg);
+                fileInfo.progressPercentage.innerHTML = '100%';
 
                 // Set the progress bar to "full" progress
-                Dom.setStyle(fileInfo.progress, "left", 0 + "px");
+                Dom.setStyle(fileInfo.progress, 'left', 0 + 'px');
 
                 // Add the failure label to the filename & and as a title attribute
-                var key = "label.failure." + event.status,
+                var key = 'label.failure.' + event.status,
                 msg = Alfresco.util.message(key, this.name);
-                if(msg == key)
+                if (msg == key)
                 {
-                   msg = Alfresco.util.message("label.failure", this.name);
+                   msg = Alfresco.util.message('label.failure', this.name);
                 }
 	    //}
         //    else {
@@ -972,7 +972,7 @@
             this._adjustGuiIfFinished();
          }
          else {
-	 fileInfo.progressPercentage.innerHTML = "100%";}
+	 fileInfo.progressPercentage.innerHTML = '100%';}
       },
 
       /**
@@ -1001,9 +1001,9 @@
             this.noOfFailedUploads--;
             this._updateStatus();
          }
-         
+
          this.fileStore[flashId] = null;
-         
+
          if (this.state === this.STATE_BROWSING)
          {
             // Remove the file from the flash movies memory
@@ -1011,7 +1011,7 @@
             if (this.dataTable.getRecordSet().getLength() === 0)
             {
                // If it was the last file, disable the gui since no files exist.
-               this.widgets.uploadButton.set("disabled", true);
+               this.widgets.uploadButton.set('disabled', true);
                this.uploader.enable();
             }
          }
@@ -1047,7 +1047,7 @@
       {
          var message, i;
          if (this.state === this.STATE_BROWSING)
-         {     
+         {
             // Do nothing (but close the panel, which happens below)
          }
          else if (this.state === this.STATE_UPLOADING)
@@ -1065,16 +1065,16 @@
             }
             if (noOfUploadedFiles > 0)
             {
-               message = YAHOO.lang.substitute(this.msg("message.cancelStatus"),
+               message = YAHOO.lang.substitute(this.msg('message.cancelStatus'),
                {
-                  "0": noOfUploadedFiles
+                  '0': noOfUploadedFiles
                });
             }
 
             if (!this.showConfig.suppressRefreshEvent)
             {
                // Tell the document list to refresh itself if present
-               YAHOO.Bubbling.fire("metadataRefresh",
+               YAHOO.Bubbling.fire('metadataRefresh',
                {
                   currentPath: this.showConfig.path
                });
@@ -1098,7 +1098,7 @@
             {
                if (fileName)
                {
-                  YAHOO.Bubbling.fire("metadataRefresh",
+                  YAHOO.Bubbling.fire('metadataRefresh',
                   {
                      currentPath: this.showConfig.path,
                      highlightFile: fileName
@@ -1106,7 +1106,7 @@
                }
                else
                {
-                  YAHOO.Bubbling.fire("metadataRefresh",
+                  YAHOO.Bubbling.fire('metadataRefresh',
                   {
                      currentPath: this.showConfig.path
                   });
@@ -1115,14 +1115,14 @@
          }
 
          Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.reset();
-         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState("");
-         
+         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState('');
+
          // Hide the panel
          this.panel.hide();
-                  
+
          // Hide the Flash movie
-         Dom.addClass(this.id + "-flashuploader-div", "hidden");
-                  
+         Dom.addClass(this.id + '-flashuploader-div', 'hidden');
+
          // Disable the Esc key listener
          this.widgets.escapeListener.disable();
 
@@ -1141,7 +1141,7 @@
 
       /**
        * Fired when the user clicks the upload button.
-       * Fires a (hopefully) brief AJAX request to refresh 
+       * Fires a (hopefully) brief AJAX request to refresh
        * any proxy server context, and then calls a function
        * to start the uploading and adjust the gui.
        *
@@ -1157,7 +1157,7 @@
               if (length > 0)
               {
                  this.state = this.STATE_UPLOADING;
-                 this.widgets.uploadButton.set("disabled", true);
+                 this.widgets.uploadButton.set('disabled', true);
                this.minorVersion.disabled = true;
                this.majorVersion.disabled = true;
                  this.uploader.disable();
@@ -1170,10 +1170,10 @@
             this.processOnUploadButtonClick();
          }
       },
-      
+
       waitForHealthCheckOK: function FlashUpload_waitForHealthCheckOK(counter)
       {
-         if (counter>19) //If this is the 20th time, execute the upload anyway (it'll probably fail)
+         if (counter > 19) //If this is the 20th time, execute the upload anyway (it'll probably fail)
          {
         	 this.processOnUploadButtonClick();
          }
@@ -1181,7 +1181,7 @@
     	 {
             Alfresco.util.Ajax.request(
 	           {
-	              url: Alfresco.constants.URL_SERVICECONTEXT+"cluster/HealthCheck",
+	              url: Alfresco.constants.URL_SERVICECONTEXT + 'cluster/HealthCheck',
 	              successCallback:
 	              {
 	                 fn: this.processOnUploadButtonClick,
@@ -1189,15 +1189,15 @@
 	              },
 	              failureCallback:
 	              {
-	            	 fn: function() { this.waitForHealthCheckOK(counter+1) },
+	            	 fn: function() { this.waitForHealthCheckOK(counter + 1) },
 	            	 scope: this
 	              }
 	           });
     	 }
       },
-      
+
       processOnUploadButtonClick: function FlashUpload_processOnUploadButtonClick()
-      {  
+      {
          if (this.state === this.STATE_UPLOADING)
          {
             // Start uploading from the queue
@@ -1213,105 +1213,105 @@
        */
       _applyConfig: function FlashUpload__applyConfig()
       {
-    	 var tags="";
-         
+    	 var tags = '';
+
          if (isSurevine) {
         	 if (this.showConfig.updateNodeRef != null)
-        	 { 
-        		 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading...";
+        	 {
+        		 Dom.get(this.id + '-tag-picker-currentValueDisplay').innerHTML = 'Loading...';
     			 this._loadItemTags(this.showConfig.updateNodeRef, this.id);
         	 }
         	 else
              {
-        		 Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML="Loading...";
-        		 Dom.get(this.id + "-tag-picker-currentValueField").value = '';
-        		 Alfresco.util.ComponentManager.get(this.id+'-tag-picker').specifyCurrentTags(tags);
+        		 Dom.get(this.id + '-tag-picker-currentValueDisplay').innerHTML = 'Loading...';
+        		 Dom.get(this.id + '-tag-picker-currentValueField').value = '';
+        		 Alfresco.util.ComponentManager.get(this.id + '-tag-picker').specifyCurrentTags(tags);
              }
          }
-    	 
+
          // Set the panel title
          var title;
          if (this.showConfig.mode === this.MODE_SINGLE_UPLOAD)
          {
-            title = this.msg("header.singleUpload");
+            title = this.msg('header.singleUpload');
          }
          else if (this.showConfig.mode === this.MODE_MULTI_UPLOAD)
          {
-            title = this.msg("header.multiUpload");
+            title = this.msg('header.multiUpload');
          }
          else if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
          {
-            title = this.msg("header.singleUpdate");
+            title = this.msg('header.singleUpdate');
          }
          this.titleText.innerHTML = title;
 
          if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
          {
-            this.singleUpdateTip.innerHTML = YAHOO.lang.substitute(this.msg("label.singleUpdateTip"),
+            this.singleUpdateTip.innerHTML = YAHOO.lang.substitute(this.msg('label.singleUpdateTip'),
             {
-               "0": this.showConfig.updateFilename
+               '0': this.showConfig.updateFilename
             });
 
             // Display the version input form
-            Dom.removeClass(this.versionSection, "hidden");
-            var versions = (this.showConfig.updateVersion || "1.0").split("."),
+            Dom.removeClass(this.versionSection, 'hidden');
+            var versions = (this.showConfig.updateVersion || '1.0').split('.'),
                majorVersion = parseInt(versions[0], 10),
                minorVersion = parseInt(versions[1], 10);
-            Dom.get(this.id + "-minorVersion").innerHTML = this.msg("label.minorVersion.more", majorVersion + "." + (1 + minorVersion));
-            Dom.get(this.id + "-majorVersion").innerHTML = this.msg("label.majorVersion.more", (1 + majorVersion) + ".0");
+            Dom.get(this.id + '-minorVersion').innerHTML = this.msg('label.minorVersion.more', majorVersion + '.' + (1 + minorVersion));
+            Dom.get(this.id + '-majorVersion').innerHTML = this.msg('label.majorVersion.more', (1 + majorVersion) + '.0');
          }
          else
          {
             // Hide the version input form
-            Dom.addClass(this.versionSection, "hidden");
+            Dom.addClass(this.versionSection, 'hidden');
          }
 
          if (this.showConfig.mode === this.MODE_MULTI_UPLOAD)
          {
             // Show the upload status label, only interesting for multiple files
-            Dom.removeClass(this.statusText, "hidden");
+            Dom.removeClass(this.statusText, 'hidden');
 
             // Show the help label for how to select multiple files
-            Dom.removeClass(this.multiUploadTip, "hidden");
+            Dom.removeClass(this.multiUploadTip, 'hidden');
 
             // Hide the help label for other modes
-            Dom.addClass(this.singleUpdateTip, "hidden");
+            Dom.addClass(this.singleUpdateTip, 'hidden');
 
             // Make the file list long
-            this.dataTable.set("height", "204px", true);
+            this.dataTable.set('height', '204px', true);
          }
          else
          {
             // Hide the upload status label, only interesting for multiple files
-            Dom.addClass(this.statusText, "hidden");
+            Dom.addClass(this.statusText, 'hidden');
 
             // Hide the help label for how to select multiple files
-            Dom.addClass(this.multiUploadTip, "hidden");
+            Dom.addClass(this.multiUploadTip, 'hidden');
 
             // Show the help label for single updates
             if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
             {
                // Show the help label for single updates
-               Dom.removeClass(this.singleUpdateTip, "hidden");
+               Dom.removeClass(this.singleUpdateTip, 'hidden');
             }
             else
             {
                // Hide the help label for single updates
-               Dom.addClass(this.singleUpdateTip, "hidden");
+               Dom.addClass(this.singleUpdateTip, 'hidden');
             }
 
             // Make the file list short
-            this.dataTable.set("height", "40px");
+            this.dataTable.set('height', '40px');
          }
 
          // Check if flash player existed or if the no flash message is displayed
-         var uploaderDiv = Dom.get(this.id + "-flashuploader-div");
+         var uploaderDiv = Dom.get(this.id + '-flashuploader-div');
          var p = Dom.getFirstChild(uploaderDiv);
-         if (p && p.tagName.toLowerCase() == "p")
+         if (p && p.tagName.toLowerCase() == 'p')
          {
             // Flash isn't installed, make sure the no flash error message is displayed
-            Dom.setStyle(uploaderDiv, "height", "30px");
-            Dom.setStyle(uploaderDiv, "height", "200px");
+            Dom.setStyle(uploaderDiv, 'height', '30px');
+            Dom.setStyle(uploaderDiv, 'height', '200px');
          }
          else
          {
@@ -1334,7 +1334,7 @@
        * @param attempt {int} Counter for retry attempts
        * @private
        */
-      _applyUploaderConfig: function (obj, attempt)
+      _applyUploaderConfig: function(obj, attempt)
       {
          try
          {
@@ -1342,17 +1342,17 @@
             this.uploader.setAllowMultipleFiles(obj.multiSelect);
             this.uploader.setFileFilters(obj.filter);
          }
-         catch(e)
+         catch (e)
          {
             if (attempt == 7)
             {
                Alfresco.util.PopupManager.displayPrompt(
                {
-                  title: this.msg("message.flashError.title"),
-                  text: this.msg("message.flashError.message"),
+                  title: this.msg('message.flashError.title'),
+                  text: this.msg('message.flashError.message'),
                   buttons: [
                   {
-                     text: Alfresco.util.message("button.ok"),
+                     text: Alfresco.util.message('button.ok'),
                      handler:
                      {
                         fn: function _applyUploaderConfig_onOk(e, p_obj)
@@ -1370,7 +1370,7 @@
                      isDefault: true
                   },
                   {
-                     text: Alfresco.util.message("button.refreshPage"),
+                     text: Alfresco.util.message('button.refreshPage'),
                      handler: function _applyUploaderConfig_onRefreshPage()
                      {
                         window.location.reload(true);
@@ -1384,7 +1384,7 @@
             }
          }
       },
-      
+
       /**
        * Disables Flash uploader if an error is detected.
        * Possibly a temporary workaround for bugs in SWFObject v1.5
@@ -1393,7 +1393,7 @@
        */
       _disableFlashUploader: function FlashUpload__disableFlashUploader()
       {
-         var fileUpload = Alfresco.util.ComponentManager.findFirst("Alfresco.FileUpload");
+         var fileUpload = Alfresco.util.ComponentManager.findFirst('Alfresco.FileUpload');
          if (fileUpload)
          {
             fileUpload.options.adobeFlashEnabled = false;
@@ -1462,16 +1462,16 @@
          {
             var record = oRecord.getData(),
                flashId = record.id;
-            
+
             // Set the state for this file(/row) if it hasn't been set
             if (!this.fileStore[flashId])
             {
                var defaultState = this.STATE_BROWSING;
-               
+
                // ALF-6697
                // Although the users operating system might be Unix based it is necessary that we only allow
                // file names that are supported by the lowest common denominator (Windows)
-               var mockField = 
+               var mockField =
                {
                   id: flashId,
                   value: record.name
@@ -1497,20 +1497,20 @@
             // create an instance from the template and give it a uniqueue id.
             var cell = new Element(el);
             var templateInstance = template.cloneNode(true);
-            templateInstance.setAttribute("id", templateInstance.getAttribute("id") + flashId);
+            templateInstance.setAttribute('id', templateInstance.getAttribute('id') + flashId);
 
             // Save references to elements that will be updated during upload.
-            var progress = Dom.getElementsByClassName("fileupload-progressSuccess-span", "span", templateInstance);
+            var progress = Dom.getElementsByClassName('fileupload-progressSuccess-span', 'span', templateInstance);
             if (progress.length == 1)
             {
                this.fileStore[flashId].progress = progress[0];
             }
-            var progressInfo = Dom.getElementsByClassName("fileupload-progressInfo-span", "span", templateInstance);
+            var progressInfo = Dom.getElementsByClassName('fileupload-progressInfo-span', 'span', templateInstance);
             if (progressInfo.length == 1)
             {
                // Display the file size in human readable format after the filename.
-               var fileInfoStr = record.name + " (" + Alfresco.util.formatFileSize(record.size) + ")";
-               templateInstance.setAttribute("title", fileInfoStr);
+               var fileInfoStr = record.name + ' (' + Alfresco.util.formatFileSize(record.size) + ')';
+               templateInstance.setAttribute('title', fileInfoStr);
 
                // Display the file name and size.
                progressInfo = progressInfo[0];
@@ -1521,53 +1521,53 @@
                this.fileStore[flashId].progressInfoCell = el;
             }
 
-            // Save a reference to the contentType dropdown so we can find each file's contentType before upload.            
-            var contentType = Dom.getElementsByClassName("fileupload-contentType-select", "select", templateInstance);
+            // Save a reference to the contentType dropdown so we can find each file's contentType before upload.
+            var contentType = Dom.getElementsByClassName('fileupload-contentType-select', 'select', templateInstance);
             if (contentType.length == 1)
             {
                this.fileStore[flashId].contentType = contentType[0];
             }
             else
             {
-               contentType = Dom.getElementsByClassName("fileupload-contentType-input", "input", templateInstance);
-               if(contentType.length == 1)
+               contentType = Dom.getElementsByClassName('fileupload-contentType-input', 'input', templateInstance);
+               if (contentType.length == 1)
                {
                   this.fileStore[flashId].contentType = contentType[0];
                }
             }
 
             // Save references to elements that will be updated during upload.
-            var progressPercentage = Dom.getElementsByClassName("fileupload-percentage-span", "span", templateInstance);
+            var progressPercentage = Dom.getElementsByClassName('fileupload-percentage-span', 'span', templateInstance);
             if (progressPercentage.length == 1)
             {
                this.fileStore[flashId].progressPercentage = progressPercentage[0];
             }
 
             // Create a yui button for the fileButton.
-            var fButton = Dom.getElementsByClassName("fileupload-file-button", "button", templateInstance);
+            var fButton = Dom.getElementsByClassName('fileupload-file-button', 'button', templateInstance);
             if (fButton.length == 1)
             {
                var fileButton = new YAHOO.widget.Button(fButton[0],
                {
-                  type: "button",
+                  type: 'button',
                   disabled: false
                });
-               fileButton.subscribe("click", function()
+               fileButton.subscribe('click', function()
                {
                   this._onFileButtonClickHandler(flashId, oRecord.getId());
                }, this, true);
-               this.fileStore[flashId].fileButton = fileButton;               
+               this.fileStore[flashId].fileButton = fileButton;
             }
 
             // Insert the templateInstance to the column.
-            cell.appendChild (templateInstance);
+            cell.appendChild(templateInstance);
          };
 
          // Definition of the data table column
          var myColumnDefs = [
-            { key: "id", className:"col-left", resizable: false, formatter: formatLeftCell },
-            { key: "name", className:"col-center", resizable: false, formatter: formatCenterCell },
-            { key: "created", className:"col-right", resizable: false, formatter: formatRightCell }
+            { key: 'id', className: 'col-left', resizable: false, formatter: formatLeftCell },
+            { key: 'name', className: 'col-center', resizable: false, formatter: formatCenterCell },
+            { key: 'created', className: 'col-right', resizable: false, formatter: formatRightCell }
          ];
 
          // The data tables underlying data source.
@@ -1582,17 +1582,17 @@
           * afterwards, if not set here they will not be changed later.
           */
          YAHOO.widget.DataTable._bStylesheetFallback = !!YAHOO.env.ua.ie;
-         var dataTableDiv = Dom.get(this.id + "-filelist-table");
+         var dataTableDiv = Dom.get(this.id + '-filelist-table');
          this.dataTable = new YAHOO.widget.DataTable(dataTableDiv, myColumnDefs, myDataSource,
          {
-            scrollable: true,            
-            height: "100px", // must be set to something so it can be changed afterwards, when the showconfig options decides if its a sinlge or multi upload
-            width: "620px",
+            scrollable: true,
+            height: '100px', // must be set to something so it can be changed afterwards, when the showconfig options decides if its a sinlge or multi upload
+            width: '620px',
             renderLoopSize: 1,
-            MSG_EMPTY: this.msg("label.noFiles")
+            MSG_EMPTY: this.msg('label.noFiles')
          });
-         this.dataTable.subscribe("postRenderEvent", this.onPostRenderEvent, this, true);
-         this.dataTable.subscribe("rowDeleteEvent", this.onRowDeleteEvent, this, true);
+         this.dataTable.subscribe('postRenderEvent', this.onPostRenderEvent, this, true);
+         this.dataTable.subscribe('rowDeleteEvent', this.onRowDeleteEvent, this, true);
       },
 
       /**
@@ -1604,7 +1604,7 @@
        */
       _getUniqueFileToken: function FlashUpload__getUniqueFileToken(data)
       {
-         return data.name + ":" + data.size + ":" + data.cDate + ":" + data.mDate;
+         return data.name + ':' + data.size + ':' + data.cDate + ':' + data.mDate;
       },
 
       /**
@@ -1616,11 +1616,11 @@
       _updateStatus: function FlashUpload__updateStatus()
       {
          // Update the status label with the latest information about the upload progress
-         this.statusText.innerHTML = YAHOO.lang.substitute(this.msg("label.uploadStatus"),
+         this.statusText.innerHTML = YAHOO.lang.substitute(this.msg('label.uploadStatus'),
          {
-            "0" : this.noOfSuccessfulUploads,
-            "1" : this.dataTable.getRecordSet().getLength(),
-            "2" : this.noOfFailedUploads
+            '0' : this.noOfSuccessfulUploads,
+            '1' : this.dataTable.getRecordSet().getLength(),
+            '2' : this.noOfFailedUploads
          });
       },
 
@@ -1633,7 +1633,7 @@
       _clearStatus: function FlashUpload__clearStatus()
       {
          // Update the status label with the latest information about the upload progress
-         this.statusText.innerHTML = "";
+         this.statusText.innerHTML = '';
       },
 
       /**
@@ -1651,7 +1651,7 @@
             failed: []
          };
          var file = null;
-         
+
          // Go into finished state if all files are finished: successful or failures
          for (var i in this.fileStore)
          {
@@ -1682,23 +1682,23 @@
             }
          }
          this.state = this.STATE_FINISHED;
-         if(!this.showConfig.suppressRefreshEvent)
+         if (!this.showConfig.suppressRefreshEvent)
          {
-         this.widgets.cancelOkButton.set("label", this.msg("button.ok"));
+         this.widgets.cancelOkButton.set('label', this.msg('button.ok'));
          this.widgets.cancelOkButton.focus();
          }
          else
          {
-            this.widgets.cancelOkButton.set("disabled", true);
+            this.widgets.cancelOkButton.set('disabled', true);
          }
-         this.widgets.uploadButton.set("disabled", true);
-         Dom.addClass(this.id + "-upload-button", "hidden");
-         
+         this.widgets.uploadButton.set('disabled', true);
+         Dom.addClass(this.id + '-upload-button', 'hidden');
+
          var callback = this.showConfig.onFileUploadComplete;
-         if (callback && typeof callback.fn == "function")
+         if (callback && typeof callback.fn == 'function')
          {
             // Call the onFileUploadComplete callback in the correct scope
-            callback.fn.call((typeof callback.scope == "object" ? callback.scope : this), objComplete, callback.obj);
+            callback.fn.call((typeof callback.scope == 'object' ? callback.scope : this), objComplete, callback.obj);
          }
       },
 
@@ -1716,26 +1716,26 @@
          var url;
          if (this.showConfig.uploadURL === null)
          {
-            url = Alfresco.constants.PROXY_URI + "api/upload";
+            url = Alfresco.constants.PROXY_URI + 'api/upload';
          }
          else
          {
             url = Alfresco.constants.PROXY_URI + this.showConfig.uploadURL;
          }
-         
+
          // Flash does not correctly bind to the session cookies during POST
          // so we manually patch the jsessionid directly onto the URL instead
-         url += ";jsessionid=" + YAHOO.util.Cookie.get("JSESSIONID") + "?lang=" + Alfresco.constants.JS_LOCALE;
-         
+         url += ';jsessionid=' + YAHOO.util.Cookie.get('JSESSIONID') + '?lang=' + Alfresco.constants.JS_LOCALE;
+
          // Find files to upload
          var startedUploads = 0,
             length = this.dataTable.getRecordSet().getLength(),
             record, flashId, fileInfo, attributes;
-         
+
          for (var i = 0; i < length && startedUploads < noOfUploadsToStart; i++)
          {
             record = this.dataTable.getRecordSet().getRecord(i);
-            flashId = record.getData("id");
+            flashId = record.getData('id');
             fileInfo = this.fileStore[flashId];
             if (fileInfo.state === this.STATE_BROWSING || fileInfo.state === this.STATE_RETRY)
             {
@@ -1746,7 +1746,7 @@
                else {
 	           fileInfo.state = this.STATE_UPLOADING;
                }
-               
+
                attributes =
                {
                   username: this.showConfig.username
@@ -1760,11 +1760,11 @@
                }
                else if (this.showConfig.destination !== null)
                {
-                  attributes.destination = this.showConfig.destination
+                  attributes.destination = this.showConfig.destination;
                }
-               
+
                if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
-               {         
+               {
                   attributes.updateNodeRef = this.showConfig.updateNodeRef;
                   attributes.majorVersion = !this.minorVersion.checked;
                   attributes.description = this.description.value;
@@ -1777,7 +1777,7 @@
                   }
                   if (fileInfo.contentType)
                   {
-                     if (fileInfo.contentType.tagName.toLowerCase() == "select")
+                     if (fileInfo.contentType.tagName.toLowerCase() == 'select')
                      {
                         attributes.contentType = fileInfo.contentType.options[fileInfo.contentType.selectedIndex].value;
                      }
@@ -1792,19 +1792,19 @@
                      attributes.thumbnails = this.showConfig.thumbnails;
                   }
                }
-               
-               attributes.eslnationalowner=this.eslNod.value;
-               attributes.eslprotectivemarking=this.eslPM.value;
-               attributes.eslcaveats=this.eslFreeFormCaveats.value;
-               attributes.eslclosedgroupshidden=this.eslClosedGroups.value;
-               attributes.eslorganisationshidden=this.eslOrganisations.value;
-               attributes.eslopengroupshidden=this.eslOpenGroups.value;
-               attributes.eslatomal=this.eslAtomal.value;
-               attributes.eslEyes=this.eslEyes.value;
+
+               attributes.eslnationalowner = this.eslNod.value;
+               attributes.eslprotectivemarking = this.eslPM.value;
+               attributes.eslcaveats = this.eslFreeFormCaveats.value;
+               attributes.eslclosedgroupshidden = this.eslClosedGroups.value;
+               attributes.eslorganisationshidden = this.eslOrganisations.value;
+               attributes.eslopengroupshidden = this.eslOpenGroups.value;
+               attributes.eslatomal = this.eslAtomal.value;
+               attributes.eslEyes = this.eslEyes.value;
                if (isSurevine) {
-                   attributes.tags=YAHOO.util.Dom.get(this.id + "-tag-picker-currentValueField").value;
+                   attributes.tags = YAHOO.util.Dom.get(this.id + '-tag-picker-currentValueField').value;
                }
-               this.uploader.upload(flashId, url, "POST", attributes, "filedata");
+               this.uploader.upload(flashId, url, 'POST', attributes, 'filedata');
                startedUploads++;
             }
          }
@@ -1823,7 +1823,7 @@
          for (var i = 0; i < length; i++)
          {
             var record = this.dataTable.getRecordSet().getRecord(i);
-            var flashId = record.getData("id");
+            var flashId = record.getData('id');
             this.uploader.cancel(flashId);
          }
       },
@@ -1847,58 +1847,58 @@
          this.dataTable.deleteRows(0, length);
          this.uploader.clearFileList();
       },
-      
+
       /**
        * Parse tag response into desired format
-       * 
+       *
        * @method _parseItemTags
        * @private
        */
       _parseItemTags: function HtmlUpload__parseItemTags(response)
-      {    		
-    	var tagString = "";
-    	
+      {
+    	var tagString = '';
+
     	var tags = response.json;
-    	
-    	for (var i=0; i < tags.length; i++)
+
+    	for (var i = 0; i < tags.length; i++)
     	{
     		tagString = tagString + YAHOO.lang.trim(tags[i]) + ' ';
     	}
-	   	
+
 	   	return YAHOO.lang.trim(tagString);
-      }, 
-      
+      },
+
       /**
        * Load an items tags via Ajax
-       * 
+       *
        * @method _loadItemTags
        * @private
        */
       _loadItemTags: function HtmlUpload__loadItemTags(nodeRef, scopeId)
       {
     	  // Strip out unwanted part of nodeRef
-    	  var nodeId = nodeRef.replace("workspace://SpacesStore/","");
-    	  
+    	  var nodeId = nodeRef.replace('workspace://SpacesStore/', '');
+
     	  var onSuccess = function HtmlUpload__loadItemTags_onSuccess(response) {
     		  var tags = this._parseItemTags(response);
-			  Dom.get(scopeId + "-tag-picker-currentValueField").value = tags;
-			  Alfresco.util.ComponentManager.get(this.id+'-tag-picker').specifyCurrentTags(tags);
+			  Dom.get(scopeId + '-tag-picker-currentValueField').value = tags;
+			  Alfresco.util.ComponentManager.get(this.id + '-tag-picker').specifyCurrentTags(tags);
     	  };
-    	  
+
     	  var onFailure = function HtmlUpload__loadItemTags_onFailure(response) {
-    		  Dom.get(this.id + "-tag-picker-currentValueDisplay").innerHTML = this.msg("taglibrary.msg.failedLoadTags");
-    		  Dom.get(scopeId + "-tag-picker-currentValueField").value = '';
+    		  Dom.get(this.id + '-tag-picker-currentValueDisplay').innerHTML = this.msg('taglibrary.msg.failedLoadTags');
+    		  Dom.get(scopeId + '-tag-picker-currentValueField').value = '';
     	  };
-    	  
+
     	  /* Request tags via Ajax */
     	  Alfresco.util.Ajax.jsonRequest(
     	  {
-    		  url : Alfresco.constants.PROXY_URI + "api/node/workspace/SpacesStore/" + nodeId + "/tags",
-    		  method : "GET",
-    		  successCallback : { fn: onSuccess, scope: this },
-			  failureCallback : { fn: onFailure, scope: this }
+    		  url: Alfresco.constants.PROXY_URI + 'api/node/workspace/SpacesStore/' + nodeId + '/tags',
+    		  method: 'GET',
+    		  successCallback: { fn: onSuccess, scope: this },
+			  failureCallback: { fn: onFailure, scope: this }
 		 });
       }
-      
+
    });
 })();

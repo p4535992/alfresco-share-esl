@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -50,10 +50,10 @@
     */
    var Dom = YAHOO.util.Dom,
       KeyListener = YAHOO.util.KeyListener;
-    
+
    Alfresco.HtmlUpload = function(htmlId)
    {
-      Alfresco.HtmlUpload.superclass.constructor.call(this, "Alfresco.HtmlUpload", htmlId, ["button", "container"]); 
+      Alfresco.HtmlUpload.superclass.constructor.call(this, 'Alfresco.HtmlUpload', htmlId, ['button', 'container']);
 
       this.defaultShowConfig =
       {
@@ -63,7 +63,7 @@
          uploadDirectory: null,
          updateNodeRef: null,
          updateFilename: null,
-         updateVersion: "1.0",
+         updateVersion: '1.0',
          mode: this.MODE_SINGLE_UPLOAD,
          onFileUploadComplete: null,
          overwrite: false,
@@ -129,12 +129,12 @@
        * The name of the currently selected file (not including its full path). This will be
        * null if a file has not been selected. This value will only be available for non-Internet
        * Explorer browsers.
-       *  
+       *
        * @property _fileName
        * @type String
        */
       _fileName: null,
-      
+
       /**
        * Fired by YUI when parent element is available for scripting.
        * Initial History Manager event registration
@@ -144,21 +144,21 @@
       onReady: function HtmlUpload_onReady()
       {
          var _this = this;
-         
-         
-         Dom.removeClass(this.id + "-dialog", "hidden");
+
+
+         Dom.removeClass(this.id + '-dialog', 'hidden');
 
          // Create the panel
-         this.widgets.panel = Alfresco.util.createYUIPanel(this.id + "-dialog");
+         this.widgets.panel = Alfresco.util.createYUIPanel(this.id + '-dialog');
 
          // Save a reference to the HTMLElement displaying texts so we can alter the texts later
-         this.widgets.titleText = Dom.get(this.id + "-title-span");
-         this.widgets.singleUploadTip = Dom.get(this.id + "-singleUploadTip-span");
-         this.widgets.singleUpdateTip = Dom.get(this.id + "-singleUpdateTip-span");
+         this.widgets.titleText = Dom.get(this.id + '-title-span');
+         this.widgets.singleUploadTip = Dom.get(this.id + '-singleUploadTip-span');
+         this.widgets.singleUpdateTip = Dom.get(this.id + '-singleUpdateTip-span');
 
          // Save references to hidden fields so we can set them later
-         this.widgets.filedata = Dom.get(this.id + "-filedata-file");
-         
+         this.widgets.filedata = Dom.get(this.id + '-filedata-file');
+
          if (YAHOO.env.ua.ie > 0)
          {
             // Internet Explorer does not support the "files" attribute for the input type file
@@ -169,65 +169,65 @@
             // If the browser is not Internet Explorer then add a listener to capture the name of
             // the currently selected file (without its full or mock path as set as the value of the
             // input element
-            YAHOO.util.Event.addListener(this.id + "-filedata-file", "change", function()
+            YAHOO.util.Event.addListener(this.id + '-filedata-file', 'change', function()
             {
                if (this.files.length > 0)
                {
                   _this._fileName = this.files[0].name || this.files[0].fileName;	// FF <= 3.5 does not support File.name
                }
-            }); 
+            });
          }
-         
-         
-         
+
+
+
          this.widgets.filedata.contentEditable = false;
-         this.widgets.siteId = Dom.get(this.id + "-siteId-hidden");
-         this.widgets.containerId = Dom.get(this.id + "-containerId-hidden");
-         this.widgets.destination = Dom.get(this.id + "-destination-hidden");
-         this.widgets.username = Dom.get(this.id + "-username-hidden");
-         this.widgets.updateNodeRef = Dom.get(this.id + "-updateNodeRef-hidden");
-         this.widgets.uploadDirectory = Dom.get(this.id + "-uploadDirectory-hidden");
-         this.widgets.overwrite = Dom.get(this.id + "-overwrite-hidden");
-         this.widgets.thumbnails = Dom.get(this.id + "-thumbnails-hidden");
-         this.widgets.successCallback = Dom.get(this.id + "-successCallback-hidden");
-         this.widgets.successScope = Dom.get(this.id + "-successScope-hidden");
-         this.widgets.failureCallback = Dom.get(this.id + "-failureCallback-hidden");
-         this.widgets.failureScope = Dom.get(this.id + "-failureScope-hidden");
+         this.widgets.siteId = Dom.get(this.id + '-siteId-hidden');
+         this.widgets.containerId = Dom.get(this.id + '-containerId-hidden');
+         this.widgets.destination = Dom.get(this.id + '-destination-hidden');
+         this.widgets.username = Dom.get(this.id + '-username-hidden');
+         this.widgets.updateNodeRef = Dom.get(this.id + '-updateNodeRef-hidden');
+         this.widgets.uploadDirectory = Dom.get(this.id + '-uploadDirectory-hidden');
+         this.widgets.overwrite = Dom.get(this.id + '-overwrite-hidden');
+         this.widgets.thumbnails = Dom.get(this.id + '-thumbnails-hidden');
+         this.widgets.successCallback = Dom.get(this.id + '-successCallback-hidden');
+         this.widgets.successScope = Dom.get(this.id + '-successScope-hidden');
+         this.widgets.failureCallback = Dom.get(this.id + '-failureCallback-hidden');
+         this.widgets.failureScope = Dom.get(this.id + '-failureScope-hidden');
 
          // Save reference to version section elements so we can set its values later
-         this.widgets.description = Dom.get(this.id + "-description-textarea");
-         this.widgets.minorVersion = Dom.get(this.id + "-minorVersion-radioButton");
-         this.widgets.versionSection = Dom.get(this.id + "-versionSection-div");
+         this.widgets.description = Dom.get(this.id + '-description-textarea');
+         this.widgets.minorVersion = Dom.get(this.id + '-minorVersion-radioButton');
+         this.widgets.versionSection = Dom.get(this.id + '-versionSection-div');
 
          // Create and save a reference to the buttons so we can alter them later
-         this.widgets.uploadButton = Alfresco.util.createYUIButton(this, "upload-button", null,
+         this.widgets.uploadButton = Alfresco.util.createYUIButton(this, 'upload-button', null,
          {
-            type: "submit"
+            type: 'submit'
          });
-         this.widgets.cancelButton = Alfresco.util.createYUIButton(this, "cancel-button", this.onCancelButtonClick);
-         
+         this.widgets.cancelButton = Alfresco.util.createYUIButton(this, 'cancel-button', this.onCancelButtonClick);
+
          // Configure the forms runtime
-         var form = new Alfresco.forms.Form(this.id + "-htmlupload-form");
+         var form = new Alfresco.forms.Form(this.id + '-htmlupload-form');
          this.widgets.form = form;
 
          // Title is mandatory
-         form.addValidation(this.id + "-filedata-file", Alfresco.forms.validation.mandatory, null, "change");
-         form.addValidation(this.id + "-filedata-file", function HtmlUpload_validateFileName(field, args, event, form, silent, message)
+         form.addValidation(this.id + '-filedata-file', Alfresco.forms.validation.mandatory, null, 'change');
+         form.addValidation(this.id + '-filedata-file', function HtmlUpload_validateFileName(field, args, event, form, silent, message)
          {
             // Although the users operating system might be Unix based it is necessary that we only allow
             // file names that are supported by the lowest common denominator (Windows)...
             if (YAHOO.env.ua.ie > 0)
             {
-               // The browser is Internet Explorer. We can reasonably assume that this will only be running on 
+               // The browser is Internet Explorer. We can reasonably assume that this will only be running on
                // Windows and it will not be possible to select an illegally named file
                return true;
             }
             else
             {
                // A non-Windows OS may allow us to select files containing the illegal characters. However a
-               // full path will contain the "/" character so we will ignore this from our list and take the 
+               // full path will contain the "/" character so we will ignore this from our list and take the
                // risk.
-               var mockField = 
+               var mockField =
                {
                   id: field.id,
                   value: _this._fileName
@@ -236,7 +236,7 @@
                {
                   Alfresco.util.PopupManager.displayMessage(
                   {
-                     text: Alfresco.util.message("message.illegalCharacters")
+                     text: Alfresco.util.message('message.illegalCharacters')
                   });
                   return false;
                }
@@ -245,7 +245,7 @@
                   return true;
                }
             }
-         }, null, "change");
+         }, null, 'change');
 
          // The ok button is the submit button, and it should be enabled when the form is ready
          form.setShowSubmitStateDynamically(true, false);
@@ -254,15 +254,15 @@
          {
             fn: function()
             {
-               this.widgets.uploadButton.set("disabled", true);
-               this.widgets.cancelButton.set("disabled", true);
+               this.widgets.uploadButton.set('disabled', true);
+               this.widgets.cancelButton.set('disabled', true);
                Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.reset();
-               Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState("");
+               Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState('');
                this.widgets.panel.hide();
                this.widgets.feedbackMessage = Alfresco.util.PopupManager.displayMessage(
                {
-                  text: Alfresco.util.message("message.uploading", this.name),
-                  spanClass: "wait",
+                  text: Alfresco.util.message('message.uploading', this.name),
+                  spanClass: 'wait',
                   displayTime: 0
                });
             },
@@ -319,13 +319,13 @@
          this.showConfig = YAHOO.lang.merge(this.defaultShowConfig, config);
          if (this.showConfig.uploadDirectory === undefined && this.showConfig.updateNodeRef === undefined)
          {
-             throw new Error("An updateNodeRef OR uploadDirectory must be provided");
+             throw new Error('An updateNodeRef OR uploadDirectory must be provided');
          }
          if (this.showConfig.uploadDirectory !== null && this.showConfig.uploadDirectory.length === 0)
          {
-            this.showConfig.uploadDirectory = "/";
+            this.showConfig.uploadDirectory = '/';
          }
-         
+
          // Enable the Esc key listener
          this.widgets.escapeListener.enable();
 
@@ -347,13 +347,13 @@
          var fileName = response.fileName ? response.fileName : this.widgets.filedata.value;
          if (!this.showConfig.suppressRefreshEvent)
          {
-            YAHOO.Bubbling.fire("metadataRefresh",
+            YAHOO.Bubbling.fire('metadataRefresh',
             {
                currentPath: this.showConfig.path,
                highlightFile: fileName
             });
          }
-              
+
          var objComplete =
          {
             successful: [
@@ -364,10 +364,10 @@
          };
 
          var callback = this.showConfig.onFileUploadComplete;
-         if (callback && typeof callback.fn == "function")
+         if (callback && typeof callback.fn == 'function')
          {
             // Call the onFileUploadComplete callback in the correct scope
-            callback.fn.call((typeof callback.scope == "object" ? callback.scope : this), objComplete, callback.obj);
+            callback.fn.call((typeof callback.scope == 'object' ? callback.scope : this), objComplete, callback.obj);
          }
       },
 
@@ -383,15 +383,15 @@
          this.widgets.feedbackMessage.destroy();
 
          // Inform user that the upload failed
-         var key = "message.failure." + e.status.code,
+         var key = 'message.failure.' + e.status.code,
             text = Alfresco.util.message(key, this.name);
          if (text == key)
          {
-            text = e.status.code ? e.status.code : Alfresco.util.message("message.failure", this.name);
+            text = e.status.code ? e.status.code : Alfresco.util.message('message.failure', this.name);
          }
          Alfresco.util.PopupManager.displayPrompt(
          {
-            title: Alfresco.util.message("message.failure", this.name),
+            title: Alfresco.util.message('message.failure', this.name),
             text: text
          });
       },
@@ -409,8 +409,8 @@
          this.widgets.escapeListener.disable();
 
          Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.reset();
-         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState("");
-         
+         Alfresco.util.ComponentManager.findFirst('Alfresco.EnhancedSecuritySelector').advancedSelector.controller.setAtomalState('');
+
          // Hide the panel
          this.widgets.panel.hide();
       },
@@ -427,68 +427,68 @@
          var title;
          if (this.showConfig.mode === this.MODE_SINGLE_UPLOAD)
          {
-            title = Alfresco.util.message("header.singleUpload", this.name);
+            title = Alfresco.util.message('header.singleUpload', this.name);
          }
          else if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
          {
-            title = Alfresco.util.message("header.singleUpdate", this.name);
+            title = Alfresco.util.message('header.singleUpdate', this.name);
          }
          this.widgets.titleText.innerHTML = title;
 
          if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
          {
-            var tip = Alfresco.util.message("label.singleUpdateTip", this.name,
+            var tip = Alfresco.util.message('label.singleUpdateTip', this.name,
             {
-               "0": this.showConfig.updateFilename
+               '0': this.showConfig.updateFilename
             });
             this.widgets.singleUpdateTip.innerHTML = tip;
 
             // Display the version input form
-            Dom.removeClass(this.widgets.versionSection, "hidden");
-            var versions = (this.showConfig.updateVersion || "1.0").split("."),
+            Dom.removeClass(this.widgets.versionSection, 'hidden');
+            var versions = (this.showConfig.updateVersion || '1.0').split('.'),
                majorVersion = parseInt(versions[0], 10),
                minorVersion = parseInt(versions[1], 10);
-            Dom.get(this.id + "-minorVersion").innerHTML = this.msg("label.minorVersion.more", majorVersion + "." + (1 + minorVersion));
-            Dom.get(this.id + "-majorVersion").innerHTML = this.msg("label.majorVersion.more", (1 + majorVersion) + ".0");
+            Dom.get(this.id + '-minorVersion').innerHTML = this.msg('label.minorVersion.more', majorVersion + '.' + (1 + minorVersion));
+            Dom.get(this.id + '-majorVersion').innerHTML = this.msg('label.majorVersion.more', (1 + majorVersion) + '.0');
          }
          else
          {
             // Hide the version input form
-            Dom.addClass(this.widgets.versionSection, "hidden");
+            Dom.addClass(this.widgets.versionSection, 'hidden');
          }
 
          // Show the help label for single updates
          if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
          {
             // Show the help label for single updates
-            Dom.removeClass(this.widgets.singleUpdateTip, "hidden");
-            Dom.addClass(this.widgets.singleUploadTip, "hidden");
+            Dom.removeClass(this.widgets.singleUpdateTip, 'hidden');
+            Dom.addClass(this.widgets.singleUploadTip, 'hidden');
          }
          else
          {
             // Only show the "Install Flash" message if Flash is enabled via config
-            Dom.addClass(this.widgets.singleUploadTip, "hidden");
+            Dom.addClass(this.widgets.singleUploadTip, 'hidden');
             if (this.showConfig.adobeFlashEnabled)
             {
                // Show the help label for single uploads
-               Dom.removeClass(this.widgets.singleUploadTip, "hidden");
+               Dom.removeClass(this.widgets.singleUploadTip, 'hidden');
             }
-            Dom.addClass(this.widgets.singleUpdateTip, "hidden");
+            Dom.addClass(this.widgets.singleUpdateTip, 'hidden');
          }
 
-         this.widgets.cancelButton.set("disabled", false);
+         this.widgets.cancelButton.set('disabled', false);
          this.widgets.filedata.value = null;
-         this.widgets.uploadButton.set("disabled", true);
+         this.widgets.uploadButton.set('disabled', true);
 
          // Set the forms action url
-         var formEl = Dom.get(this.id + "-htmlupload-form");
+         var formEl = Dom.get(this.id + '-htmlupload-form');
          if (this.showConfig.uploadURL === null)
          {
             // The .html suffix is required - it is not possible to do a multipart post using an ajax call.
             // So it has to be a FORM submit, to make it feel like an ajax call a a hidden iframe is used.
             // Since the component still needs to be called when the upload is finished, the script returns
             // an html template with SCRIPT tags inside that which calls the component that triggered it.
-            formEl.action = Alfresco.constants.PROXY_URI + "api/upload.html";
+            formEl.action = Alfresco.constants.PROXY_URI + 'api/upload.html';
          }
          else
          {
@@ -503,23 +503,23 @@
          if (this.showConfig.mode === this.MODE_SINGLE_UPDATE)
          {
             this.widgets.updateNodeRef.value = this.showConfig.updateNodeRef;
-            this.widgets.uploadDirectory.value = "";
-            this.widgets.overwrite.value = "";
-            this.widgets.thumbnails.value = "";
+            this.widgets.uploadDirectory.value = '';
+            this.widgets.overwrite.value = '';
+            this.widgets.thumbnails.value = '';
          }
          else
          {
-            this.widgets.updateNodeRef.value = "";
+            this.widgets.updateNodeRef.value = '';
             this.widgets.uploadDirectory.value = this.showConfig.uploadDirectory;
             this.widgets.overwrite.value = this.showConfig.overwrite;
             this.widgets.thumbnails.value = this.showConfig.thumbnails;
          }
          var success = "window.parent.Alfresco.util.ComponentManager.get('" + this.id + "')";
-         this.widgets.successCallback.value = success + ".onUploadSuccess";
+         this.widgets.successCallback.value = success + '.onUploadSuccess';
          this.widgets.successScope.value = success;
 
          var failure = "window.parent.Alfresco.util.ComponentManager.get('" + this.id + "')";
-         this.widgets.failureCallback.value = failure + ".onUploadFailure";
+         this.widgets.failureCallback.value = failure + '.onUploadFailure';
          this.widgets.failureScope.value = failure;
       },
 
@@ -532,7 +532,7 @@
       _showPanel: function HtmlUpload__showPanel()
       {
          // Reset references and the gui before showing it
-         this.widgets.description.value = "";
+         this.widgets.description.value = '';
          this.widgets.minorVersion.checked = true;
 
          // Apply the config before it is showed

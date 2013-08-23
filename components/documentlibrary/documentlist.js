@@ -1,27 +1,27 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 /**
  * DocumentList component.
- * 
+ *
  * @namespace Alfresco
  * @class Alfresco.DocumentList
  */
@@ -46,23 +46,23 @@
    /**
     * Preferences
     */
-   var PREFERENCES_DOCLIST = "org.alfresco.share.documentList",
-      PREF_SHOW_FOLDERS = PREFERENCES_DOCLIST + ".showFolders",
-      PREF_SIMPLE_VIEW = PREFERENCES_DOCLIST + ".simpleView";
+   var PREFERENCES_DOCLIST = 'org.alfresco.share.documentList',
+      PREF_SHOW_FOLDERS = PREFERENCES_DOCLIST + '.showFolders',
+      PREF_SIMPLE_VIEW = PREFERENCES_DOCLIST + '.simpleView';
 
    /**
     * DocumentList constructor.
-    * 
+    *
     * @param htmlId {String} The HTML id of the parent element
     * @return {Alfresco.DocumentList} The new DocumentList instance
     * @constructor
     */
    Alfresco.DocumentList = function(htmlId)
    {
-      Alfresco.DocumentList.superclass.constructor.call(this, "Alfresco.DocumentList", htmlId, ["button", "menu", "container", "datasource", "datatable", "paginator", "json", "history"]);
+      Alfresco.DocumentList.superclass.constructor.call(this, 'Alfresco.DocumentList', htmlId, ['button', 'menu', 'container', 'datasource', 'datatable', 'paginator', 'json', 'history']);
 
       // Initialise prototype properties
-      this.currentPath = "";
+      this.currentPath = '';
       this.currentPage = 1;
       this.totalRecords = 0;
       this.showingMoreActions = false;
@@ -72,8 +72,8 @@
       };
       this.currentFilter =
       {
-         filterId: "path",
-         filterData: ""
+         filterId: 'path',
+         filterData: ''
       };
       this.actions = {};
       this.selectedFiles = {};
@@ -81,35 +81,35 @@
       this.doclistMetadata = {};
       this.previewTooltips = [];
       this.dynamicControls = [];
-      
+
       /**
        * Decoupled event listeners
        */
       // Specific event handlers
-      YAHOO.Bubbling.on("activateDynamicControls", this.onActivateDynamicControls, this);
-      YAHOO.Bubbling.on("deactivateAllControls", this.onDeactivateAllControls, this);
-      YAHOO.Bubbling.on("deactivateDynamicControls", this.onDeactivateDynamicControls, this);
-      YAHOO.Bubbling.on("metadataRefresh", this.onDocListRefresh, this);
-      YAHOO.Bubbling.on("fileRenamed", this.onFileRenamed, this);
-      YAHOO.Bubbling.on("changeFilter", this.onChangeFilter, this);
-      YAHOO.Bubbling.on("filterChanged", this.onFilterChanged, this);
-      YAHOO.Bubbling.on("folderCreated", this.onDocListRefresh, this);
-      YAHOO.Bubbling.on("folderRenamed", this.onFileRenamed, this);
-      YAHOO.Bubbling.on("highlightFile", this.onHighlightFile, this);
+      YAHOO.Bubbling.on('activateDynamicControls', this.onActivateDynamicControls, this);
+      YAHOO.Bubbling.on('deactivateAllControls', this.onDeactivateAllControls, this);
+      YAHOO.Bubbling.on('deactivateDynamicControls', this.onDeactivateDynamicControls, this);
+      YAHOO.Bubbling.on('metadataRefresh', this.onDocListRefresh, this);
+      YAHOO.Bubbling.on('fileRenamed', this.onFileRenamed, this);
+      YAHOO.Bubbling.on('changeFilter', this.onChangeFilter, this);
+      YAHOO.Bubbling.on('filterChanged', this.onFilterChanged, this);
+      YAHOO.Bubbling.on('folderCreated', this.onDocListRefresh, this);
+      YAHOO.Bubbling.on('folderRenamed', this.onFileRenamed, this);
+      YAHOO.Bubbling.on('highlightFile', this.onHighlightFile, this);
       // File actions which may be part of a multi-file action set
-      YAHOO.Bubbling.on("fileCopied", this.onFileAction, this);
-      YAHOO.Bubbling.on("fileDeleted", this.onFileAction, this);
-      YAHOO.Bubbling.on("fileMoved", this.onFileAction, this);
-      YAHOO.Bubbling.on("filePermissionsUpdated", this.onFileAction, this);
-      YAHOO.Bubbling.on("folderCopied", this.onFileAction, this);
-      YAHOO.Bubbling.on("folderDeleted", this.onFileAction, this);
-      YAHOO.Bubbling.on("folderMoved", this.onFileAction, this);
-      YAHOO.Bubbling.on("folderPermissionsUpdated", this.onFileAction, this);
+      YAHOO.Bubbling.on('fileCopied', this.onFileAction, this);
+      YAHOO.Bubbling.on('fileDeleted', this.onFileAction, this);
+      YAHOO.Bubbling.on('fileMoved', this.onFileAction, this);
+      YAHOO.Bubbling.on('filePermissionsUpdated', this.onFileAction, this);
+      YAHOO.Bubbling.on('folderCopied', this.onFileAction, this);
+      YAHOO.Bubbling.on('folderDeleted', this.onFileAction, this);
+      YAHOO.Bubbling.on('folderMoved', this.onFileAction, this);
+      YAHOO.Bubbling.on('folderPermissionsUpdated', this.onFileAction, this);
       // Multi-file actions
-      YAHOO.Bubbling.on("filesCopied", this.onDocListRefresh, this);
-      YAHOO.Bubbling.on("filesDeleted", this.onDocListRefresh, this);
-      YAHOO.Bubbling.on("filesMoved", this.onDocListRefresh, this);
-      YAHOO.Bubbling.on("filesPermissionsUpdated", this.onDocListRefresh, this);
+      YAHOO.Bubbling.on('filesCopied', this.onDocListRefresh, this);
+      YAHOO.Bubbling.on('filesDeleted', this.onDocListRefresh, this);
+      YAHOO.Bubbling.on('filesMoved', this.onDocListRefresh, this);
+      YAHOO.Bubbling.on('filesPermissionsUpdated', this.onDocListRefresh, this);
 
       return this;
    };
@@ -147,11 +147,11 @@
    Alfresco.DocumentList.generateFilterMarkup = function DL_generateFilterMarkup(filter)
    {
       var filterObj = Alfresco.util.cleanBubblingObject(filter),
-         markup = YAHOO.lang.substitute("{filterOwner}|{filterId}|{filterData}|{filterDisplay}", filterObj, function(p_key, p_value, p_meta)
+         markup = YAHOO.lang.substitute('{filterOwner}|{filterId}|{filterData}|{filterDisplay}', filterObj, function(p_key, p_value, p_meta)
          {
-            return typeof p_value == "undefined" ? "" : window.escape(p_value);
+            return typeof p_value == 'undefined' ? '' : window.escape(p_value);
          });
-      
+
       return markup;
    };
 
@@ -166,11 +166,11 @@
    {
       return Alfresco.DocumentList.generateFilterMarkup(
       {
-         filterId: "path",
+         filterId: 'path',
          filterData: $combine(locn.path, locn.file)
       });
    };
-   
+
    /**
     * Generate URL for a file- or folder-link that may be located within a different Site
     *
@@ -197,7 +197,7 @@
       {
          if (record.isFolder)
          {
-            html = $siteURL("documentlibrary?path=" + encodeURIComponent(record.location.path),
+            html = $siteURL('documentlibrary?path=' + encodeURIComponent(record.location.path),
             {
                site: record.location.site
             });
@@ -234,7 +234,7 @@
       var record = oRecord.getData(),
          nodeRef = new Alfresco.util.NodeRef(record.isLink ? record.linkedNodeRef : record.nodeRef);
 
-      return Alfresco.constants.PROXY_URI + "api/node/" + nodeRef.uri + "/content/thumbnails/doclib?c=queue&ph=true";
+      return Alfresco.constants.PROXY_URI + 'api/node/' + nodeRef.uri + '/content/thumbnails/doclib?c=queue&ph=true';
    };
 
    /**
@@ -247,14 +247,14 @@
     */
    Alfresco.DocumentList.generateFavourite = function DL_generateFavourite(scope, record)
    {
-      var id = scope.id + "-fav-" + record.getId(),
-         type = record.getData("isFolder") ? "folder" : "document",
-         isFavourite = record.getData("isFavourite");
+      var id = scope.id + '-fav-' + record.getId(),
+         type = record.getData('isFolder') ? 'folder' : 'document',
+         isFavourite = record.getData('isFavourite');
 
-      return '<a id="' + id + '" class="favourite-' + type + (isFavourite ? ' enabled' : '') + '" title="' + scope.msg("tip.favourite-" + type + "." + (isFavourite ? 'remove' : 'add')) + '">&nbsp;</a>';
+      return '<a id="' + id + '" class="favourite-' + type + (isFavourite ? ' enabled' : '') + '" title="' + scope.msg('tip.favourite-' + type + '.' + (isFavourite ? 'remove' : 'add')) + '">&nbsp;</a>';
    };
 
-   
+
    /**
     * Augment prototype with main class implementation, ensuring overwrite is enabled
     */
@@ -270,7 +270,7 @@
       {
          /**
           * Flag indicating whether folders are visible or not.
-          * 
+          *
           * @property showFolders
           * @type boolean
           */
@@ -278,7 +278,7 @@
 
          /**
           * Flag indicating whether the list shows a detailed view or a simple one.
-          * 
+          *
           * @property simpleView
           * @type boolean
           */
@@ -286,7 +286,7 @@
 
          /**
           * Flag indicating whether pagination is available or not.
-          * 
+          *
           * @property usePagination
           * @type boolean
           * @default false
@@ -296,7 +296,7 @@
          /**
           * Working mode: Site or Repository.
           * Affects how actions operate, e.g. actvities are not posted in Repository mode.
-          * 
+          *
           * @property workingMode
           * @type number
           * @default Alfresco.doclib.MODE_SITE
@@ -305,11 +305,11 @@
 
          /**
           * Current siteId. Not used in Repository working mode.
-          * 
+          *
           * @property siteId
           * @type string
           */
-         siteId: "",
+         siteId: '',
 
          /**
           * ContainerId representing root container. Not used in Repository working mode.
@@ -318,11 +318,11 @@
           * @type string
           * @default "documentLibrary"
           */
-         containerId: "documentLibrary",
+         containerId: 'documentLibrary',
 
          /**
           * Current root node. Not used in Site working mode.
-          * 
+          *
           * @property rootNode
           * @type string
           */
@@ -330,7 +330,7 @@
 
          /**
           * Initial page to show on load (otherwise taken from URL hash).
-          * 
+          *
           * @property initialPage
           * @type int
           */
@@ -338,7 +338,7 @@
 
          /**
           * Number of items per page
-          * 
+          *
           * @property pageSize
           * @type int
           */
@@ -346,12 +346,12 @@
 
          /**
           * Initial filter to show on load.
-          * 
+          *
           * @property initialFilter
           * @type object
           */
          initialFilter: {},
-         
+
          /**
           * Delay time value for "More Actions" popup, in milliseconds
           *
@@ -360,7 +360,7 @@
           * @default 500
           */
          actionsPopupTimeout: 500,
-         
+
          /**
           * Delay before showing "loading" message for slow data requests
           *
@@ -372,20 +372,20 @@
 
          /**
           * FileName to highlight on initial DataTable render.
-          * 
+          *
           * @property highlightFile
           * @type string
           */
          highlightFile: null,
-         
+
          /**
           * Holds IDs to register preview tooltips with.
-          * 
+          *
           * @property previewTooltips
           * @type array
           */
          previewTooltips: null,
-         
+
          /**
           * Number of multi-file uploads before grouping the Activity Post
           *
@@ -404,11 +404,11 @@
           */
          inlineEditMimetypes:
          {
-            "text/plain": true,
-            "text/html": true,
-            "text/xml": true
+            'text/plain': true,
+            'text/html': true,
+            'text/xml': true
          },
-         
+
          /**
           * SharePoint (Vti) Server Details
           *
@@ -416,7 +416,7 @@
           * @type object
           */
          vtiServer: {},
-         
+
          /**
           * Replication URL Mapping details
           *
@@ -435,7 +435,7 @@
           * True if an an edit offline ajax call is in process
           *
           * @property: actionEditOfflineActive
-          * @type: boolean
+          * @type : boolean
           * @default: false
           */
          actionEditOfflineActive: false
@@ -443,7 +443,7 @@
 
       /**
        * Current path being browsed.
-       * 
+       *
        * @property currentPath
        * @type string
        */
@@ -451,16 +451,16 @@
 
       /**
        * Current page being browsed.
-       * 
+       *
        * @property currentPage
        * @type int
        * @default 1
        */
       currentPage: null,
-      
+
       /**
        * Total number of records (documents + folders) in the currentPath.
-       * 
+       *
        * @property totalRecords
        * @type int
        * @default 0
@@ -469,7 +469,7 @@
 
       /**
        * Current filter to filter document list.
-       * 
+       *
        * @property currentFilter
        * @type object
        */
@@ -477,7 +477,7 @@
 
       /**
        * FileUpload module instance.
-       * 
+       *
        * @property fileUpload
        * @type Alfresco.FileUpload
        */
@@ -485,7 +485,7 @@
 
       /**
        * Object container for storing action markup elements.
-       * 
+       *
        * @property actions
        * @type object
        */
@@ -493,7 +493,7 @@
 
       /**
        * Object literal of selected states for visible files (indexed by nodeRef).
-       * 
+       *
        * @property selectedFiles
        * @type object
        */
@@ -501,7 +501,7 @@
 
       /**
        * Current actions menu being shown
-       * 
+       *
        * @property currentActionsMenu
        * @type object
        * @default null
@@ -510,7 +510,7 @@
 
       /**
        * Whether "More Actions" pop-up is currently visible.
-       * 
+       *
        * @property showingMoreActions
        * @type boolean
        * @default false
@@ -519,7 +519,7 @@
 
       /**
        * Deferred actions menu element when showing "More Actions" pop-up.
-       * 
+       *
        * @property deferredActionsMenu
        * @type object
        * @default null
@@ -545,7 +545,7 @@
 
       /**
        * Dynamic controls that take part in the deactivateDynamicControls event
-       * 
+       *
        * @property dynamicControls
        * @type array
        */
@@ -566,29 +566,29 @@
          this._setupHistoryManagers();
 
          // Hide/Show Folders button
-         this.widgets.showFolders = Alfresco.util.createYUIButton(this, "showFolders-button", this.onShowFolders);
+         this.widgets.showFolders = Alfresco.util.createYUIButton(this, 'showFolders-button', this.onShowFolders);
          if (this.widgets.showFolders !== null)
          {
-            this.widgets.showFolders.set("label", this.msg(this.options.showFolders ? "button.folders.hide" : "button.folders.show"));
+            this.widgets.showFolders.set('label', this.msg(this.options.showFolders ? 'button.folders.hide' : 'button.folders.show'));
             this.dynamicControls.push(this.widgets.showFolders);
          }
 
          // Detailed/Simple List button
-         this.widgets.simpleDetailed = new YAHOO.widget.ButtonGroup(this.id + "-simpleDetailed");
+         this.widgets.simpleDetailed = new YAHOO.widget.ButtonGroup(this.id + '-simpleDetailed');
          if (this.widgets.simpleDetailed !== null)
          {
             this.widgets.simpleDetailed.check(this.options.simpleView ? 0 : 1);
-            this.widgets.simpleDetailed.on("checkedButtonChange", this.onSimpleDetailed, this.widgets.simpleDetailed, this);
-            Dom.addClass(this.id + "-simpleView", "simple-view");
-            Dom.addClass(this.id + "-detailedView", "detailed-view");
+            this.widgets.simpleDetailed.on('checkedButtonChange', this.onSimpleDetailed, this.widgets.simpleDetailed, this);
+            Dom.addClass(this.id + '-simpleView', 'simple-view');
+            Dom.addClass(this.id + '-detailedView', 'detailed-view');
             this.dynamicControls.push(this.widgets.simpleDetailed);
          }
 
          // File Select menu button
-         this.widgets.fileSelect = Alfresco.util.createYUIButton(this, "fileSelect-button", this.onFileSelect,
+         this.widgets.fileSelect = Alfresco.util.createYUIButton(this, 'fileSelect-button', this.onFileSelect,
          {
-            type: "menu", 
-            menu: "fileSelect-menu"
+            type: 'menu',
+            menu: 'fileSelect-menu'
          });
          if (this.widgets.fileSelect !== null)
          {
@@ -597,32 +597,32 @@
 
          // Preferences service
          this.services.preferences = new Alfresco.service.Preferences();
-         
+
          // DataSource set-up and event registration
          this._setupDataSource();
-         
+
          // DataTable set-up and event registration
          this._setupDataTable();
 
          // Tooltip for thumbnail in Simple View
-         this.widgets.previewTooltip = new YAHOO.widget.Tooltip(this.id + "-previewTooltip",
+         this.widgets.previewTooltip = new YAHOO.widget.Tooltip(this.id + '-previewTooltip',
          {
-            width: "108px"
+            width: '108px'
          });
          this.widgets.previewTooltip.contextTriggerEvent.subscribe(function(type, args)
          {
             var context = args[0],
                record = me.widgets.dataTable.getRecord(context.id);
-            this.cfg.setProperty("text", '<img src="' + Alfresco.DocumentList.generateThumbnailUrl(record) + '" />');
+            this.cfg.setProperty('text', '<img src="' + Alfresco.DocumentList.generateThumbnailUrl(record) + '" />');
          });
-         
+
          // Hook action events
          var fnActionHandler = function DL_fnActionHandler(layer, args)
          {
-            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
+            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, 'div');
             if (owner !== null)
             {
-               if (typeof me[owner.className] == "function")
+               if (typeof me[owner.className] == 'function')
                {
                   args[1].stop = true;
                   var asset = me.widgets.dataTable.getRecord(args[1].target.offsetParent).getData();
@@ -631,33 +631,33 @@
             }
             return true;
          };
-         YAHOO.Bubbling.addDefaultAction("action-link", fnActionHandler);
-         YAHOO.Bubbling.addDefaultAction("show-more", fnActionHandler);
-         
+         YAHOO.Bubbling.addDefaultAction('action-link', fnActionHandler);
+         YAHOO.Bubbling.addDefaultAction('show-more', fnActionHandler);
+
          // Hook favourite document events
          var fnFavouriteDocumentHandler = function DL_fnFavouriteDocumentHandler(layer, args)
          {
-            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
+            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, 'div');
             if (owner !== null)
             {
                me.onFavouriteDocument.call(me, args[1].target.offsetParent, owner);
             }
             return true;
          };
-         YAHOO.Bubbling.addDefaultAction("favourite-document", fnFavouriteDocumentHandler);
+         YAHOO.Bubbling.addDefaultAction('favourite-document', fnFavouriteDocumentHandler);
 
          // Hook favourite folder events
          var fnFavouriteFolderHandler = function DL_fnFavouriteFolderHandler(layer, args)
          {
-            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
+            var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, 'div');
             if (owner !== null)
             {
                me.onFavouriteFolder.call(me, args[1].target.offsetParent, owner);
             }
             return true;
          };
-         YAHOO.Bubbling.addDefaultAction("favourite-folder", fnFavouriteFolderHandler);
-         
+         YAHOO.Bubbling.addDefaultAction('favourite-folder', fnFavouriteFolderHandler);
+
          // Hook filter change events
          var fnChangeFilterHandler = function DL_fnChangeFilterHandler(layer, args)
          {
@@ -667,24 +667,24 @@
                var filter = owner.rel,
                   filters,
                   filterObj = {};
-               if (filter && filter !== "")
+               if (filter && filter !== '')
                {
                   args[1].stop = true;
-                  filters = filter.split("|");
+                  filters = filter.split('|');
                   filterObj =
                   {
-                     filterOwner: window.unescape(filters[0] || ""),
-                     filterId: window.unescape(filters[1] || ""),
-                     filterData: window.unescape(filters[2] || ""),
-                     filterDisplay: window.unescape(filters[3] || "")
+                     filterOwner: window.unescape(filters[0] || ''),
+                     filterId: window.unescape(filters[1] || ''),
+                     filterData: window.unescape(filters[2] || ''),
+                     filterDisplay: window.unescape(filters[3] || '')
                   };
-                  Alfresco.logger.debug("DL_fnChangeFilterHandler", "changeFilter =>", filterObj);
-                  YAHOO.Bubbling.fire("changeFilter", filterObj);
+                  Alfresco.logger.debug('DL_fnChangeFilterHandler', 'changeFilter =>', filterObj);
+                  YAHOO.Bubbling.fire('changeFilter', filterObj);
                }
             }
             return true;
          };
-         YAHOO.Bubbling.addDefaultAction("filter-change", fnChangeFilterHandler);
+         YAHOO.Bubbling.addDefaultAction('filter-change', fnChangeFilterHandler);
 
          // DocLib Actions module
          this.modules.actions = new Alfresco.module.DoclibActions(this.options.workingMode);
@@ -695,9 +695,9 @@
          // Initialize the browser history management library
          try
          {
-             YAHOO.util.History.initialize("yui-history-field", "yui-history-iframe");
+             YAHOO.util.History.initialize('yui-history-field', 'yui-history-iframe');
          }
-         catch(e)
+         catch (e)
          {
             /*
              * The only exception that gets thrown here is when the browser is
@@ -721,7 +721,7 @@
       fnRenderCellSelected: function DL_fnRenderCellSelected()
       {
          var scope = this;
-         
+
          /**
           * Selector custom datacell formatter
           *
@@ -733,10 +733,10 @@
           */
          return function DL_renderCellSelected(elCell, oRecord, oColumn, oData)
          {
-            Dom.setStyle(elCell, "width", oColumn.width + "px");
-            Dom.setStyle(elCell.parentNode, "width", oColumn.width + "px");
-            
-            elCell.innerHTML = '<input id="checkbox-' + oRecord.getId() + '" type="checkbox" name="fileChecked" value="'+ oData + '"' + (scope.selectedFiles[oData] ? ' checked="checked">' : '>');
+            Dom.setStyle(elCell, 'width', oColumn.width + 'px');
+            Dom.setStyle(elCell.parentNode, 'width', oColumn.width + 'px');
+
+            elCell.innerHTML = '<input id="checkbox-' + oRecord.getId() + '" type="checkbox" name="fileChecked" value="' + oData + '"' + (scope.selectedFiles[oData] ? ' checked="checked">' : '>');
          };
       },
 
@@ -748,7 +748,7 @@
       fnRenderCellStatus: function DL_fnRenderCellStatus()
       {
          var scope = this;
-         
+
          /**
           * Status custom datacell formatter
           *
@@ -760,25 +760,25 @@
           */
          return function DL_renderCellStatus(elCell, oRecord, oColumn, oData)
          {
-            Dom.setStyle(elCell, "width", oColumn.width + "px");
-            Dom.setStyle(elCell.parentNode, "width", oColumn.width + "px");
+            Dom.setStyle(elCell, 'width', oColumn.width + 'px');
+            Dom.setStyle(elCell.parentNode, 'width', oColumn.width + 'px');
 
             var record = oRecord.getData(),
                dataStatus = record.status,
                status,
-               tip = "",
-               desc = "";
+               tip = '',
+               desc = '';
 
             if (dataStatus.length > 0)
             {
-               var statuses = dataStatus.split(",").sort(),
-                  s, SPACE = " ", meta,
+               var statuses = dataStatus.split(',').sort(),
+                  s, SPACE = ' ', meta,
                   i18n, i18nMeta;
 
                for (var i = 0, j = statuses.length; i < j; i++)
                {
                   status = statuses[i];
-                  meta = "";
+                  meta = '';
                   s = status.indexOf(SPACE);
                   if (s > -1)
                   {
@@ -786,22 +786,22 @@
                      status = status.substring(0, s);
                   }
 
-                  i18n = "tip." + status;
-                  i18nMeta = i18n + ".meta";
+                  i18n = 'tip.' + status;
+                  i18nMeta = i18n + '.meta';
                   if (meta && scope.msg(i18nMeta) !== i18nMeta)
                   {
                      i18n = i18nMeta;
                   }
-                  tip = Alfresco.util.message(i18n, scope.name, meta.split("|")); // Note: deliberate bypass of scope.msg() function
+                  tip = Alfresco.util.message(i18n, scope.name, meta.split('|')); // Note: deliberate bypass of scope.msg() function
                   desc += '<div class="status"><img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/documentlibrary/images/' + status + '-indicator-16.png" title="' + tip + '" alt="' + status + '" /></div>';
                }
             }
 
             // In workflow status
             status = record.activeWorkflows;
-            if (status && status !== "")
+            if (status && status !== '')
             {
-               tip = scope.msg("tip.active-workflow", status.split(",").length);
+               tip = scope.msg('tip.active-workflow', status.split(',').length);
                desc += '<div class="status"><img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/documentlibrary/images/workflow-indicator-16.png" title="' + tip + '" alt="' + tip + '" /></div>';
             }
 
@@ -817,7 +817,7 @@
       fnRenderCellThumbnail: function DL_fnRenderCellThumbnail()
       {
          var scope = this;
-         
+
          /**
           * Thumbnail custom datacell formatter
           *
@@ -834,7 +834,7 @@
                title = record.title,
                type = record.type,
                isLink = record.isLink,
-               extn = name.substring(name.lastIndexOf("."));
+               extn = name.substring(name.lastIndexOf('.'));
 
             if (scope.options.simpleView)
             {
@@ -842,10 +842,10 @@
                 * Simple View
                 */
                oColumn.width = 40;
-               Dom.setStyle(elCell, "width", oColumn.width + "px");
-               Dom.setStyle(elCell.parentNode, "width", oColumn.width + "px");
+               Dom.setStyle(elCell, 'width', oColumn.width + 'px');
+               Dom.setStyle(elCell.parentNode, 'width', oColumn.width + 'px');
 
-               if (type == "folder")
+               if (type == 'folder')
                {
                   elCell.innerHTML = '<span class="folder-small">' + (isLink ? '<span class="link"></span>' : '') + Alfresco.DocumentList.generateFileFolderLinkMarkup(scope, oRecord) + '<img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/documentlibrary/images/folder-32.png" /></a>';
                }
@@ -864,10 +864,10 @@
                 * Detailed View
                 */
                oColumn.width = 100;
-               Dom.setStyle(elCell, "width", oColumn.width + "px");
-               Dom.setStyle(elCell.parentNode, "width", oColumn.width + "px");
+               Dom.setStyle(elCell, 'width', oColumn.width + 'px');
+               Dom.setStyle(elCell.parentNode, 'width', oColumn.width + 'px');
 
-               if (type == "folder")
+               if (type == 'folder')
                {
                   elCell.innerHTML = '<span class="folder">' + (isLink ? '<span class="link"></span>' : '') + Alfresco.DocumentList.generateFileFolderLinkMarkup(scope, oRecord) + '<img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/documentlibrary/images/folder-48.png" /></a>';
                }
@@ -887,7 +887,7 @@
       fnRenderCellDescription: function DL_fnRenderCellDescription()
       {
          var scope = this;
-         
+
          /**
           * Description/detail custom datacell formatter
           *
@@ -899,18 +899,18 @@
           */
          return function DL_renderCellDescription(elCell, oRecord, oColumn, oData)
          {
-            var desc = "", tags, tag, i, j;
+            var desc = '', tags, tag, i, j;
             var record = oRecord.getData(),
                type = record.type,
                isLink = record.isLink,
-               title = "",
-               description = record.description || scope.msg("details.description.none");
-            
+               title = '',
+               description = record.description || scope.msg('details.description.none');
+
             // Link handling
             if (isLink)
             {
-               oRecord.setData("linkedDisplayName", record.displayName);
-               oRecord.setData("displayName", scope.msg("details.link-to", record.displayName));
+               oRecord.setData('linkedDisplayName', record.displayName);
+               oRecord.setData('displayName', scope.msg('details.link-to', record.displayName));
             }
 
             // Use title property if it's available
@@ -919,7 +919,7 @@
                title = '<span class="title">(' + $html(record.title) + ')</span>';
             }
 
-            if (type == "folder")
+            if (type == 'folder')
             {
                /**
                 * Folders
@@ -932,31 +932,31 @@
                   /**
                    * Simple View
                    */
-                  desc += '<div class="detail"><span class="item-simple"><em>' + scope.msg("details.modified.on") + '</em> ' + $date(record.modifiedOn, scope.msg("date-format.longDate")) + '</span>';
-                  desc += '<span class="item-simple"><em>' + scope.msg("details.by") + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span></div>';
+                  desc += '<div class="detail"><span class="item-simple"><em>' + scope.msg('details.modified.on') + '</em> ' + $date(record.modifiedOn, scope.msg('date-format.longDate')) + '</span>';
+                  desc += '<span class="item-simple"><em>' + scope.msg('details.by') + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span></div>';
                }
                else
                {
                   /**
                    * Detailed View
                    */
-                  desc += '<div class="detail"><span class="item"><em>' + scope.msg("details.modified.on") + '</em> ' + $date(record.modifiedOn) + '</span>';
-                  desc += '<span class="item"><em>' + scope.msg("details.modified.by") + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span></div>';
-                  desc += '<div class="detail"><span class="item"><em>' + scope.msg("details.description") + '</em> ' + $links($html(description)) + '</span></div>';
+                  desc += '<div class="detail"><span class="item"><em>' + scope.msg('details.modified.on') + '</em> ' + $date(record.modifiedOn) + '</span>';
+                  desc += '<span class="item"><em>' + scope.msg('details.modified.by') + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span></div>';
+                  desc += '<div class="detail"><span class="item"><em>' + scope.msg('details.description') + '</em> ' + $links($html(description)) + '</span></div>';
                   /* Tags */
                   tags = record.tags;
-                  desc += '<div class="detail"><span class="item tag-item"><em>' + scope.msg("details.tags") + '</em> ';
+                  desc += '<div class="detail"><span class="item tag-item"><em>' + scope.msg('details.tags') + '</em> ';
                   if (tags.length > 0)
                   {
                      for (i = 0, j = tags.length; i < j; i++)
                      {
                         tag = $html(tags[i]);
-                        desc += '<span class="tag"><a href="#" class="tag-link" rel="' + tag + '" title="' + tags[i] + '">' + tag + '</a></span>' + (j - i > 1 ? ", " : "");
+                        desc += '<span class="tag"><a href="#" class="tag-link" rel="' + tag + '" title="' + tags[i] + '">' + tag + '</a></span>' + (j - i > 1 ? ', ' : '');
                      }
                   }
                   else
                   {
-                     desc += scope.msg("details.tags.none");
+                     desc += scope.msg('details.tags.none');
                   }
                   desc += '</span></div>';
                }
@@ -966,24 +966,24 @@
                /**
                 * Documents and Links
                 */
-               desc +='<div class="eslPMDocLibList'+record.eslPM.replace(/ /g,'')+'"> <span class="eslRenderNod">'+record.eslNod+'</span> <span class="eslRenderPM">'+record.eslPM+'</span> <span class="eslRenderAtomal">'+record.eslAtomal+'</span> <span class="eslRenderFreeForm">'+record.eslFreeformCaveats+'</span> <span class="eslRenderEyes">'+record.eslEyes+'</span><br/>';
-               desc +='<span class="eslRenderClosed">'+record.eslClosedMarkings+' </span> <span class="eslRenderOrganisations">'+record.eslOrganisations+'</span><span class="eslRenderOpen">'+record.eslOpenMarkings+'</span> </div>';
+               desc += '<div class="eslPMDocLibList' + record.eslPM.replace(/ /g, '') + '"> <span class="eslRenderNod">' + record.eslNod + '</span> <span class="eslRenderPM">' + record.eslPM + '</span> <span class="eslRenderAtomal">' + record.eslAtomal + '</span> <span class="eslRenderFreeForm">' + record.eslFreeformCaveats + '</span> <span class="eslRenderEyes">' + record.eslEyes + '</span><br/>';
+               desc += '<span class="eslRenderClosed">' + record.eslClosedMarkings + ' </span> <span class="eslRenderOrganisations">' + record.eslOrganisations + '</span><span class="eslRenderOpen">' + record.eslOpenMarkings + '</span> </div>';
 
                // Locked / Working Copy handling
-               if (record.lockedByUser && record.lockedByUser !== "")
+               if (record.lockedByUser && record.lockedByUser !== '')
                {
                   var lockedByLink = $userProfile(record.lockedByUser, record.lockedBy);
 
                   /* Google Docs Integration */
-                  if (record.custom.googleDocUrl && record.custom.googleDocUrl !== "")
+                  if (record.custom.googleDocUrl && record.custom.googleDocUrl !== '')
                   {
                      if (record.lockedByUser === Alfresco.constants.USERNAME)
                      {
-                        desc += '<div class="info-banner">' + scope.msg("details.banner.google-docs-owner", '<a href="' + record.custom.googleDocUrl + '" target="_blank">' + scope.msg("details.banner.google-docs.link") + '</a>') + '</div>';
+                        desc += '<div class="info-banner">' + scope.msg('details.banner.google-docs-owner', '<a href="' + record.custom.googleDocUrl + '" target="_blank">' + scope.msg('details.banner.google-docs.link') + '</a>') + '</div>';
                      }
                      else
                      {
-                        desc += '<div class="info-banner">' + scope.msg("details.banner.google-docs-locked", lockedByLink, '<a href="' + record.custom.googleDocUrl + '" target="_blank">' + scope.msg("details.banner.google-docs.link") + '</a>') + '</div>';
+                        desc += '<div class="info-banner">' + scope.msg('details.banner.google-docs-locked', lockedByLink, '<a href="' + record.custom.googleDocUrl + '" target="_blank">' + scope.msg('details.banner.google-docs.link') + '</a>') + '</div>';
                      }
                   }
                   /* Regular Working Copy handling */
@@ -991,25 +991,25 @@
                   {
                      if (record.lockedByUser === Alfresco.constants.USERNAME)
                      {
-                        desc += '<div class="info-banner">' + scope.msg("details.banner." + (record.actionSet === "lockOwner" ? "lock-owner" : "editing")) + '</div>';
+                        desc += '<div class="info-banner">' + scope.msg('details.banner.' + (record.actionSet === 'lockOwner' ? 'lock-owner' : 'editing')) + '</div>';
                      }
                      else
                      {
-                        desc += '<div class="info-banner">' + scope.msg("details.banner.locked", lockedByLink) + '</div>';
+                        desc += '<div class="info-banner">' + scope.msg('details.banner.locked', lockedByLink) + '</div>';
                      }
                   }
                }
-                
-               desc += '<h3 class="filename">' + Alfresco.DocumentList.generateFavourite(scope, oRecord) + '<span id="' + scope.id + '-preview-' + oRecord.getId() + '">'+ Alfresco.DocumentList.generateFileFolderLinkMarkup(scope, oRecord);
+
+               desc += '<h3 class="filename">' + Alfresco.DocumentList.generateFavourite(scope, oRecord) + '<span id="' + scope.id + '-preview-' + oRecord.getId() + '">' + Alfresco.DocumentList.generateFileFolderLinkMarkup(scope, oRecord);
                desc += $html(record.displayName) + '</a></span>' + title + '</h3>';
-               
+
                if (scope.options.simpleView)
                {
                   /**
                    * Simple View
                    */
-                  desc += '<div class="detail"><span class="item-simple"><em>' + scope.msg("details.modified.on") + '</em> ' + $date(record.modifiedOn, scope.msg("date-format.longDate")) + '</span>';
-                  desc += '<span class="item-simple"><em>' + scope.msg("details.by") + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span></div>';
+                  desc += '<div class="detail"><span class="item-simple"><em>' + scope.msg('details.modified.on') + '</em> ' + $date(record.modifiedOn, scope.msg('date-format.longDate')) + '</span>';
+                  desc += '<span class="item-simple"><em>' + scope.msg('details.by') + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span></div>';
                }
                else
                {
@@ -1022,11 +1022,11 @@
                       * Working Copy
                       */
                      desc += '<div class="detail">';
-                     desc += '<span class="item"><em>' + scope.msg("details.editing-started.on") + '</em> ' + $date(record.modifiedOn) + '</span>';
-                     desc += '<span class="item"><em>' + scope.msg("details.editing-started.by") + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span>';
-                     desc += '<span class="item"><em>' + scope.msg("details.size") + '</em> ' + Alfresco.util.formatFileSize(record.size) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.editing-started.on') + '</em> ' + $date(record.modifiedOn) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.editing-started.by') + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.size') + '</em> ' + Alfresco.util.formatFileSize(record.size) + '</span>';
                      desc += '</div><div class="detail">';
-                     desc += '<span class="item"><em>' + scope.msg("details.description") + '</em> ' + $links($html(description)) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.description') + '</em> ' + $links($html(description)) + '</span>';
                      desc += '</div>';
                   }
                   else
@@ -1035,28 +1035,28 @@
                       * Non-Working Copy
                       */
                      desc += '<div class="detail">';
-                     desc += '<span class="item"><em>' + scope.msg("details.modified.on") + '</em> ' + $date(record.modifiedOn) + '</span>';
-                     desc += '<span class="item"><em>' + scope.msg("details.modified.by") + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span>';
-                     desc += '<span class="item"><em>' + scope.msg("details.version") + '</em> ' + record.version + '</span>';
-                     desc += '<span class="item"><em>' + scope.msg("details.size") + '</em> ' + Alfresco.util.formatFileSize(record.size) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.modified.on') + '</em> ' + $date(record.modifiedOn) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.modified.by') + '</em> ' + $userProfile(record.modifiedByUser, record.modifiedBy) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.version') + '</em> ' + record.version + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.size') + '</em> ' + Alfresco.util.formatFileSize(record.size) + '</span>';
                      desc += '</div><div class="detail">';
-                     desc += '<span class="item"><em>' + scope.msg("details.description") + '</em> ' + $links($html(description)) + '</span>';
+                     desc += '<span class="item"><em>' + scope.msg('details.description') + '</em> ' + $links($html(description)) + '</span>';
                      desc += '</div>';
 
                      /* Tags */
                      tags = record.tags;
-                     desc += '<div class="detail"><span class="item tag-item"><em>' + scope.msg("details.tags") + '</em> ';
+                     desc += '<div class="detail"><span class="item tag-item"><em>' + scope.msg('details.tags') + '</em> ';
                      if (tags.length > 0)
                      {
                         for (i = 0, j = tags.length; i < j; i++)
                         {
                            tag = $html(tags[i]);
-                           desc += '<span class="tag"><a href="#" class="tag-link" rel="' + tag + '" title="' + tags[i] + '">' + tag + '</a></span>' + (j - i > 1 ? ", " : "");
+                           desc += '<span class="tag"><a href="#" class="tag-link" rel="' + tag + '" title="' + tags[i] + '">' + tag + '</a></span>' + (j - i > 1 ? ', ' : '');
                         }
                      }
                      else
                      {
-                        desc += scope.msg("details.tags.none");
+                        desc += scope.msg('details.tags.none');
                      }
                      desc += '</span></div>';
                   }
@@ -1074,7 +1074,7 @@
       fnRenderCellActions: function DL_fnRenderCellActions()
       {
          var scope = this;
-         
+
          /**
           * Actions custom datacell formatter
           *
@@ -1100,9 +1100,9 @@
                 */
                 oColumn.width = 200;
             }
-            Dom.setStyle(elCell, "width", oColumn.width + "px");
-            Dom.setStyle(elCell.parentNode, "width", oColumn.width + "px");
-            Dom.addClass(elCell.parentNode, oRecord.getData("type"));
+            Dom.setStyle(elCell, 'width', oColumn.width + 'px');
+            Dom.setStyle(elCell.parentNode, 'width', oColumn.width + 'px');
+            Dom.addClass(elCell.parentNode, oRecord.getData('type'));
 
             elCell.innerHTML = '<div id="' + scope.id + '-actions-' + oRecord.getId() + '" class="hidden"></div>';
 
@@ -1114,14 +1114,14 @@
             if (scope.doclistMetadata.onlineEditing && (record.mimetype in scope.onlineEditMimetypes))
             {
                var loc = record.location,
-                  uri = scope.options.vtiServer.host + ":" + scope.options.vtiServer.port + "/" + $combine("alfresco", loc.site, loc.container, loc.path, loc.file);
-               
+                  uri = scope.options.vtiServer.host + ':' + scope.options.vtiServer.port + '/' + $combine('alfresco', loc.site, loc.container, loc.path, loc.file);
+
                if (!(/^(http|https):\/\//).test(uri))
                {
                   // VTI server now supports HTTPS directly http://issues.alfresco.com/jira/browse/DOC-227
-                  uri = window.location.protocol + "//" + uri;
+                  uri = window.location.protocol + '//' + uri;
                }
-               oRecord.setData("onlineEditUrl", uri);
+               oRecord.setData('onlineEditUrl', uri);
             }
          };
       },
@@ -1136,44 +1136,44 @@
          /**
           * YUI History - filter
           */
-         var bookmarkedFilter = YAHOO.util.History.getBookmarkedState("filter");
-         bookmarkedFilter = bookmarkedFilter || "path|/";
+         var bookmarkedFilter = YAHOO.util.History.getBookmarkedState('filter');
+         bookmarkedFilter = bookmarkedFilter || 'path|/';
 
          try
          {
-            while (bookmarkedFilter != (bookmarkedFilter = decodeURIComponent(bookmarkedFilter))){}
+            while (bookmarkedFilter != (bookmarkedFilter = decodeURIComponent(bookmarkedFilter))) {}
          }
          catch (e)
          {
             // Catch "malformed URI sequence" exception
          }
-         
+
          var fnDecodeBookmarkedFilter = function DL_fnDecodeBookmarkedFilter(strFilter)
          {
-            var filters = strFilter.split("|"),
+            var filters = strFilter.split('|'),
                filterObj =
                {
-                  filterId: window.unescape(filters[0] || ""),
-                  filterData: window.unescape(filters[1] || "")
+                  filterId: window.unescape(filters[0] || ''),
+                  filterData: window.unescape(filters[1] || '')
                };
-            
+
             filterObj.filterOwner = Alfresco.util.FilterManager.getOwner(filterObj.filterId);
             return filterObj;
          };
-         
+
          this.options.initialFilter = fnDecodeBookmarkedFilter(bookmarkedFilter);
 
          // Register History Manager filter update callback
-         YAHOO.util.History.register("filter", bookmarkedFilter, function DL_onHistoryManagerFilterChanged(newFilter)
+         YAHOO.util.History.register('filter', bookmarkedFilter, function DL_onHistoryManagerFilterChanged(newFilter)
          {
-            Alfresco.logger.debug("HistoryManager: filter changed:" + newFilter);
+            Alfresco.logger.debug('HistoryManager: filter changed:' + newFilter);
             // Firefox fix
             if (YAHOO.env.ua.gecko > 0)
             {
                newFilter = window.unescape(newFilter);
-               Alfresco.logger.debug("HistoryManager: filter (after Firefox fix):" + newFilter);
+               Alfresco.logger.debug('HistoryManager: filter (after Firefox fix):' + newFilter);
             }
-            
+
             this._updateDocList.call(this,
             {
                filter: fnDecodeBookmarkedFilter(newFilter),
@@ -1188,19 +1188,19 @@
          var handlePagination = function DL_handlePagination(state, me)
          {
             me.widgets.paginator.setState(state);
-            YAHOO.util.History.navigate("page", String(state.page));
+            YAHOO.util.History.navigate('page', String(state.page));
          };
 
          if (this.options.usePagination)
          {
-            var bookmarkedPage = YAHOO.util.History.getBookmarkedState("page") || "1";
-            while (bookmarkedPage != (bookmarkedPage = decodeURIComponent(bookmarkedPage))){}
+            var bookmarkedPage = YAHOO.util.History.getBookmarkedState('page') || '1';
+            while (bookmarkedPage != (bookmarkedPage = decodeURIComponent(bookmarkedPage))) {}
             this.currentPage = parseInt(bookmarkedPage || this.options.initialPage, 10);
 
             // Register History Manager page update callback
-            YAHOO.util.History.register("page", bookmarkedPage, function DL_onHistoryManagerPageChanged(newPage)
+            YAHOO.util.History.register('page', bookmarkedPage, function DL_onHistoryManagerPageChanged(newPage)
             {
-               Alfresco.logger.debug("HistoryManager: page changed:" + newPage);
+               Alfresco.logger.debug('HistoryManager: page changed:' + newPage);
                // Update the DocList
                if (this.currentPage != newPage)
                {
@@ -1211,29 +1211,29 @@
                }
                else
                {
-                  Alfresco.logger.debug("...page changed event ignored.");
+                  Alfresco.logger.debug('...page changed event ignored.');
                }
             }, null, this);
 
             // YUI Paginator definition
             this.widgets.paginator = new YAHOO.widget.Paginator(
             {
-               containers: [this.id + "-paginator", this.id + "-paginatorBottom"],
+               containers: [this.id + '-paginator', this.id + '-paginatorBottom'],
                rowsPerPage: this.options.pageSize,
                initialPage: this.currentPage,
-               template: this.msg("pagination.template"),
-               pageReportTemplate: this.msg("pagination.template.page-report"),
-               previousPageLinkLabel: this.msg("pagination.previousPageLinkLabel"),
-               nextPageLinkLabel: this.msg("pagination.nextPageLinkLabel")
+               template: this.msg('pagination.template'),
+               pageReportTemplate: this.msg('pagination.template.page-report'),
+               previousPageLinkLabel: this.msg('pagination.previousPageLinkLabel'),
+               nextPageLinkLabel: this.msg('pagination.nextPageLinkLabel')
             });
-            
-            this.widgets.paginator.subscribe("changeRequest", handlePagination, this);
-            
+
+            this.widgets.paginator.subscribe('changeRequest', handlePagination, this);
+
             // Display the bottom paginator bar
-            Dom.setStyle(this.id + "-doclistBarBottom", "display", "block");
+            Dom.setStyle(this.id + '-doclistBarBottom', 'display', 'block');
          }
       },
-      
+
       /**
        * DataSource set-up and event registration
        *
@@ -1243,18 +1243,18 @@
       _setupDataSource: function DL__setupDataSource()
       {
          var me = this;
-         
+
          // DataSource definition
-         this.widgets.dataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + "slingshot/doclib/doclist/",
+         this.widgets.dataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + 'slingshot/doclib/doclist/',
          {
             responseType: YAHOO.util.DataSource.TYPE_JSON,
             responseSchema:
             {
-               resultsList: "items",
+               resultsList: 'items',
                metaFields:
                {
-                  paginationRecordOffset: "startIndex",
-                  totalRecords: "totalRecords"
+                  paginationRecordOffset: 'startIndex',
+                  totalRecords: 'totalRecords'
                }
             }
          });
@@ -1263,41 +1263,41 @@
          this.widgets.dataSource.doBeforeCallback = function DL_doBeforeCallback(oRequest, oFullResponse, oParsedResponse)
          {
             me.doclistMetadata = oFullResponse.metadata;
-            
+
             // Fire event with parent metadata
-            YAHOO.Bubbling.fire("doclistMetadata",
+            YAHOO.Bubbling.fire('doclistMetadata',
             {
                metadata: me.doclistMetadata
             });
-            
+
             // Reset onlineEdit flag if correct conditions not met
-            if ((YAHOO.env.ua.ie === 0) || (me.options.vtiServer && typeof me.options.vtiServer.port != "number"))
+            if ((YAHOO.env.ua.ie === 0) || (me.options.vtiServer && typeof me.options.vtiServer.port != 'number'))
             {
                me.doclistMetadata.onlineEditing = false;
             }
-            
+
             // Container userAccess event
             var permissions = me.doclistMetadata.parent.permissions;
             if (permissions && permissions.userAccess)
             {
-               YAHOO.Bubbling.fire("userAccess",
+               YAHOO.Bubbling.fire('userAccess',
                {
                   userAccess: permissions.userAccess
                });
             }
-            
+
             // Update "Empty" message to reflect subfolders are available but hidden?
             var itemCounts = me.doclistMetadata.itemCounts;
             if (itemCounts.documents === 0 && itemCounts.folders > 0 && !me.options.showFolders)
             {
-               var showFoldersLink = '<span class="show-folders-link theme-color-1" onclick="Alfresco.util.ComponentManager.get(\'' + me.id + '\').onShowFolders();">' + me.msg("message.empty.subfolders.link") + '</span>';
-               me.widgets.dataTable.set("MSG_EMPTY", me.msg("message.empty.subfolders", showFoldersLink, itemCounts.folders));
+               var showFoldersLink = '<span class="show-folders-link theme-color-1" onclick="Alfresco.util.ComponentManager.get(\'' + me.id + '\').onShowFolders();">' + me.msg('message.empty.subfolders.link') + '</span>';
+               me.widgets.dataTable.set('MSG_EMPTY', me.msg('message.empty.subfolders', showFoldersLink, itemCounts.folders));
             }
-            
+
             return oParsedResponse;
          };
       },
-      
+
       /**
        * DataTable set-up and event registration
        *
@@ -1311,20 +1311,20 @@
          // DataTable column defintions
          var columnDefinitions =
          [
-            { key: "nodeRef", label: "Select", sortable: false, formatter: this.fnRenderCellSelected(), width: 16 },
-            { key: "status", label: "Status", sortable: false, formatter: this.fnRenderCellStatus(), width: 16 },
-            { key: "thumbnail", label: "Preview", sortable: false, formatter: this.fnRenderCellThumbnail(), width: 100 },
-            { key: "fileName", label: "Description", sortable: false, formatter: this.fnRenderCellDescription() },
-            { key: "actions", label: "Actions", sortable: false, formatter: this.fnRenderCellActions(), width: 200 }
+            { key: 'nodeRef', label: 'Select', sortable: false, formatter: this.fnRenderCellSelected(), width: 16 },
+            { key: 'status', label: 'Status', sortable: false, formatter: this.fnRenderCellStatus(), width: 16 },
+            { key: 'thumbnail', label: 'Preview', sortable: false, formatter: this.fnRenderCellThumbnail(), width: 100 },
+            { key: 'fileName', label: 'Description', sortable: false, formatter: this.fnRenderCellDescription() },
+            { key: 'actions', label: 'Actions', sortable: false, formatter: this.fnRenderCellActions(), width: 200 }
          ];
-         
+
          // DataTable definition
-         this.widgets.dataTable = new YAHOO.widget.DataTable(this.id + "-documents", columnDefinitions, this.widgets.dataSource,
+         this.widgets.dataTable = new YAHOO.widget.DataTable(this.id + '-documents', columnDefinitions, this.widgets.dataSource,
          {
             renderLoopSize: this.options.usePagination ? 16 : Alfresco.util.RENDERLOOPSIZE,
             initialLoad: false,
             dynamicData: true,
-            MSG_EMPTY: this.msg("message.loading")
+            MSG_EMPTY: this.msg('message.loading')
          });
 
          // Update totalRecords on the fly with value from server
@@ -1338,12 +1338,12 @@
          this._setDefaultDataTableErrors(this.widgets.dataTable);
 
          // Hook tableMsgShowEvent to clear out fixed-pixel width on <table> element (breaks resizer)
-         this.widgets.dataTable.subscribe("tableMsgShowEvent", function(oArgs)
+         this.widgets.dataTable.subscribe('tableMsgShowEvent', function(oArgs)
          {
             // NOTE: Scope needs to be DataTable
-            this._elMsgTbody.parentNode.style.width = "";
+            this._elMsgTbody.parentNode.style.width = '';
          });
-         
+
          // Override abstract function within DataTable to set custom error message
          this.widgets.dataTable.doBeforeLoadData = function DL_doBeforeLoadData(sRequest, oResponse, oPayload)
          {
@@ -1352,51 +1352,51 @@
                try
                {
                   var response = YAHOO.lang.JSON.parse(oResponse.responseText);
-                  me.widgets.dataTable.set("MSG_ERROR", response.message);
+                  me.widgets.dataTable.set('MSG_ERROR', response.message);
                }
-               catch(e)
+               catch (e)
                {
                   me._setDefaultDataTableErrors(me.widgets.dataTable);
                }
             }
-            
+
             // We don't get an renderEvent for an empty recordSet, but we'd like one anyway
             if (oResponse.results.length === 0)
             {
-               this.fireEvent("renderEvent",
+               this.fireEvent('renderEvent',
                {
-                  type: "renderEvent"
+                  type: 'renderEvent'
                });
             }
-            
+
             // Must return true to have the "Loading..." message replaced by the error message
             return true;
          };
 
          // File checked handler
-         this.widgets.dataTable.subscribe("checkboxClickEvent", function(e)
-         { 
-            var id = e.target.value; 
-            this.selectedFiles[id] = e.target.checked;
-            YAHOO.Bubbling.fire("selectedFilesChanged");
-         }, this, true);
-         
-         // Rendering complete event handler
-         this.widgets.dataTable.subscribe("renderEvent", function()
+         this.widgets.dataTable.subscribe('checkboxClickEvent', function(e)
          {
-            Alfresco.logger.debug("DataTable renderEvent");
-            
+            var id = e.target.value;
+            this.selectedFiles[id] = e.target.checked;
+            YAHOO.Bubbling.fire('selectedFilesChanged');
+         }, this, true);
+
+         // Rendering complete event handler
+         this.widgets.dataTable.subscribe('renderEvent', function()
+         {
+            Alfresco.logger.debug('DataTable renderEvent');
+
             // IE6 fix for long filename rendering issue
             if (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 7)
             {
                var ie6fix = this.widgets.dataTable.getTableEl().parentNode;
                ie6fix.className = ie6fix.className;
             }
-            
+
             // Update the paginator if it's been created
             if (this.widgets.paginator)
             {
-               Alfresco.logger.debug("Setting paginator state: page=" + this.currentPage + ", totalRecords=" + this.totalRecords);
+               Alfresco.logger.debug('Setting paginator state: page=' + this.currentPage + ', totalRecords=' + this.totalRecords);
 
                this.widgets.paginator.setState(
                {
@@ -1405,11 +1405,11 @@
                });
                this.widgets.paginator.render();
             }
-            
+
             // Need to highlight a file now the data is available?
             if (this.options.highlightFile)
             {
-               YAHOO.Bubbling.fire("highlightFile",
+               YAHOO.Bubbling.fire('highlightFile',
                {
                   fileName: unescape(this.options.highlightFile)
                });
@@ -1417,9 +1417,9 @@
             else
             {
                // Scroll up (only) to the top of the documents
-               var yPos = Dom.getY(this.id + "-documents"),
-                  yScroll = YAHOO.env.ua.ie > 0 ? ((document.compatMode && document.compatMode != "BackCompat") ? document.documentElement : document.body).scrollTop : window.scrollY;
-               
+               var yPos = Dom.getY(this.id + '-documents'),
+                  yScroll = YAHOO.env.ua.ie > 0 ? ((document.compatMode && document.compatMode != 'BackCompat') ? document.documentElement : document.body).scrollTop : window.scrollY;
+
                if (yScroll > yPos)
                {
                   window.scrollTo(0, yPos);
@@ -1432,19 +1432,19 @@
                this.afterDocListUpdate[i].call(this);
             }
             this.afterDocListUpdate = [];
-            
+
             // Register preview tooltips
-            this.widgets.previewTooltip.cfg.setProperty("context", this.previewTooltips);
-            
-            this.widgets.dataTable.set("renderLoopSize", this.options.usePagination ? 16 : Alfresco.util.RENDERLOOPSIZE);
-            
+            this.widgets.previewTooltip.cfg.setProperty('context', this.previewTooltips);
+
+            this.widgets.dataTable.set('renderLoopSize', this.options.usePagination ? 16 : Alfresco.util.RENDERLOOPSIZE);
+
          }, this, true);
-         
+
          // Enable row highlighting
-         this.widgets.dataTable.subscribe("rowMouseoverEvent", this.onEventHighlightRow, this, true);
-         this.widgets.dataTable.subscribe("rowMouseoutEvent", this.onEventUnhighlightRow, this, true);
+         this.widgets.dataTable.subscribe('rowMouseoverEvent', this.onEventHighlightRow, this, true);
+         this.widgets.dataTable.subscribe('rowMouseoutEvent', this.onEventUnhighlightRow, this, true);
       },
-      
+
       /**
        * Fired by YUI when History Manager is initialised and available for scripting.
        * Component initialisation, including instantiation of YUI widgets and event listener binding.
@@ -1454,16 +1454,16 @@
       onHistoryManagerReady: function DL_onHistoryManagerReady()
       {
          // Fire changeFilter event for first-time population
-         Alfresco.logger.debug("DL_onHistoryManagerReady", "changeFilter =>", this.options.initialFilter);
-         YAHOO.Bubbling.fire("changeFilter", YAHOO.lang.merge(
+         Alfresco.logger.debug('DL_onHistoryManagerReady', 'changeFilter =>', this.options.initialFilter);
+         YAHOO.Bubbling.fire('changeFilter', YAHOO.lang.merge(
          {
             doclistFirstTimeNav: true
          }, this.options.initialFilter));
-         
+
          // Finally show the component body here to prevent UI artifacts on YUI button decoration
-         Dom.setStyle(this.id + "-body", "visibility", "visible");
+         Dom.setStyle(this.id + '-body', 'visibility', 'visible');
       },
-      
+
       /**
        * Public functions
        *
@@ -1481,19 +1481,19 @@
          var files = [],
             recordSet = this.widgets.dataTable.getRecordSet(),
             record;
-         
+
          for (var i = 0, j = recordSet.getLength(); i < j; i++)
          {
             record = recordSet.getRecord(i);
-            if (this.selectedFiles[record.getData("nodeRef")])
+            if (this.selectedFiles[record.getData('nodeRef')])
             {
                files.push(record.getData());
             }
          }
-         
+
          return files;
       },
-      
+
       /**
        * Public function to select files by specified groups
        *
@@ -1518,43 +1518,43 @@
          {
             selectDocuments:
             {
-               "document": true
+               'document': true
             },
             selectFolders:
             {
-               "folder": true
+               'folder': true
             }
          };
 
          switch (p_selectType)
          {
-            case "selectAll":
+            case 'selectAll':
                fnCheck = function(assetType, isChecked)
                {
                   return true;
                };
                break;
-            
-            case "selectNone":
+
+            case 'selectNone':
                fnCheck = function(assetType, isChecked)
                {
                   return false;
                };
                break;
 
-            case "selectInvert":
+            case 'selectInvert':
                fnCheck = function(assetType, isChecked)
                {
                   return !isChecked;
                };
                break;
 
-            case "selectDocuments":
-            case "selectFolders":
+            case 'selectDocuments':
+            case 'selectFolders':
                typeMap = typeMapping[p_selectType];
                fnCheck = function(assetType, isChecked)
                {
-                  if (typeof typeMap === "object")
+                  if (typeof typeMap === 'object')
                   {
                      return typeMap[assetType];
                   }
@@ -1572,10 +1572,10 @@
          for (i = 0; i < len; i++)
          {
             record = recordSet.getRecord(i);
-            this.selectedFiles[record.getData("nodeRef")] = checks[i].checked = fnCheck(record.getData("type"), checks[i].checked);
+            this.selectedFiles[record.getData('nodeRef')] = checks[i].checked = fnCheck(record.getData('type'), checks[i].checked);
          }
-         
-         YAHOO.Bubbling.fire("selectedFilesChanged");
+
+         YAHOO.Bubbling.fire('selectedFilesChanged');
       },
 
 
@@ -1594,15 +1594,15 @@
       onShowFolders: function DL_onShowFolders(e, p_obj)
       {
          this.options.showFolders = !this.options.showFolders;
-         this.widgets.showFolders.set("label", this.msg(this.options.showFolders ? "button.folders.hide" : "button.folders.show"));
+         this.widgets.showFolders.set('label', this.msg(this.options.showFolders ? 'button.folders.hide' : 'button.folders.show'));
          this.services.preferences.set(PREF_SHOW_FOLDERS, this.options.showFolders);
-         YAHOO.Bubbling.fire("metadataRefresh");
+         YAHOO.Bubbling.fire('metadataRefresh');
          if (e)
          {
             Event.preventDefault(e);
          }
       },
-      
+
       /**
        * Show/Hide detailed list button click handler
        *
@@ -1613,11 +1613,11 @@
       onSimpleView: function DL_onSimpleView(e, p_obj)
       {
          this.options.simpleView = !this.options.simpleView;
-         p_obj.set("label", this.msg(this.options.simpleView ? "button.view.detailed" : "button.view.simple"));
+         p_obj.set('label', this.msg(this.options.simpleView ? 'button.view.detailed' : 'button.view.simple'));
 
          this.services.preferences.set(PREF_SIMPLE_VIEW, this.options.simpleView);
 
-         YAHOO.Bubbling.fire("metadataRefresh");
+         YAHOO.Bubbling.fire('metadataRefresh');
          Event.preventDefault(e);
       },
 
@@ -1632,11 +1632,11 @@
       {
          this.options.simpleView = e.newValue.index === 0;
          this.services.preferences.set(PREF_SIMPLE_VIEW, this.options.simpleView);
-         YAHOO.Bubbling.fire("metadataRefresh");
+         YAHOO.Bubbling.fire('metadataRefresh');
 
          Event.preventDefault(e);
       },
-      
+
       /**
        * Multi-file select button click handler
        *
@@ -1668,51 +1668,51 @@
          this.widgets.dataTable.onEventHighlightRow.call(this.widgets.dataTable, oArgs);
 
          // elActions is the element id of the active table cell where we'll inject the actions
-         var elActions = Dom.get(this.id + "-actions-" + oArgs.target.id);
+         var elActions = Dom.get(this.id + '-actions-' + oArgs.target.id);
 
          // Inject the correct action elements into the actionsId element
          if (elActions && elActions.firstChild === null)
          {
             // Retrieve the actionSet for this asset
             var record = this.widgets.dataTable.getRecord(oArgs.target.id),
-               actionSet = record.getData("actionSet");
-            
+               actionSet = record.getData('actionSet');
+
             // Clone the actionSet template node from the DOM
-            var clone = Dom.get(this.id + "-actionSet-" + actionSet).cloneNode(true);
-            
+            var clone = Dom.get(this.id + '-actionSet-' + actionSet).cloneNode(true);
+
             // Token replacement
             clone.innerHTML = YAHOO.lang.substitute(window.unescape(clone.innerHTML), this.getActionUrls(record.getData()));
 
             // Generate an id
-            clone.id = elActions.id + "_a";
-            
+            clone.id = elActions.id + '_a';
+
             // Simple or detailed view
-            Dom.addClass(clone, this.options.simpleView ? "simple" : "detailed");
-            
+            Dom.addClass(clone, this.options.simpleView ? 'simple' : 'detailed');
+
             // Trim the items in the clone depending on the user's access
-            var userAccess = record.getData("permissions").userAccess,
-               actionLabels = record.getData("actionLabels") || {};
-            
+            var userAccess = record.getData('permissions').userAccess,
+               actionLabels = record.getData('actionLabels') || {};
+
             // Inject special-case permissions
-            if (record.getData("mimetype") in this.options.inlineEditMimetypes)
+            if (record.getData('mimetype') in this.options.inlineEditMimetypes)
             {
-               userAccess["inline-edit"] = true;
+               userAccess['inline-edit'] = true;
             }
-            if (record.getData("onlineEditUrl"))
+            if (record.getData('onlineEditUrl'))
             {
-               userAccess["online-edit"] = true;
+               userAccess['online-edit'] = true;
             }
             if (this.options.repositoryUrl)
             {
                userAccess.repository = true;
             }
             userAccess.portlet = Alfresco.constants.PORTLET;
-            
+
             // Inject the current filterId to allow filter-scoped actions
-            userAccess["filter-" + this.currentFilter.filterId] = true;
-            
+            userAccess['filter-' + this.currentFilter.filterId] = true;
+
             // Remove any actions the user doesn't have permission for
-            var actions = YAHOO.util.Selector.query("div", clone),
+            var actions = YAHOO.util.Selector.query('div', clone),
                action, aTag, spanTag, actionPermissions, aP, i, ii, j, jj;
             for (i = 0, ii = actions.length; i < ii; i++)
             {
@@ -1723,15 +1723,15 @@
                {
                   spanTag.innerHTML = $html(actionLabels[action.className]);
                }
-               
-               if (aTag.rel !== "")
+
+               if (aTag.rel !== '')
                {
-                  actionPermissions = aTag.rel.split(",");
+                  actionPermissions = aTag.rel.split(',');
                   for (j = 0, jj = actionPermissions.length; j < jj; j++)
                   {
                      aP = actionPermissions[j];
                      // Support "negative" permissions
-                     if ((aP.charAt(0) == "~") ? !!userAccess[aP.substring(1)] : !userAccess[aP])
+                     if ((aP.charAt(0) == '~') ? !!userAccess[aP.substring(1)] : !userAccess[aP])
                      {
                         clone.removeChild(action);
                         break;
@@ -1739,14 +1739,14 @@
                   }
                }
             }
-            
+
             // Need the "More >" container?
-            var splitAt = record.getData("type") == "folder" ? 2 : 3;
-            actions = YAHOO.util.Selector.query("div", clone);
+            var splitAt = record.getData('type') == 'folder' ? 2 : 3;
+            actions = YAHOO.util.Selector.query('div', clone);
             if (actions.length > splitAt + (this.options.simpleView ? 0 : 1))
             {
-               var moreContainer = Dom.get(this.id + "-moreActions").cloneNode(true);
-               var containerDivs = YAHOO.util.Selector.query("div", moreContainer);
+               var moreContainer = Dom.get(this.id + '-moreActions').cloneNode(true);
+               var containerDivs = YAHOO.util.Selector.query('div', moreContainer);
                // Insert the two necessary DIVs before the third action item
                Dom.insertBefore(containerDivs[0], actions[splitAt]);
                Dom.insertBefore(containerDivs[1], actions[splitAt]);
@@ -1760,19 +1760,19 @@
                   }
                }
             }
-            
+
             elActions.appendChild(clone);
          }
-         
+
          if (this.showingMoreActions)
          {
             this.deferredActionsMenu = elActions;
          }
-         else if (!Dom.hasClass(document.body, "masked"))
+         else if (!Dom.hasClass(document.body, 'masked'))
          {
             this.currentActionsMenu = elActions;
             // Show the actions
-            Dom.removeClass(elActions, "hidden");
+            Dom.removeClass(elActions, 'hidden');
             this.deferredActionsMenu = null;
          }
       },
@@ -1799,19 +1799,19 @@
 
          return (
          {
-            downloadUrl: Alfresco.constants.PROXY_URI + contentUrl + "?a=true",
-            viewUrl:  Alfresco.constants.PROXY_URI + contentUrl + "\" target=\"_blank",
-            documentDetailsUrl: fnPageURL("document-details?nodeRef=" + nodeRef),
-            folderDetailsUrl: fnPageURL("folder-details?nodeRef=" + nodeRef),
-            folderRulesUrl: fnPageURL("folder-rules?nodeRef=" + nodeRef),
-            editMetadataUrl: fnPageURL("edit-metadata?nodeRef=" + nodeRef),
-            inlineEditUrl: fnPageURL("inline-edit?nodeRef=" + nodeRef),
-            managePermissionsUrl: fnPageURL("manage-permissions?nodeRef=" + nodeRef),
-            workingCopyUrl: fnPageURL("document-details?nodeRef=" + (custom.workingCopyNode || nodeRef)),
-            viewGoogleDocUrl: custom.googleDocUrl + "\" target=\"_blank",
-            originalUrl: fnPageURL("document-details?nodeRef=" + (custom.workingCopyOriginal || nodeRef)),
-            explorerViewUrl: $combine(this.options.repositoryUrl, "/n/showSpaceDetails/", nodeRefUri) + "\" target=\"_blank",
-            sourceRepositoryUrl: this.viewInSourceRepositoryURL(recordData) + "\" target=\"_blank"
+            downloadUrl: Alfresco.constants.PROXY_URI + contentUrl + '?a=true',
+            viewUrl: Alfresco.constants.PROXY_URI + contentUrl + '\" target=\"_blank',
+            documentDetailsUrl: fnPageURL('document-details?nodeRef=' + nodeRef),
+            folderDetailsUrl: fnPageURL('folder-details?nodeRef=' + nodeRef),
+            folderRulesUrl: fnPageURL('folder-rules?nodeRef=' + nodeRef),
+            editMetadataUrl: fnPageURL('edit-metadata?nodeRef=' + nodeRef),
+            inlineEditUrl: fnPageURL('inline-edit?nodeRef=' + nodeRef),
+            managePermissionsUrl: fnPageURL('manage-permissions?nodeRef=' + nodeRef),
+            workingCopyUrl: fnPageURL('document-details?nodeRef=' + (custom.workingCopyNode || nodeRef)),
+            viewGoogleDocUrl: custom.googleDocUrl + '\" target=\"_blank',
+            originalUrl: fnPageURL('document-details?nodeRef=' + (custom.workingCopyOriginal || nodeRef)),
+            explorerViewUrl: $combine(this.options.repositoryUrl, '/n/showSpaceDetails/', nodeRefUri) + '\" target=\"_blank',
+            sourceRepositoryUrl: this.viewInSourceRepositoryURL(recordData) + '\" target=\"_blank'
          });
       },
 
@@ -1827,13 +1827,13 @@
          // Call through to get the row unhighlighted by YUI
          this.widgets.dataTable.onEventUnhighlightRow.call(this.widgets.dataTable, oArgs);
 
-         var elActions = Dom.get(this.id + "-actions-" + (oArgs.target.id));
+         var elActions = Dom.get(this.id + '-actions-' + (oArgs.target.id));
 
          // Don't hide unless the More Actions drop-down is showing, or a dialog mask is present
-         if (elActions && !this.showingMoreActions || Dom.hasClass(document.body, "masked"))
+         if (elActions && !this.showingMoreActions || Dom.hasClass(document.body, 'masked'))
          {
             // Just hide the action links, rather than removing them from the DOM
-            Dom.addClass(elActions, "hidden");
+            Dom.addClass(elActions, 'hidden');
             this.deferredActionsMenu = null;
          }
       },
@@ -1854,31 +1854,31 @@
       onActionShowMore: function DL_onActionShowMore(asset, elMore)
       {
          var me = this;
-         
+
          // Fix "More Actions" hover style
-         Dom.addClass(elMore.firstChild, "highlighted");
-         
+         Dom.addClass(elMore.firstChild, 'highlighted');
+
          // Get the pop-up div, sibling of the "More Actions" link
          var elMoreActions = Dom.getNextSibling(elMore);
-         Dom.removeClass(elMoreActions, "hidden");
+         Dom.removeClass(elMoreActions, 'hidden');
          me.showingMoreActions = true;
-         
+
          // Hide pop-up timer function
          var fnHidePopup = function DL_oASM_fnHidePopup()
          {
             // Need to rely on the "elMoreActions" enclosed variable, as MSIE doesn't support
             // parameter passing for timer functions.
-            Event.removeListener(elMoreActions, "mouseover");
-            Event.removeListener(elMoreActions, "mouseout");
-            Dom.removeClass(elMore.firstChild, "highlighted");
-            Dom.addClass(elMoreActions, "hidden");
+            Event.removeListener(elMoreActions, 'mouseover');
+            Event.removeListener(elMoreActions, 'mouseout');
+            Dom.removeClass(elMore.firstChild, 'highlighted');
+            Dom.addClass(elMoreActions, 'hidden');
             me.showingMoreActions = false;
             if (me.deferredActionsMenu !== null)
             {
-               Dom.addClass(me.currentActionsMenu, "hidden");
+               Dom.addClass(me.currentActionsMenu, 'hidden');
                me.currentActionsMenu = me.deferredActionsMenu;
                me.deferredActionsMenu = null;
-               Dom.removeClass(me.currentActionsMenu, "hidden");
+               Dom.removeClass(me.currentActionsMenu, 'hidden');
             }
          };
 
@@ -1888,7 +1888,7 @@
             window.clearTimeout(elMoreActions.hideTimerId);
          }
          elMoreActions.hideTimerId = window.setTimeout(fnHidePopup, me.options.actionsPopupTimeout * 5);
-         
+
          // Mouse over handler
          var onMouseOver = function DLSM_onMouseOver(e, obj)
          {
@@ -1899,7 +1899,7 @@
                obj.hideTimerId = null;
             }
          };
-         
+
          // Mouse out handler
          var onMouseOut = function DLSM_onMouseOut(e, obj)
          {
@@ -1916,11 +1916,11 @@
                obj.hideTimerId = window.setTimeout(fnHidePopup, me.options.actionsPopupTimeout);
             }
          };
-         
-         Event.on(elMoreActions, "mouseover", onMouseOver, elMoreActions);
-         Event.on(elMoreActions, "mouseout", onMouseOut, elMoreActions);
+
+         Event.on(elMoreActions, 'mouseover', onMouseOver, elMoreActions);
+         Event.on(elMoreActions, 'mouseout', onMouseOut, elMoreActions);
       },
-      
+
       /**
        * Edit Offline.
        *
@@ -1944,10 +1944,10 @@
                {
                   event:
                   {
-                     name: "changeFilter",
+                     name: 'changeFilter',
                      obj:
                      {
-                        filterId: "editingMe"
+                        filterId: 'editingMe'
                      }
                   },
                   callback:
@@ -1966,11 +1966,11 @@
                               // MSIE7 blocks the download and gets the wrong URL in the "manual download bar"
                               Alfresco.util.PopupManager.displayPrompt(
                               {
-                                 title: this.msg("message.edit-offline.success", displayName),
-                                 text: this.msg("message.edit-offline.success.ie7"),
+                                 title: this.msg('message.edit-offline.success', displayName),
+                                 text: this.msg('message.edit-offline.success.ie7'),
                                  buttons: [
                                  {
-                                    text: this.msg("button.download"),
+                                    text: this.msg('button.download'),
                                     handler: function DL_oAEO_success_download()
                                     {
                                        window.location = downloadUrl;
@@ -1979,7 +1979,7 @@
                                     isDefault: true
                                  },
                                  {
-                                    text: this.msg("button.close"),
+                                    text: this.msg('button.close'),
                                     handler: function DL_oAEO_success_close()
                                     {
                                        this.destroy();
@@ -1991,7 +1991,7 @@
                            {
                               Alfresco.util.PopupManager.displayMessage(
                               {
-                                 text: this.msg("message.edit-offline.success", displayName)
+                                 text: this.msg('message.edit-offline.success', displayName)
                               });
                               // Kick off the download 3 seconds after the confirmation message
                               YAHOO.lang.later(3000, this, function()
@@ -2015,12 +2015,12 @@
                      },
                      scope: this
                   },
-                  message: this.msg("message.edit-offline.failure", displayName)
+                  message: this.msg('message.edit-offline.failure', displayName)
                },
                webscript:
                {
                   method: Alfresco.util.Ajax.POST,
-                  name: "checkout/node/{nodeRef}",
+                  name: 'checkout/node/{nodeRef}',
                   params:
                   {
                      nodeRef: nodeRef.uri
@@ -2029,7 +2029,7 @@
             });
          }
       },
-      
+
       /**
        * Checkout to Google Docs.
        *
@@ -2043,12 +2043,12 @@
             nodeRef = new Alfresco.util.NodeRef(asset.nodeRef),
             path = asset.location.path,
             fileName = asset.fileName;
-            
+
          var progressPopup = Alfresco.util.PopupManager.displayMessage(
          {
             displayTime: 0,
             effect: null,
-            text: this.msg("message.checkout-google.inprogress", displayName)
+            text: this.msg('message.checkout-google.inprogress', displayName)
          });
 
          this.modules.actions.genericAction(
@@ -2057,10 +2057,10 @@
             {
                event:
                {
-                  name: "changeFilter",
+                  name: 'changeFilter',
                   obj:
                   {
-                     filterId: "editingMe"
+                     filterId: 'editingMe'
                   }
                },
                callback:
@@ -2069,13 +2069,13 @@
                   {
                      progressPopup.destroy();
                      this.options.highlightFile = displayName;
-                     
+
                      // The filterChanged event causes the DocList to update, so we need to run these functions afterwards
                      var fnAfterUpdate = function DL_oACTGD_success_afterUpdate()
                      {
                         Alfresco.util.PopupManager.displayMessage(
                         {
-                           text: this.msg("message.checkout-google.success", displayName)
+                           text: this.msg('message.checkout-google.success', displayName)
                         });
                      };
                      this.afterDocListUpdate.push(fnAfterUpdate);
@@ -2085,8 +2085,8 @@
                activity:
                {
                   siteId: this.options.siteId,
-                  activityType: "google-docs-checkout",
-                  page: "document-details",
+                  activityType: 'google-docs-checkout',
+                  page: 'document-details',
                   activityData:
                   {
                      fileName: fileName,
@@ -2104,7 +2104,7 @@
                      progressPopup.destroy();
                      Alfresco.util.PopupManager.displayMessage(
                      {
-                        text: this.msg("message.checkout-google.failure", displayName)
+                        text: this.msg('message.checkout-google.failure', displayName)
                      });
                   },
                   scope: this
@@ -2113,7 +2113,7 @@
             webscript:
             {
                method: Alfresco.util.Ajax.POST,
-               name: "checkout/node/{nodeRef}",
+               name: 'checkout/node/{nodeRef}',
                params:
                {
                   nodeRef: nodeRef.uri
@@ -2140,7 +2140,7 @@
          {
             displayTime: 0,
             effect: null,
-            text: this.msg("message.checkin-google.inprogress", displayName)
+            text: this.msg('message.checkin-google.inprogress', displayName)
          });
 
          this.modules.actions.genericAction(
@@ -2149,20 +2149,20 @@
             {
                event:
                {
-                  name: "metadataRefresh"
+                  name: 'metadataRefresh'
                },
                callback:
                {
                   fn: function DL_oACFGD_success(data)
                   {
                      progressPopup.destroy();
-                     
+
                      // The filterChanged event causes the DocList to update, so we need to run these functions afterwards
                      var fnAfterUpdate = function DL_oACTGD_success_afterUpdate()
                      {
                         Alfresco.util.PopupManager.displayMessage(
                         {
-                           text: this.msg("message.checkin-google.success", displayName)
+                           text: this.msg('message.checkin-google.success', displayName)
                         });
                      };
                      this.afterDocListUpdate.push(fnAfterUpdate);
@@ -2172,8 +2172,8 @@
                activity:
                {
                   siteId: this.options.siteId,
-                  activityType: "google-docs-checkin",
-                  page: "document-details",
+                  activityType: 'google-docs-checkin',
+                  page: 'document-details',
                   activityData:
                   {
                      fileName: displayName,
@@ -2184,12 +2184,12 @@
             },
             failure:
             {
-               message: this.msg("message.checkin-google.failure", displayName)
+               message: this.msg('message.checkin-google.failure', displayName)
             },
             webscript:
             {
                method: Alfresco.util.Ajax.POST,
-               name: "checkin/node/{nodeRef}",
+               name: 'checkin/node/{nodeRef}',
                params:
                {
                   nodeRef: nodeRef.uri
@@ -2202,7 +2202,7 @@
        * BUBBLING LIBRARY EVENT HANDLERS FOR PAGE EVENTS
        * Disconnected event handlers for inter-component event notification
        */
-      
+
       /**
        * Generic file action event handler
        *
@@ -2234,7 +2234,7 @@
          var obj = args[1];
          if (obj && (obj.file !== null))
          {
-            var recordFound = this._findRecordByParameter(obj.file.nodeRef, "nodeRef");
+            var recordFound = this._findRecordByParameter(obj.file.nodeRef, 'nodeRef');
             if (recordFound !== null)
             {
                this.widgets.dataTable.updateRow(recordFound, obj.file);
@@ -2276,15 +2276,15 @@
          {
             // Should be a filter in the arguments
             var filter = Alfresco.util.cleanBubblingObject(obj),
-               strFilter = window.escape(obj.filterId) + (typeof obj.filterData !== "undefined" ? "|" + window.escape(obj.filterData) : "");
-            
-            Alfresco.logger.debug("DL_onChangeFilter: ", filter);
+               strFilter = window.escape(obj.filterId) + (typeof obj.filterData !== 'undefined' ? '|' + window.escape(obj.filterData) : '');
+
+            Alfresco.logger.debug('DL_onChangeFilter: ', filter);
 
             var objNav =
             {
                filter: strFilter
             };
-            
+
             // Initial navigation won't fire the History event
             if (obj.doclistFirstTimeNav)
             {
@@ -2299,20 +2299,20 @@
                if (this.options.usePagination)
                {
                   this.currentPage = 1;
-                  objNav.page = "1";
+                  objNav.page = '1';
                }
 
-               Alfresco.logger.debug("DL_onChangeFilter: objNav = ", objNav);
+               Alfresco.logger.debug('DL_onChangeFilter: objNav = ', objNav);
 
                // Do we think the history state will change?
-               if (this.options.highlightFile && objNav.filter == YAHOO.util.History.getCurrentState("filter"))
+               if (this.options.highlightFile && objNav.filter == YAHOO.util.History.getCurrentState('filter'))
                {
-                  YAHOO.Bubbling.fire("highlightFile",
+                  YAHOO.Bubbling.fire('highlightFile',
                   {
                      fileName: this.options.highlightFile
                   });
                }
-               
+
                YAHOO.util.History.multiNavigate(objNav);
             }
          }
@@ -2334,7 +2334,7 @@
 
             // Should be a filterId in the arguments
             this.currentFilter = Alfresco.util.cleanBubblingObject(obj);
-            Alfresco.logger.debug("DL_onFilterChanged: ", this.currentFilter);
+            Alfresco.logger.debug('DL_onFilterChanged: ', this.currentFilter);
          }
       },
 
@@ -2351,8 +2351,8 @@
          var obj = args[1];
          if ((obj !== null) && (obj.fileName !== null))
          {
-            Alfresco.logger.debug("DL_onHighlightFile: ", obj.fileName);
-            var recordFound = this._findRecordByParameter(obj.fileName, "displayName");
+            Alfresco.logger.debug('DL_onHighlightFile: ', obj.fileName);
+            var recordFound = this._findRecordByParameter(obj.fileName, 'displayName');
             if (recordFound !== null)
             {
                // Scroll the record into view and highlight it
@@ -2371,9 +2371,9 @@
                this.options.highlightFile = null;
 
                // Select the file
-               Dom.get("checkbox-" + recordFound.getId()).checked = true;
-               this.selectedFiles[recordFound.getData("nodeRef")] = true;
-               YAHOO.Bubbling.fire("selectedFilesChanged");
+               Dom.get('checkbox-' + recordFound.getId()).checked = true;
+               this.selectedFiles[recordFound.getData('nodeRef')] = true;
+               YAHOO.Bubbling.fire('selectedFilesChanged');
             }
          }
       },
@@ -2396,7 +2396,7 @@
             }
          }
       },
-      
+
       /**
        * Deactivate Dynamic Controls event handler
        * Only deactivates specifically defined controls.
@@ -2416,7 +2416,7 @@
             }
          }
       },
-      
+
       /**
        * Activate Dynamic Controls event handler
        * (Re-)Activates controls taking part in dynamic deactivation
@@ -2436,7 +2436,7 @@
             }
          }
       },
-      
+
       /**
        * Favourite document event handler
        *
@@ -2458,7 +2458,7 @@
       {
          this._favouriteHandler(row, Alfresco.service.Preferences.FAVOURITE_FOLDERS);
       },
-      
+
 
       /**
        * PRIVATE FUNCTIONS
@@ -2477,10 +2477,10 @@
          var record = this.widgets.dataTable.getRecord(row),
             file = record.getData(),
             nodeRef = file.nodeRef;
-         
+
          file.isFavourite = !file.isFavourite;
          this.widgets.dataTable.updateRow(record, file);
-               
+
          var responseConfig =
          {
             failureCallback:
@@ -2493,7 +2493,7 @@
                   this.widgets.dataTable.updateRow(p_oRecord, file);
                   Alfresco.util.PopupManager.displayPrompt(
                   {
-                     text: this.msg("message.favourite.failure", file.displayName)
+                     text: this.msg('message.favourite.failure', file.displayName)
                   });
                },
                scope: this,
@@ -2501,7 +2501,7 @@
             }
          };
 
-         var fnPref = file.isFavourite ? "add" : "remove";
+         var fnPref = file.isFavourite ? 'add' : 'remove';
          this.services.preferences[fnPref].call(this.services.preferences, prefKey, nodeRef, responseConfig);
       },
 
@@ -2515,10 +2515,10 @@
       _setDefaultDataTableErrors: function DL__setDefaultDataTableErrors(dataTable)
       {
          var msg = Alfresco.util.message;
-         dataTable.set("MSG_EMPTY", msg("message.empty", "Alfresco.DocumentList"));
-         dataTable.set("MSG_ERROR", msg("message.error", "Alfresco.DocumentList"));
+         dataTable.set('MSG_EMPTY', msg('message.empty', 'Alfresco.DocumentList'));
+         dataTable.set('MSG_ERROR', msg('message.error', 'Alfresco.DocumentList'));
       },
-      
+
       /**
        * Updates document list by calling data webscript with current site and path
        *
@@ -2529,7 +2529,7 @@
       _updateDocList: function DL__updateDocList(p_obj)
       {
          p_obj = p_obj || {};
-         Alfresco.logger.debug("DL__updateDocList: ", p_obj.filter, p_obj.page);
+         Alfresco.logger.debug('DL__updateDocList: ', p_obj.filter, p_obj.page);
          var successFilter = YAHOO.lang.merge({}, p_obj.filter !== undefined ? p_obj.filter : this.currentFilter),
             successPage = p_obj.page !== undefined ? p_obj.page : this.currentPage,
             loadingMessage = null,
@@ -2541,21 +2541,21 @@
                page: successPage
             };
          successFilter.doclistFirstTimeNav = false;
-         
+
          // Clear the current document list if the data webscript is taking too long
          var fnShowLoadingMessage = function DL_fnShowLoadingMessage()
          {
-            Alfresco.logger.debug("DL__uDL_fnShowLoadingMessage: slow data webscript detected.");
+            Alfresco.logger.debug('DL__uDL_fnShowLoadingMessage: slow data webscript detected.');
             // Check the timer still exists. This is to prevent IE firing the event after we cancelled it. Which is "useful".
             if (timerShowLoadingMessage)
             {
                loadingMessage = Alfresco.util.PopupManager.displayMessage(
                {
                   displayTime: 0,
-                  text: '<span class="wait">' + $html(this.msg("message.loading")) + '</span>',
+                  text: '<span class="wait">' + $html(this.msg('message.loading')) + '</span>',
                   noEscape: true
                });
-               
+
                if (YAHOO.env.ua.ie > 0)
                {
                   this.loadingMessageShowing = true;
@@ -2569,20 +2569,20 @@
                }
             }
          };
-         
+
          // Reset the custom error messages
          this._setDefaultDataTableErrors(this.widgets.dataTable);
-         
+
          // Reset preview tooltips array
          this.previewTooltips = [];
-         
+
          // More Actions menu no longer relevant
          this.showingMoreActions = false;
-         
+
          // Slow data webscript message
          this.loadingMessageShowing = false;
          timerShowLoadingMessage = YAHOO.lang.later(this.options.loadingMessageDelay, this, fnShowLoadingMessage);
-         
+
          var destroyLoaderMessage = function DL__uDL_destroyLoaderMessage()
          {
             if (timerShowLoadingMessage)
@@ -2607,31 +2607,31 @@
                }
             }
          };
-         
+
          var successHandler = function DL__uDL_successHandler(sRequest, oResponse, oPayload)
          {
             destroyLoaderMessage();
             // Updating the Doclist may change the file selection
             var fnAfterUpdate = function DL__uDL_sH_fnAfterUpdate()
             {
-               YAHOO.Bubbling.fire("activateDynamicControls");
-               YAHOO.Bubbling.fire("selectedFilesChanged");
+               YAHOO.Bubbling.fire('activateDynamicControls');
+               YAHOO.Bubbling.fire('selectedFilesChanged');
             };
             this.afterDocListUpdate.push(fnAfterUpdate);
-            
-            Alfresco.logger.debug("currentFilter was:", this.currentFilter, "now:", successFilter);
-            Alfresco.logger.debug("currentPage was [" + this.currentPage + "] now [" + successPage + "]");
+
+            Alfresco.logger.debug('currentFilter was:', this.currentFilter, 'now:', successFilter);
+            Alfresco.logger.debug('currentPage was [' + this.currentPage + '] now [' + successPage + ']');
             this.currentFilter = successFilter;
             this.currentPage = successPage;
-            if (successFilter.filterId == "path")
+            if (successFilter.filterId == 'path')
             {
-               Alfresco.logger.debug("currentPath was [" + this.currentPath + "] now [" + successFilter.filterData + "]");
+               Alfresco.logger.debug('currentPath was [' + this.currentPath + '] now [' + successFilter.filterData + ']');
                this.currentPath = successFilter.filterData;
             }
-            YAHOO.Bubbling.fire("filterChanged", successFilter);
+            YAHOO.Bubbling.fire('filterChanged', successFilter);
             this.widgets.dataTable.onDataReturnInitializeTable.call(this.widgets.dataTable, sRequest, oResponse, oPayload);
          };
-         
+
          var failureHandler = function DL__uDL_failureHandler(sRequest, oResponse)
          {
             destroyLoaderMessage();
@@ -2650,12 +2650,12 @@
                   if (oResponse.status == 404)
                   {
                      // Folder not found (via the HTTP "404 Not Found" response) - deactivate dynamic controls only
-                     YAHOO.Bubbling.fire("deactivateDynamicControls");
+                     YAHOO.Bubbling.fire('deactivateDynamicControls');
                   }
                   else
                   {
                      // Site or container not found (e.g. via the HTTP "410 Gone" response) or more serious - deactivate all controls
-                     YAHOO.Bubbling.fire("deactivateAllControls");
+                     YAHOO.Bubbling.fire('deactivateAllControls');
                   }
 
                   var fnAfterFailedUpdate = function DL__uDL_failureHandler_fnAfterUpdate(responseMsg)
@@ -2667,7 +2667,7 @@
                            totalRecords: 0
                         });
                         this.widgets.paginator.render();
-                        this.widgets.dataTable.set("MSG_ERROR", responseMsg);
+                        this.widgets.dataTable.set('MSG_ERROR', responseMsg);
                         this.widgets.dataTable.showTableMessage(responseMsg, YAHOO.widget.DataTable.CLASS_ERROR);
                      };
                   };
@@ -2676,21 +2676,21 @@
                   this.widgets.dataTable.initializeTable();
                   this.widgets.dataTable.render();
                }
-               catch(e)
+               catch (e)
                {
                   Alfresco.logger.error(e);
                   this._setDefaultDataTableErrors(this.widgets.dataTable);
                }
             }
          };
-         
+
          // Update the DataSource
-         if (params.filter && params.filter.filterId == "path")
+         if (params.filter && params.filter.filterId == 'path')
          {
             params.path = params.filter.filterData;
          }
          var requestParams = this._buildDocListParams(params);
-         Alfresco.logger.debug("DataSource requestParams: ", requestParams);
+         Alfresco.logger.debug('DataSource requestParams: ', requestParams);
          this.widgets.dataSource.sendRequest(requestParams,
          {
             success: successHandler,
@@ -2714,15 +2714,15 @@
       _buildDocListParams: function DL__buildDocListParams(p_obj)
       {
          // Essential defaults
-         var obj = 
+         var obj =
          {
             path: this.currentPath,
-            type: this.options.showFolders ? "all" : "documents",
+            type: this.options.showFolders ? 'all' : 'documents',
             site: this.options.siteId,
             container: this.options.containerId,
             filter: this.currentFilter
          };
-         
+
          // Pagination in use?
          if (this.options.usePagination)
          {
@@ -2731,39 +2731,39 @@
          }
 
          // Passed-in overrides
-         if (typeof p_obj == "object")
+         if (typeof p_obj == 'object')
          {
             obj = YAHOO.lang.merge(obj, p_obj);
          }
 
          // Build the URI stem
-         var params = YAHOO.lang.substitute("{type}/site/{site}/{container}" + (obj.filter.filterId == "path" ? "{path}" : ""),
+         var params = YAHOO.lang.substitute('{type}/site/{site}/{container}' + (obj.filter.filterId == 'path' ? '{path}' : ''),
          {
             type: encodeURIComponent(obj.type),
             site: encodeURIComponent(obj.site),
             container: encodeURIComponent(obj.container),
-            path: $combine("/", Alfresco.util.encodeURIPath(obj.path))
+            path: $combine('/', Alfresco.util.encodeURIPath(obj.path))
          });
 
          // Filter parameters
-         params += "?filter=" + encodeURIComponent(obj.filter.filterId);
-         if (obj.filter.filterData && obj.filter.filterId !== "path")
+         params += '?filter=' + encodeURIComponent(obj.filter.filterId);
+         if (obj.filter.filterData && obj.filter.filterId !== 'path')
          {
-            params += "&filterData=" + encodeURIComponent(obj.filter.filterData);             
+            params += '&filterData=' + encodeURIComponent(obj.filter.filterData);
          }
-         
+
          // Paging parameters
          if (this.options.usePagination)
          {
-            params += "&size=" + obj.pageSize  + "&pos=" + obj.page;
+            params += '&size=' + obj.pageSize + '&pos=' + obj.page;
          }
 
          // No-cache
-         params += "&noCache=" + new Date().getTime();
+         params += '&noCache=' + new Date().getTime();
 
          return params;
       },
-       
+
       /**
        * Searches the current recordSet for a record with the given parameter value
        *

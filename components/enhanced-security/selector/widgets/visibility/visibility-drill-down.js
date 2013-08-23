@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
- *   
+ *
  * Although intended for deployment and use alongside Alfresco this module should
  * be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
  * http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -33,7 +33,7 @@
 
     /**
      * EnhancedSecuritySingleValueSelector constructor.
-     * 
+     *
      * @param {String}
      *            htmlId The HTML id of the parent element
      * @return {Alfresco.EnhancedSecuritySingleValueSelector} The new instance
@@ -42,7 +42,7 @@
     Alfresco.EnhancedSecurityVisibilityDrillDown = function(htmlId)
     {
         /* Mandatory properties */
-        this.name = "Alfresco.EnhancedSecurityVisibilityDrillDown";
+        this.name = 'Alfresco.EnhancedSecurityVisibilityDrillDown';
         this.id = htmlId;
 
         /* Initialise prototype properties */
@@ -53,7 +53,7 @@
         Alfresco.util.ComponentManager.register(this);
 
         /* Load YUI Components */
-        Alfresco.util.YUILoaderHelper.require( [ "json", "connection", "event", "tabview" ], this.onComponentsLoaded, this);
+        Alfresco.util.YUILoaderHelper.require(['json', 'connection', 'event', 'tabview'], this.onComponentsLoaded, this);
 
         return this;
     };
@@ -64,32 +64,32 @@
         {
             /**
              * Object container for initialization options
-             * 
+             *
              * @property options
              * @type object
              */
-            options : {},
+            options: {},
 
             /**
              * Object container for storing YUI widget instances.
-             * 
+             *
              * @property widgets
              * @type object
              */
-            widgets : null,
+            widgets: null,
 
             /**
              * Object container for storing module instances.
-             * 
+             *
              * @property modules
              * @type object
              */
-            modules : null,
+            modules: null,
 
             /**
              * Whether this dialog is currently displayed
              */
-            isVisible : false,
+            isVisible: false,
 
             // +++ PUBLIC EVENTS
 
@@ -98,43 +98,43 @@
             /**
              * Sets the security marking. Will trigger the update, via ajax, of
              * the visibility.
-             * 
+             *
              * @public
              * @method setSecurityMarking
              * @param {Object}
              *            securityMarking the security marking
              */
-            setSecurityMarking : function(securityMarking)
+            setSecurityMarking: function(securityMarking)
             {
                 this.currentMarking = securityMarking;
-                
-                Dom.get(this.id + "-markingLabel").innerHTML = $html(Alfresco.EnhancedSecurityVisibilityUtils.securityMarkingToString(securityMarking));
+
+                Dom.get(this.id + '-markingLabel').innerHTML = $html(Alfresco.EnhancedSecurityVisibilityUtils.securityMarkingToString(securityMarking));
 
                 // If the marking is visible to everyone then we won't bother updating the sub-component's markings.
-                // We may have to remove this and make the sub-components handle this situation better in the future  
-                if(Alfresco.EnhancedSecurityVisibilityUtils.isMarkingVisibleToEveryone(this.currentMarking)) {
+                // We may have to remove this and make the sub-components handle this situation better in the future
+                if (Alfresco.EnhancedSecurityVisibilityUtils.isMarkingVisibleToEveryone(this.currentMarking)) {
                 	return;
             	}
 
-                if(this.widgets.visibilityUserList) {
+                if (this.widgets.visibilityUserList) {
                 	this.widgets.visibilityUserList.setSecurityMarking(securityMarking);
                 }
-                
-                if(this.widgets.visibilitySingleUserDetails) {
+
+                if (this.widgets.visibilitySingleUserDetails) {
                 	this.widgets.visibilitySingleUserDetails.setSecurityMarking(securityMarking);
                 }
             },
 
             /**
              * Set multiple initialization options at once.
-             * 
+             *
              * @method setOptions
              * @param obj
              *            {object} Object literal specifying a set of options
              * @return {Alfresco.EnhancedSecuritySingleValueSelector} returns
              *         'this' for method chaining
              */
-            setOptions : function(obj)
+            setOptions: function(obj)
             {
                 this.options = YAHOO.lang.merge(this.options, obj);
 
@@ -143,14 +143,14 @@
 
             /**
              * Set messages for this component.
-             * 
+             *
              * @method setMessages
              * @param obj
              *            {object} Object literal specifying a set of messages
              * @return {Alfresco.EnhancedSecurityVisibilityDrillDown} returns 'this'
              *         for method chaining
              */
-            setMessages : function(obj)
+            setMessages: function(obj)
             {
                 Alfresco.util.addMessages(obj, this.name);
 
@@ -160,10 +160,10 @@
             /**
              * Fired by YUILoaderHelper when required component script files
              * have been loaded into the browser.
-             * 
+             *
              * @method onComponentsLoaded
              */
-            onComponentsLoaded : function()
+            onComponentsLoaded: function()
             {
                 Event.onContentReady(this.id, this.onReady, this, true);
             },
@@ -172,70 +172,70 @@
              * Fired by YUI when parent element is available for scripting.
              * Component initialisation, including instantiation of YUI widgets
              * and event listener binding.
-             * 
+             *
              * @method onReady
              */
-            onReady : function()
+            onReady: function()
             {
                 var el = Dom.get(this.id);
-                
-                this.widgets.tabs = new YAHOO.widget.TabView(this.id + "-tabView");
-                
-                this.widgets.closeButton = Alfresco.util.createYUIButton(this, "closeButton", this.hide,
+
+                this.widgets.tabs = new YAHOO.widget.TabView(this.id + '-tabView');
+
+                this.widgets.closeButton = Alfresco.util.createYUIButton(this, 'closeButton', this.hide,
                         {
-                            value : "close"
+                            value: 'close'
                         });
-                
-                this.widgets.visibilityUserList = Alfresco.util.ComponentManager.get(this.id + "-visibilityUserList");
-                
+
+                this.widgets.visibilityUserList = Alfresco.util.ComponentManager.get(this.id + '-visibilityUserList');
+
                 this.widgets.visibilityUserList.onDataLoaded.subscribe(function(event, data) {
                 	this.updateVisibilityCountDisplay(data[0].results.length);
                 }, this, true);
-                
-                this.widgets.visibilitySingleUserDetails = Alfresco.util.ComponentManager.get(this.id + "-visibilitySingleUserDetails");
+
+                this.widgets.visibilitySingleUserDetails = Alfresco.util.ComponentManager.get(this.id + '-visibilitySingleUserDetails');
             },
-            
+
             /**
              * Displays the dialog
-             * 
+             *
              * @method show
              */
-            show : function()
+            show: function()
             {
             	// If the marking is visible to everyone then we can't show the breakdown
-            	if(Alfresco.EnhancedSecurityVisibilityUtils.isMarkingVisibleToEveryone(this.currentMarking)) {
+            	if (Alfresco.EnhancedSecurityVisibilityUtils.isMarkingVisibleToEveryone(this.currentMarking)) {
             		Alfresco.util.PopupManager.displayPrompt({
-            			title: this._msg("visibility.cannot-view-everyone.title"),
-            			text: this._msg("visibility.cannot-view-everyone.message")
+            			title: this._msg('visibility.cannot-view-everyone.title'),
+            			text: this._msg('visibility.cannot-view-everyone.message')
             		});
-            		
+
             		return;
             	}
-            	
+
                 // Create the panel
                 if (!this.widgets.panel)
                 {
                     this.widgets.panel = Alfresco.util.createYUIPanel(this.id,
                         {
-                            close : false
+                            close: false
                         });
 
-                    YAHOO.util.Dom.removeClass(this.id, "hidden");
+                    YAHOO.util.Dom.removeClass(this.id, 'hidden');
                 }
 
-                this.isVisible = true;   
+                this.isVisible = true;
                 this.widgets.panel.show();
-                
-                Event.addListener(this.id + "_mask", "click", this.hide, this, true); 
+
+                Event.addListener(this.id + '_mask', 'click', this.hide, this, true);
             },
 
             /**
              * Hides the dialog
-             * 
+             *
              * @public
              * @method hide
              */
-            hide : function()
+            hide: function()
             {
                 this.isVisible = false;
                 this.widgets.panel.hide();
@@ -245,34 +245,34 @@
             // +++ PRIVATE METHODS
 
             /**
-             * Updates the visibility count 
+             * Updates the visibility count
              */
-            updateVisibilityCountDisplay : function(visibilityCount) {
+            updateVisibilityCountDisplay: function(visibilityCount) {
             	var property;
-            	
-            	if(visibilityCount == 0) {
-            		property = "visibility.drill-down-count.none";
-            	} else if(visibilityCount == 1) {
-            		property = "visibility.drill-down-count.one";
+
+            	if (visibilityCount == 0) {
+            		property = 'visibility.drill-down-count.none';
+            	} else if (visibilityCount == 1) {
+            		property = 'visibility.drill-down-count.one';
             	} else {
-            		property = "visibility.drill-down-count";
+            		property = 'visibility.drill-down-count';
             	}
-            	
-        		Dom.get(this.id + "-countLabel").innerHTML = $html(this._msg(property, visibilityCount));
+
+        		Dom.get(this.id + '-countLabel').innerHTML = $html(this._msg(property, visibilityCount));
             },
-            
+
             /**
              * Gets a custom message
-             * 
+             *
              * @method _msg
              * @param messageId
              *            {string} The messageId to retrieve
              * @return {string} The custom message
              * @private
              */
-            _msg : function(messageId)
+            _msg: function(messageId)
             {
-                return Alfresco.util.message.call(this, messageId, "Alfresco.EnhancedSecurityVisibilityDrillDown",
+                return Alfresco.util.message.call(this, messageId, 'Alfresco.EnhancedSecurityVisibilityDrillDown',
                         Array.prototype.slice.call(arguments).slice(1));
             }
         };
