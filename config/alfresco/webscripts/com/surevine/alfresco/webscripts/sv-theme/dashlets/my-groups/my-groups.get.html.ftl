@@ -116,6 +116,9 @@ function loadVisibilityTab(tabIndex, start, size) {
             }
             groupDefinition.loaded=start+size;      
             tab.innerHTML+=rV;
+            if (typeof Alfresco != 'undefined' && typeof Alfresco.thirdparty != 'undefined' && typeof Alfresco.thirdparty.xmpp != 'undefined' && typeof Alfresco.thirdparty.xmpp.refreshPresences != 'undefined') {
+            	Alfresco.thirdparty.xmpp.refreshPresences();
+            }
 }
          
 function onVisibilityReportFail(response) {
@@ -129,6 +132,9 @@ function onVisibilityReportSuccess(response) {
     com_surevine_visibilityReportResults=reportObj; //Store the results for later use
     for (group in report) {
        reportObj.addTabForGroup({"name":group, "members":report[group]});
+    }
+    if (typeof Alfresco != 'undefined' && typeof Alfresco.thirdparty != 'undefined' && typeof Alfresco.thirdparty.xmpp != 'undefined' && typeof Alfresco.thirdparty.xmpp.refreshPresences != 'undefined') {
+    	Alfresco.thirdparty.xmpp.refreshPresences();
     }
 }
 
