@@ -1,4 +1,4 @@
-<import resource = 'classpath:/alfresco/site-webscripts/org/alfresco/components/enhanced-security/lib/enhanced-security.lib.js'>
+<import resource="classpath:/alfresco/site-webscripts/org/alfresco/components/enhanced-security/lib/enhanced-security.lib.js">
 
 /*
  * Copyright (C) 2008-2010 Surevine Limited.
