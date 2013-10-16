@@ -27,7 +27,7 @@
 	<artifactId>share.esl.module</artifactId>
 	<packaging>amp</packaging>
 	<name>ESL Share Module Dependencies</name>
-	<version>1.7.3-SNAPSHOT</version>
+	<version>1.7.4-SNAPSHOT</version>
 	<description>ESL Repo Module</description>
 
 	<distributionManagement>
