@@ -86,6 +86,11 @@
 	</target>
 
 	<target name="release">
+        <exec executable="git" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+
 		<echo>Updating local pom.xml...</echo>
 		<replaceregexp file="${pom.file}" match="&lt;version&gt;.*&lt;/version&gt;" replace="&lt;version&gt;${env.VERSION_NUMBER_RELEASE}&lt;/version&gt;" />
 		<echo>Committing tag into ${env.VERSION_NUMBER_RELEASE}</echo>
