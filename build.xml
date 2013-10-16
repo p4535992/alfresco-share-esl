@@ -101,8 +101,6 @@
 			<arg value="-m" />
 			<arg value="Tagging for ${env.VERSION_NUMBER_RELEASE} release" />
 		</exec>
-		<echo>Building and publishing version ${env.VERSION_NUMBER_RELEASE}</echo>
-		<antcall target="deploy" />
 		<echo>Updating local pom.xml...</echo>
 		<replaceregexp file="${pom.file}" match="&lt;version&gt;.*&lt;/version&gt;" replace="&lt;version&gt;${env.VERSION_NUMBER_NEW}&lt;/version&gt;" />
 		<echo>Committing into master...</echo>
@@ -117,6 +115,8 @@
             <arg value="origin"/>
             <arg value="master"/>
         </exec>
+		<echo>Building and publishing version ${env.VERSION_NUMBER_RELEASE}</echo>
+		<antcall target="deploy" />
 	</target>
 
 </project>
