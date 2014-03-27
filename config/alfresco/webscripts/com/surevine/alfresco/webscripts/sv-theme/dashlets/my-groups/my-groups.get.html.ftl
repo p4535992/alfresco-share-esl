@@ -1,20 +1,20 @@
 <#--
     Copyright (C) 2008-2010 Surevine Limited.
-      
+
     Although intended for deployment and use alongside Alfresco this module should
     be considered 'Not a Contribution' as defined in Alfresco'sstandard contribution agreement, see
     http://www.alfresco.org/resource/AlfrescoContributionAgreementv2.pdf
-    
+
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
     as published by the Free Software Foundation; either version 2
     of the License, or (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -36,7 +36,7 @@ function loadVisibilityReport()
 
   Alfresco.util.Ajax.request(
     {
-      url: Alfresco.constants.PROXY_URI + "/api/enhanced-security/shared-visibility-report",
+      url: Alfresco.constants.PROXY_URI + "/api/enhanced-security/shared-visibility-report" + "?user=" + Alfresco.constants.USERNAME,
       method: "GET",
       responseContentType : "text/json",
       successCallback:
@@ -77,21 +77,21 @@ function loadVisibilityTab(tabIndex, start, size) {
             if (groupDefinition.loadedAll || groupDefinition.loaded > (start+size)) {
                 return;
             }
-            
+
             if (start === 0) {
             	tab.innerHTML = VisibilityReport_renderMembersOfGroup(groupDefinition);
             }
-            
+
             var showMores = getElementsByClassName(tab, 'show-more');
-            
+
             for (showMore in showMores) {
                 showMores[showMore].style.cssText="display:none;";
             }
-            
+
             var itemsRendered=0;
             var itemsObserved=0;
             var rV="";
-            
+
             for (member in groupDefinition.members) {
                 if (++itemsObserved > start) {
                     var user=YAHOO.lang.JSON.parse(groupDefinition.members[member]);
@@ -114,18 +114,18 @@ function loadVisibilityTab(tabIndex, start, size) {
             else {
                 groupDefinition.loadedAll=true;
             }
-            groupDefinition.loaded=start+size;      
+            groupDefinition.loaded=start+size;
             tab.innerHTML+=rV;
             if (typeof Alfresco != 'undefined' && typeof Alfresco.thirdparty != 'undefined' && typeof Alfresco.thirdparty.xmpp != 'undefined' && typeof Alfresco.thirdparty.xmpp.refreshPresences != 'undefined') {
             	Alfresco.thirdparty.xmpp.refreshPresences();
             }
 }
-         
+
 function onVisibilityReportFail(response) {
     var body = YAHOO.util.Selector.query('div[id=my-groups-dashlet-body]')[0];
     body.innerHTML="<h3>Could not load details of the current users' groups.  If this issue persists, please contact support</h3>";
 }
-         
+
 function onVisibilityReportSuccess(response) {
     var report = YAHOO.lang.JSON.parse(response.serverResponse.responseText);
     var reportObj = new VisibilityReport("my-groups-dashlet-body");
@@ -157,11 +157,11 @@ function handleActiveTabChange(event) {
             this.id = containerId;
             this.options = {};
             this.groupDefinitions=[];
-            
+
             /* Load YUI Components */
             Alfresco.util.YUILoaderHelper.require(["tabview"], this.onComponentsLoaded, this);
             return this;
-            
+
         };
     VisibilityReport.prototype= {
         addTabForGroup: function VisibilityReport_addTabForGroup(group) {
@@ -179,7 +179,7 @@ function handleActiveTabChange(event) {
             tabView.set('activeIndex', 0);
             tabView.addListener('activeTabChange', handleActiveTabChange);
             tabView.appendTo(document.getElementById(this.id));
-            
+
             //If we have more than three groups, use a more compact rendering scheme
             if (this.groupDefinitions.length>3) {
                 //Remove the default tab selection mechanism
@@ -188,7 +188,7 @@ function handleActiveTabChange(event) {
                 for (var i=0; i < children.length; i++) {
                     parentUl.removeChild(children[i]);
                 }
-       
+
                 //Add our new control
                 var newControl="<span>Show the members of: </span><select id='my-groups-select'>";
                 for (group in this.groupDefinitions) {
@@ -196,7 +196,7 @@ function handleActiveTabChange(event) {
                 }
                 newControl+="</select>";
                 parentUl.innerHTML=newControl;
-                
+
                 //Add the event handler to make the select dialogue function as per the tab buttons
                 var selector = document.getElementById("my-groups-select");
                 selector.onchange=function() {
@@ -211,7 +211,7 @@ function handleActiveTabChange(event) {
                         }
                     }
                 }
-                
+
             }
             loadVisibilityTab(0, 0, 12);
         },
